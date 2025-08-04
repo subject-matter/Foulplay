@@ -1,6 +1,12 @@
 # Evil Dawn :smiling_imp:
 dark side rework of [Dawn](https://github.com/Shopify/dawn), Shopify's reference liquid theme
 
+# Horizon (edit 08.04.25)
+the public repo for Shopify's new flagship theme can be found [here](https://github.com/Shopify/horizon). The Evil Dawn starter pack is still totally viable, especially for builds where you are primarily gutting Dawn & replacing with a Figma-designed custom site. However, if you want to take full advantage of theme blocks for a more dynamic, composable theme experience, give Horizon a try. 
+
+# Known Issues
+some users have reported issues with the hls streaming polyfill causing a black screen on ios browsers. hls is supported by default on ios but it seems like there's a bug where the hls polyfill (200kb) is still loading. I'm not in a place where I can dive into this but contributions/fixes are welcome :)
+
 ## features
 - typescript
 - vite
