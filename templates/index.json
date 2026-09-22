@@ -45,6 +45,7 @@
 			},
 			"block_order": ["dose", "benefits", "flavour"],
 			"settings": {
+				"product": "hi-creatine",
 				"destination": "shopify://collections/all",
 				"link_label": "Shop HI-CREATINE"
 			}
@@ -76,6 +77,7 @@
 			},
 			"block_order": ["dose", "benefits"],
 			"settings": {
+				"product": "purest-creatine-sachets",
 				"destination": "shopify://collections/all",
 				"link_label": "Shop PUREST-CREATINE"
 			}
@@ -343,7 +345,12 @@
 					}
 				}
 			},
-			"block_order": ["home_of_football", "utmb", "hiking_patrol", "salomon"],
+			"block_order": [
+				"home_of_football",
+				"utmb",
+				"hiking_patrol",
+				"salomon"
+			],
 			"settings": {
 				"heading": "Journal",
 				"filter_label": "Journal categories"

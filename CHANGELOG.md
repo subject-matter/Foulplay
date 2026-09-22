@@ -10,3 +10,5 @@
 - Add the homepage subscription product showcase and interactive science sections from Figma.
 - Add the sticky homepage bundle selector, product panels, and configurable bundle choices from Figma.
 - Add the Figma footer with newsletter signup, policy links, localization, and responsive artwork.
+- Add section-aware header states, a continuous blurred surface, and Shopify product purchase controls.
+- Add the supplied Neue Haas Grotesk Text Pro and Microgramma Extended webfonts.

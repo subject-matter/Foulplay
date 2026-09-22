@@ -1,0 +1,213 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders one product purchase state inside the shared header.
+	- Uses the product variants and selling plans from Shopify.
+	- Updates the submitted variant, selling plan, availability, and price.
+
+	Section Author: rishi@subject-matter.studio
+{% endcomment %}
+
+{% liquid
+	assign current_variant = product.selected_or_first_available_variant
+	assign current_plan = product.selling_plan_groups.first.selling_plans.first
+	assign current_allocation = blank
+
+	if current_plan != blank
+		for allocation in current_variant.selling_plan_allocations
+			if allocation.selling_plan.id == current_plan.id
+				assign current_allocation = allocation
+				break
+			endif
+		endfor
+	endif
+
+	assign subscription_active = false
+	if current_plan != blank and current_allocation != blank
+		assign subscription_active = true
+	endif
+
+	assign displayed_price = current_variant.price
+	if subscription_active
+		assign displayed_price = current_allocation.price
+	endif
+%}
+
+{% # MARK:- Product purchase row from Figma node 1287:42669 %}
+<form
+	id="FpHeaderPurchaseOptions-{{ product.id }}"
+	data-header-product-ui="{{ slot }}"
+	hidden
+></form>
+<product-form
+	class="fp-header__product-form"
+	data-header-product-form="{{ product.handle }}"
+	data-header-product-slot="{{ slot }}"
+	hidden
+>
+	{% form 'product', product, class: 'fp-header__product-form-inner' %}
+		<div class="fp-header__product-cell fp-header__purchase-options">
+			<span class="fp-header__frame" aria-hidden="true"></span>
+			<fieldset>
+				<legend class="visually-hidden">Purchase option</legend>
+				<label class="fp-header__purchase-option">
+					<input
+						type="radio"
+						name="purchase-option-{{ product.id }}"
+						form="FpHeaderPurchaseOptions-{{ product.id }}"
+						value="one-time"
+						data-header-purchase-option
+						{% unless subscription_active %}
+							checked
+						{% endunless %}
+					>
+					<span>Buy It Once</span>
+				</label>
+				<label class="fp-header__purchase-option">
+					<input
+						type="radio"
+						name="purchase-option-{{ product.id }}"
+						form="FpHeaderPurchaseOptions-{{ product.id }}"
+						value="subscription"
+						data-header-purchase-option
+						{% if subscription_active %}
+							checked
+						{% endif %}
+						{% if current_plan == blank %}
+							disabled
+						{% endif %}
+					>
+					<span>Subscribe &amp; Save 15%</span>
+				</label>
+			</fieldset>
+		</div>
+
+		<div class="fp-header__product-cell fp-header__product-selectors">
+			<span class="fp-header__frame" aria-hidden="true"></span>
+			<label class="fp-header__product-select">
+				<span class="visually-hidden">Delivery frequency</span>
+				<select
+					name="selling_plan"
+					data-header-selling-plan
+					{% unless subscription_active %}
+						disabled
+					{% endunless %}
+				>
+					{% if current_plan == blank %}
+						<option value="">One-time purchase</option>
+					{% else %}
+						{% for selling_plan_group in product.selling_plan_groups %}
+							{% for selling_plan in selling_plan_group.selling_plans %}
+								<option
+									value="{{ selling_plan.id }}"
+									{% if selling_plan.id == current_plan.id %}
+										selected
+									{% endif %}
+								>
+									{{ forloop.index }} Month
+									{%- unless forloop.index == 1 -%}
+										s
+									{%- endunless %}
+								</option>
+							{% endfor %}
+						{% endfor %}
+					{% endif %}
+				</select>
+			</label>
+
+			<label class="fp-header__product-select">
+				<span class="visually-hidden">Product option</span>
+				<select name="id" data-header-variant>
+					{% for variant in product.variants %}
+						{% liquid
+							assign option_label = variant.title
+							if option_label == 'Default Title'
+								assign option_label = 'One Box'
+							elsif option_label contains 'Single Box'
+								assign option_label = 'One Box'
+							elsif option_label contains 'Two Boxes'
+								assign option_label = 'Two Boxes'
+							elsif option_label contains 'Three Boxes'
+								assign option_label = 'Three Boxes'
+							endif
+						%}
+						<option
+							value="{{ variant.id }}"
+							{% if variant.id == current_variant.id %}
+								selected
+							{% endif %}
+							{% unless variant.available %}
+								disabled
+							{% endunless %}
+						>
+							{{- option_label | escape -}}
+						</option>
+					{% endfor %}
+				</select>
+			</label>
+		</div>
+
+		<div class="fp-header__product-cell fp-header__product-submit-cell">
+			<span class="fp-header__frame" aria-hidden="true"></span>
+			<span
+				class="visually-hidden"
+				data-header-product-status
+				aria-live="polite"
+				aria-atomic="true"
+			></span>
+			<button
+				class="fp-header__product-submit"
+				type="submit"
+				name="add"
+				data-header-product-submit
+				{% unless current_variant.available %}
+					disabled aria-disabled="true"
+				{% endunless %}
+			>
+				<span data-header-submit-label>
+					{%- if current_variant.available -%}
+						Add to Cart
+					{%- else -%}
+						Sold Out
+					{%- endif -%}
+				</span>
+				<span data-header-product-price>
+					{{- displayed_price | money -}}
+				</span>
+				<span
+					class="hidden"
+					data-uc-loading-overlay-spinner
+					aria-hidden="true"
+				></span>
+			</button>
+		</div>
+
+		<div
+			class="visually-hidden"
+			data-uc-product-form-error-message-wrapper
+			role="alert"
+			hidden
+		>
+			<span data-uc-product-form-error-message></span>
+		</div>
+
+		<script type="application/json" data-header-product-data>
+			{
+				"variants": [
+					{% for variant in product.variants %}
+						{
+							"id": {{ variant.id | json }},
+							"available": {{ variant.available | json }},
+							"price": {{ variant.price | money | json }},
+							"sellingPlans": {
+								{% for allocation in variant.selling_plan_allocations %}
+									"{{ allocation.selling_plan.id }}": {{ allocation.price | money | json }}{% unless forloop.last %},{% endunless %}
+								{% endfor %}
+							}
+						}{% unless forloop.last %},{% endunless %}
+					{% endfor %}
+				]
+			}
+		</script>
+	{% endform %}
+</product-form>

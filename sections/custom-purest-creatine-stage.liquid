@@ -2,6 +2,7 @@
 	assign desktop_image = section.settings.desktop_image
 	assign mobile_image = section.settings.mobile_image
 	assign destination = section.settings.destination | default: routes.all_products_collection_url
+	assign stage_product = section.settings.product | default: all_products['purest-creatine-sachets']
 %}
 
 {% # MARK:- PUREST-CREATINE homepage stage from Figma nodes 1287:41955 and 1287:41957 %}
@@ -9,6 +10,7 @@
 	class="foulplay-product-hero foulplay-product-hero--purest-creatine"
 	data-node-id="1287:41955"
 	data-header-theme="dark"
+	data-header-product="{{ stage_product.handle }}"
 >
 	<div class="foulplay-product-hero__stage">
 		<a
@@ -53,6 +55,14 @@
 			{% content_for 'blocks' %}
 		</div>
 	</div>
+	<template data-header-product-source="{{ section.id }}">
+		{% if stage_product != blank %}
+			{% render 'custom-header-product-bar',
+				product: stage_product,
+				slot: section.id
+			%}
+		{% endif %}
+	</template>
 </section>
 
 {% schema %}
@@ -64,6 +74,7 @@
 		"blocks": [{ "type": "foulplay-highlight" }],
 		"max_blocks": 2,
 		"settings": [
+			{ "type": "product", "id": "product", "label": "Header product" },
 			{
 				"type": "image_picker",
 				"id": "desktop_image",
