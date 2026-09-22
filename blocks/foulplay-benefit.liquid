@@ -1,0 +1,73 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Shows one selectable scientific benefit and its supporting text.
+	- Assigns each benefit to the creatine or hydration filter.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% liquid
+	assign panel_id = 'science-benefit-' | append: block.id
+%}
+
+<article
+	class="foulplay-benefit"
+	data-foulplay-panel-item="{{ block.settings.group }}"
+	{{ block.shopify_attributes }}
+>
+	<button
+		class="foulplay-benefit__trigger"
+		type="button"
+		aria-pressed="false"
+		aria-controls="{{ panel_id }}"
+		data-science-benefit-trigger
+	>
+		{{ block.settings.heading | escape }}
+	</button>
+	<div class="foulplay-benefit__copy" id="{{ panel_id }}" aria-hidden="true">
+		{% if block.settings.image != blank %}
+			<div class="foulplay-benefit__media">
+				{{
+					block.settings.image
+					| image_url: width: 960
+					| image_tag:
+						widths: '320, 480, 720, 960',
+						loading: 'lazy',
+						alt: ''
+				}}
+			</div>
+		{% endif %}
+		{% if block.settings.body != blank %}
+			<div>{{ block.settings.body }}</div>
+		{% endif %}
+	</div>
+</article>
+
+{% schema %}
+	{
+		"name": "Science benefit",
+		"settings": [
+			{
+				"type": "select",
+				"id": "group",
+				"label": "Tab",
+				"options": [
+					{ "value": "creatine", "label": "Creatine" },
+					{ "value": "hydration", "label": "Hydration" }
+				],
+				"default": "creatine"
+			},
+			{
+				"type": "text",
+				"id": "heading",
+				"label": "Heading",
+				"default": "Benefit"
+			},
+			{ "type": "richtext", "id": "body", "label": "Body" },
+			{ "type": "image_picker", "id": "image", "label": "Image" }
+		],
+		"presets": [{ "name": "Science benefit" }]
+	}
+{% endschema %}

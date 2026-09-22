@@ -58,6 +58,31 @@
 %}
 
 {% style %}
+	/* MARK:- Foulplay brand webfonts */
+	@font-face {
+		font-display: swap;
+		font-family: 'Neue Haas Grotesk Text Pro';
+		font-style: normal;
+		font-weight: 400;
+		src: url("{{ 'foulplay-neue-haas-text-regular.woff2' | asset_url }}") format('woff2');
+	}
+
+	@font-face {
+		font-display: swap;
+		font-family: 'Neue Haas Grotesk Text Pro';
+		font-style: normal;
+		font-weight: 500;
+		src: url("{{ 'foulplay-neue-haas-text-medium.woff2' | asset_url }}") format('woff2');
+	}
+
+	@font-face {
+		font-display: swap;
+		font-family: 'Microgramma';
+		font-style: normal;
+		font-weight: 400;
+		src: url("{{ 'foulplay-microgramma-extended-regular.woff2' | asset_url }}") format('woff2');
+	}
+
 	{% if settings.body_font_custom %}
 	    {% render 'brand-font-body', preload: false %}
 	{% else %}

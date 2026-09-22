@@ -1,0 +1,181 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Shows a merchant-selected product as a reusable Foulplay title card.
+	- Links the image and title to the selected product.
+	- Supports the supplied product artwork, filters, badges, reviews, and action labels.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% liquid
+	assign card_product = block.settings.product
+	assign card_title = block.settings.title
+	if card_title == blank and card_product != blank
+		assign card_title = card_product.title
+	endif
+	assign card_url = block.settings.link
+	if card_url == blank and card_product != blank
+		assign card_url = card_product.url
+	endif
+	assign card_image = block.settings.image
+	assign card_key = card_product.handle
+	if card_key == blank
+		assign card_key = card_title | handleize
+	endif
+	assign card_asset = blank
+	case card_key
+		when 'hi-creatine'
+			assign card_asset = 'foulplay-header-hi-creatine.png'
+		when 'purest-creatine', 'purest-creatine-sachets'
+			assign card_asset = 'foulplay-header-purest-creatine.png'
+		when 'electrolytes'
+			assign card_asset = 'foulplay-product-electrolytes.png'
+	endcase
+	assign card_price = block.settings.price_label
+	if card_price == blank and card_product != blank
+		assign card_price = card_product.price | money
+	endif
+%}
+
+<article
+	class="foulplay-card foulplay-card--product"
+	data-product-categories=",{{ block.settings.categories | downcase | replace: ' ', '' }},"
+	data-product-artwork="{{ card_key | escape }}"
+	{{ block.shopify_attributes }}
+>
+	<a
+		class="foulplay-card__media"
+		href="{{ card_url | default: routes.all_products_collection_url }}"
+	>
+		{% if card_image != blank %}
+			{{
+				card_image
+				| image_url: width: 1200
+				| image_tag:
+					widths: '320, 480, 720, 960, 1200',
+					sizes: '(min-width: 1000px) 25vw, 50vw',
+					loading: 'lazy',
+					alt: ''
+			}}
+		{% elsif card_asset != blank %}
+			<img
+				src="{{ card_asset | asset_url }}"
+				width="{% if card_key == 'electrolytes' %}3277{% else %}1169{% endif %}"
+				height="{% if card_key == 'electrolytes' %}4096{% else %}1628{% endif %}"
+				alt=""
+				loading="lazy"
+			>
+		{% elsif card_product != blank
+			and card_product.featured_image != blank
+		%}
+			{{
+				card_product.featured_image
+				| image_url: width: 1200
+				| image_tag:
+					widths: '320, 480, 720, 960, 1200',
+					sizes: '(min-width: 1000px) 336px, 84vw',
+					loading: 'lazy',
+					alt: ''
+			}}
+		{% else %}
+			{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+		{% endif %}
+	</a>
+	<div class="foulplay-card__body">
+		<h3 class="foulplay-card__title">
+			<a href="{{ card_url | default: routes.all_products_collection_url }}">
+				{{- card_title | escape -}}
+			</a>
+		</h3>
+		{% if block.settings.subtitle != blank %}
+			<p class="foulplay-card__subtitle">
+				{{ block.settings.subtitle | escape }}
+			</p>
+		{% endif %}
+		{% if block.settings.description != blank %}
+			<div class="foulplay-card__description">
+				{{ block.settings.description }}
+			</div>
+		{% endif %}
+		{% if card_price != blank %}
+			<div class="foulplay-card__price">
+				<span class="visually-hidden">Price</span>
+				{{ card_price | escape }}
+			</div>
+		{% endif %}
+		{% if block.settings.badge != blank or block.settings.rating != blank %}
+			<div class="foulplay-card__tags">
+				{% if block.settings.badge != blank -%}
+					{%- render 'custom-foulplay-pill',
+						label: block.settings.badge,
+						style: 'solid'
+					-%}
+				{%- endif %}
+				{% if block.settings.rating != blank %}
+					<span class="foulplay-pill foulplay-pill--review">
+						<img
+							src="{{ 'foulplay-icon-star.svg' | asset_url }}"
+							width="16"
+							height="16"
+							alt=""
+						>
+						<span class="visually-hidden">Rated </span>
+						{{- block.settings.rating | escape -}}
+						<span class="visually-hidden"> out of 5</span>
+					</span>
+				{% endif %}
+			</div>
+		{% endif %}
+		{% if block.settings.show_button
+			and block.settings.button_label != blank
+		-%}
+			{%- render 'custom-foulplay-button',
+				label: block.settings.button_label,
+				url: card_url,
+				style: 'secondary'
+			-%}
+		{%- endif %}
+	</div>
+</article>
+
+{% schema %}
+	{
+		"name": "Product",
+		"settings": [
+			{ "type": "product", "id": "product", "label": "Product" },
+			{
+				"type": "image_picker",
+				"id": "image",
+				"label": "Image override"
+			},
+			{ "type": "text", "id": "title", "label": "Title override" },
+			{ "type": "text", "id": "subtitle", "label": "Subtitle" },
+			{ "type": "richtext", "id": "description", "label": "Description" },
+			{ "type": "text", "id": "price_label", "label": "Price label" },
+			{ "type": "text", "id": "badge", "label": "Badge" },
+			{ "type": "text", "id": "rating", "label": "Rating" },
+			{
+				"type": "text",
+				"id": "categories",
+				"label": "Filter categories",
+				"default": "featured"
+			},
+			{
+				"type": "checkbox",
+				"id": "show_button",
+				"label": "Show button",
+				"default": false
+			},
+			{
+				"type": "text",
+				"id": "button_label",
+				"label": "Button label",
+				"default": "View product"
+			},
+			{ "type": "url", "id": "link", "label": "Link override" }
+		],
+		"presets": [{ "name": "Product" }]
+	}
+{% endschema %}

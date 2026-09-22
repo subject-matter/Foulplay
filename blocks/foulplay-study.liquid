@@ -1,0 +1,63 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders one evidence record for the Foulplay clinical studies module.
+	- Supports a statistic, copy, image, and source link.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+<article class="foulplay-study" {{ block.shopify_attributes }}>
+	{% if block.settings.image != blank %}
+		<div class="foulplay-study__media">
+			{{
+				block.settings.image
+				| image_url: width: 1200
+				| image_tag:
+					widths: '320, 640, 960, 1200',
+					sizes: '(min-width: 1000px) 50vw, 100vw',
+					loading: 'lazy',
+					alt: block.settings.heading
+			}}
+		</div>
+	{% endif %}
+	<div class="foulplay-study__copy">
+		{% if block.settings.value != blank %}
+			<p class="foulplay-study__value">
+				{{ block.settings.value | escape }}
+			</p>
+		{% endif %}
+		<h3>{{ block.settings.heading | escape }}</h3>
+		{% if block.settings.body != blank %}
+			<div>{{ block.settings.body }}</div>
+		{% endif %}
+		{% if block.settings.link_label != blank -%}
+			{%- render 'custom-foulplay-button',
+				label: block.settings.link_label,
+				url: block.settings.link,
+				style: 'inline'
+			-%}
+		{%- endif %}
+	</div>
+</article>
+
+{% schema %}
+	{
+		"name": "Foulplay study",
+		"settings": [
+			{ "type": "text", "id": "value", "label": "Statistic" },
+			{
+				"type": "text",
+				"id": "heading",
+				"label": "Heading",
+				"default": "Study finding"
+			},
+			{ "type": "richtext", "id": "body", "label": "Body" },
+			{ "type": "image_picker", "id": "image", "label": "Image" },
+			{ "type": "text", "id": "link_label", "label": "Link label" },
+			{ "type": "url", "id": "link", "label": "Source link" }
+		],
+		"presets": [{ "name": "Foulplay study" }]
+	}
+{% endschema %}

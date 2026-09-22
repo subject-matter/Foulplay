@@ -1,330 +1,371 @@
-/*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
 {
 	"sections": {
-		"hero_MK4cWi": {
-			"type": "hero",
+		"opening_image": {
+			"type": "custom-home-opening",
+			"settings": {}
+		},
+		"hi_creatine_stage": {
+			"type": "custom-hi-creatine-stage",
 			"blocks": {
-				"media_dXAyMa": {
-					"type": "media",
+				"dose": {
+					"type": "foulplay-highlight",
 					"settings": {
-						"color_scheme": "",
-						"position": "center",
-						"wrap_width": 700,
-						"mobile_wrap_percent": 100,
-						"eyebrow": "",
-						"title": "Image banner",
-						"heading_size": "h1",
-						"text": "",
-						"button_label": "Button label",
-						"button_link": "",
-						"full_block_clickable": false,
-						"image": "shopify://shop_images/IMG_9944_2.jpg",
-						"x_position_desktop": 50,
-						"y_position_desktop": 50,
-						"override_shopify_position_desktop": true,
-						"image_overlay_opacity": 10,
-						"mobile_image": "shopify://shop_images/Screen_Shot_2023-03-28_at_2.09_2.jpg",
-						"x_position_mobile": 50,
-						"y_position_mobile": 50,
-						"override_shopify_position_mobile": true
+						"variant": "text",
+						"size": "small",
+						"style": "outline",
+						"value": "1800mg",
+						"heading": "The only high-performance creatine bites.",
+						"body": "<p>Powered by HI-TECH: our proprietary process that delivers 1.8g of creatine monohydrate per gummy. That's 20% more than any competitor.</p>"
 					}
 				},
-				"media_gGXX9p": {
-					"type": "media",
+				"benefits": {
+					"type": "foulplay-highlight",
 					"settings": {
-						"color_scheme": "transparent-bg",
-						"position": "center",
-						"wrap_width": 700,
-						"mobile_wrap_percent": 100,
-						"eyebrow": "",
-						"title": "Image banner",
-						"heading_size": "h1",
-						"text": "",
-						"button_label": "Button label",
-						"button_link": "",
-						"full_block_clickable": false,
-						"image": "shopify://shop_images/IMG_9944.jpg",
-						"x_position_desktop": 50,
-						"y_position_desktop": 50,
-						"override_shopify_position_desktop": true,
-						"image_overlay_opacity": 10,
-						"mobile_image": "shopify://shop_images/IMG_9945.jpg",
-						"x_position_mobile": 50,
-						"y_position_mobile": 50,
-						"override_shopify_position_mobile": true
+						"variant": "benefits",
+						"size": "small",
+						"style": "outline",
+						"heading": "Supports strength, recovery and cognitive function.",
+						"body": "<p>Creatine is a naturally occurring compound that supports adenosine triphosphate (ATP) recycling in our muscles and brain.</p>"
+					}
+				},
+				"flavour": {
+					"type": "foulplay-highlight",
+					"settings": {
+						"variant": "flavour",
+						"size": "small",
+						"style": "outline",
+						"value": "Hakuto\nPeach",
+						"heading": "Naturally-flavored bites to support strength, recovery and cognition.",
+						"body": "<p>Each bite opens with a rounded sweetness, followed by a clean and refreshing finish. Made with 100% natural flavour</p>",
+						"tartness": 1,
+						"sweetness": 4,
+						"flavour": 5
 					}
 				}
 			},
-			"block_order": [
-				"media_dXAyMa",
-				"media_gGXX9p"
-			],
+			"block_order": ["dose", "benefits", "flavour"],
 			"settings": {
-				"height": "large",
-				"space_above": 0,
-				"mobile_space_above": -1
+				"product": "hi-creatine",
+				"destination": "shopify://collections/all",
+				"link_label": "Shop HI-CREATINE"
 			}
 		},
-		"featured_collection_L3RcEq": {
-			"type": "featured-collection",
+		"purest_creatine_stage": {
+			"type": "custom-purest-creatine-stage",
 			"blocks": {
-				"collection_JTg4gN": {
-					"type": "collection",
+				"dose": {
+					"type": "foulplay-highlight",
 					"settings": {
-						"title": "Featured collection",
-						"collection": "premium-collection"
+						"variant": "text",
+						"size": "small",
+						"style": "outline",
+						"value": "5000mg",
+						"heading": "Creatine without compromise",
+						"body": "<p>PUREST uses a patented form of creatine monohydrate tested to be purer than anything else on the market. 99.99% purity. No solvents. No residue. No compromise.</p>"
 					}
 				},
-				"collection_4Bcbrx": {
-					"type": "collection",
+				"benefits": {
+					"type": "foulplay-highlight",
 					"settings": {
-						"title": "Featured collection",
-						"collection": "automated-collection"
+						"variant": "benefits",
+						"size": "small",
+						"style": "outline",
+						"heading": "Supports strength, recovery and cognitive function.",
+						"body": "<p>Creatine is a naturally occurring compound that supports adenosine triphosphate (ATP) recycling in our muscles and brain.</p>"
 					}
 				}
 			},
-			"block_order": [
-				"collection_JTg4gN",
-				"collection_4Bcbrx"
-			],
+			"block_order": ["dose", "benefits"],
 			"settings": {
-				"color_scheme": "",
-				"space_above": 4,
-				"mobile_space_above": -1
+				"product": "purest-creatine-sachets",
+				"destination": "shopify://collections/all",
+				"link_label": "Shop PUREST-CREATINE"
 			}
 		},
-		"rich_text": {
-			"type": "rich-text",
+		"product_showcase": {
+			"type": "custom-home-products",
 			"blocks": {
-				"heading": {
-					"type": "heading",
+				"hi_creatine": {
+					"type": "foulplay-product",
 					"settings": {
-						"heading": "Talk about your brand",
-						"heading_size": "h1"
+						"product": "hi-creatine",
+						"title": "HI-CREATINE",
+						"subtitle": "High-strength Creatine Bites",
+						"price_label": "From $20.80",
+						"badge": "Bundle & Save 15% Off",
+						"rating": "4.8",
+						"categories": "featured,creatine",
+						"show_button": false
 					}
 				},
-				"text": {
-					"type": "text",
+				"purest_creatine": {
+					"type": "foulplay-product",
 					"settings": {
-						"text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+						"product": "purest-creatine-sachets",
+						"title": "PUREST-CREATINE",
+						"subtitle": "Ultra Pure Creatine Monohydrate",
+						"price_label": "From $24.90",
+						"badge": "Bundle & Save 15% Off",
+						"rating": "4.8",
+						"categories": "featured,creatine",
+						"show_button": false
+					}
+				},
+				"electrolytes": {
+					"type": "foulplay-product",
+					"settings": {
+						"title": "ELECTROLYTES",
+						"subtitle": "Energy Hydration Sachets",
+						"price_label": "From $24.90",
+						"badge": "Bundle & Save 15% Off",
+						"rating": "4.8",
+						"categories": "featured,hydration",
+						"show_button": false,
+						"link": "shopify://collections/all"
 					}
 				}
 			},
-			"block_order": [
-				"heading",
-				"text"
-			],
+			"block_order": ["hi_creatine", "purest_creatine", "electrolytes"],
 			"settings": {
-				"color_scheme": "background-1",
-				"desktop_content_position": "center",
-				"content_alignment": "center",
-				"full_width": true,
-				"space_above": 4,
-				"mobile_space_above": -1
+				"heading": "Save with Subscriptions",
+				"body": "<p>When you create a subscription for any of our core product range*, you'll receive all our Performance Novelties as a complimentary gift (valued at $47).</p>",
+				"button_label": "Shop All",
+				"button_link": "shopify://collections/all",
+				"filter_label": "Filter products",
+				"featured_label": "Featured",
+				"creatine_label": "Creatine",
+				"hydration_label": "Hydration",
+				"complements_label": "Complements"
 			}
 		},
-		"rich_text_RhK3RR": {
-			"type": "rich-text",
+		"science": {
+			"type": "custom-home-science",
 			"blocks": {
-				"heading_yyRqcx": {
-					"type": "heading",
+				"lean_muscle": {
+					"type": "foulplay-benefit",
 					"settings": {
-						"heading": "Talk about your brand",
-						"heading_size": "h1"
+						"group": "creatine",
+						"heading": "Lean Muscle Mass",
+						"body": "<p>Creatine is a naturally occurring compound that supports adenosine triphosphate (ATP) recycling in our muscles and brain. Daily use supports strength, recovery and cognitive function.</p>"
 					}
 				},
-				"text_ATPX7V": {
-					"type": "text",
+				"growth_recovery": {
+					"type": "foulplay-benefit",
 					"settings": {
-						"text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+						"group": "creatine",
+						"heading": "Muscle Growth & Recovery",
+						"body": "<p>Daily creatine intake supports repeated high-intensity performance and helps muscles recover between training sessions.</p>"
 					}
 				},
-				"button_xLFEmq": {
-					"type": "button",
+				"cognition": {
+					"type": "foulplay-benefit",
 					"settings": {
-						"button_label": "Button label",
-						"button_link": "",
-						"button_style_secondary": false,
-						"button_label_2": "",
-						"button_link_2": "",
-						"button_style_secondary_2": false
+						"group": "creatine",
+						"heading": "Supports daily cognition",
+						"body": "<p>Creatine supports the energy demands of the brain and helps maintain daily cognitive performance.</p>"
+					}
+				},
+				"metabolism": {
+					"type": "foulplay-benefit",
+					"settings": {
+						"group": "creatine",
+						"heading": "Aging & Metabolism",
+						"body": "<p>Creatine supports healthy muscle function and energy metabolism as training needs change over time.</p>"
 					}
 				}
 			},
 			"block_order": [
-				"heading_yyRqcx",
-				"text_ATPX7V",
-				"button_xLFEmq"
+				"lean_muscle",
+				"growth_recovery",
+				"cognition",
+				"metabolism"
 			],
 			"settings": {
-				"color_scheme": "",
-				"desktop_content_position": "center",
-				"content_alignment": "center",
-				"full_width": true,
-				"space_above": 4,
-				"mobile_space_above": -1
+				"heading": "Scientifically Tested",
+				"body": "<p>Our in-house testing programme ensures that we always meet our label claims. We work with independent labs the purity of all our products.</p>",
+				"certificate_label": "View certificate of analysis",
+				"certificate_link": "https://cdn.shopify.com/s/files/1/0731/5429/7908/files/AH00012965___039__Run_Afoul_RUN_AFOUL_350562_2025-09-09__163221_1_1_1_2.pdf?v=1780852762",
+				"button_label": "View Science",
+				"button_link": "/pages/science",
+				"filter_label": "Product benefits",
+				"creatine_label": "Creatine",
+				"hydration_label": "Hydration"
 			}
 		},
-		"rich_text_ztxYpi": {
-			"type": "rich-text",
+		"bundles": {
+			"type": "custom-home-bundles",
 			"blocks": {
-				"heading_iWqg9U": {
-					"type": "heading",
+				"complete": {
+					"type": "foulplay-bundle-choice",
 					"settings": {
-						"heading": "Talk about your brand",
-						"heading_size": "h1"
+						"product": "complete-creatine-bundle",
+						"artwork_style": "complete",
+						"heading": "The Complete Bundle",
+						"regular_price": "$99.00",
+						"sale_price": "$82.90",
+						"rating": "4.8",
+						"review_count": "(46 review)",
+						"description": "<p>The Complete Bundle includes one box each of Purest-Creatine, Hi-Creatine, and Electrolytes.</p>",
+						"option_1_label": "Hi-Creatine:",
+						"option_1_values": "Hakuto Peach|60 Bites (20 servings)\nWhite Peach|60 Bites (20 servings)",
+						"option_2_label": "Purest-Creatine:",
+						"option_2_values": "Unflavoured|30 Sachets",
+						"option_3_label": "Electrolytes:",
+						"option_3_values": "Orange|30 Sachets\nLemon Lime|30 Sachets",
+						"button_label": "Add to Cart"
 					}
 				},
-				"text_TAGzUM": {
-					"type": "text",
+				"creatine": {
+					"type": "foulplay-bundle-choice",
 					"settings": {
-						"text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+						"product": "complete-creatine-bundle",
+						"artwork_style": "creatine",
+						"heading": "Creatine Bundle",
+						"sale_price": "$77.90",
+						"rating": "4.6",
+						"review_count": "(46 review)",
+						"description": "<p>The Creatine Bundle combines Hi-Creatine bites with Purest-Creatine sachets.</p>",
+						"option_1_label": "Hi-Creatine:",
+						"option_1_values": "Hakuto Peach|60 Bites (20 servings)\nWhite Peach|60 Bites (20 servings)",
+						"option_2_label": "Purest-Creatine:",
+						"option_2_values": "Unflavoured|30 Sachets",
+						"button_label": "Add to Cart"
 					}
 				},
-				"button_3QjgEN": {
-					"type": "button",
+				"hydration": {
+					"type": "foulplay-bundle-choice",
 					"settings": {
-						"button_label": "Button label",
-						"button_link": "",
-						"button_style_secondary": false,
-						"button_label_2": "",
-						"button_link_2": "",
-						"button_style_secondary_2": false
+						"artwork_style": "hydration",
+						"heading": "Hydration Bundle",
+						"sale_price": "$77.90",
+						"rating": "4.7",
+						"description": "<p>The Hydration Bundle supports daily energy, hydration, and recovery.</p>",
+						"link": "shopify://collections/all",
+						"button_label": "View Bundle"
 					}
 				}
 			},
-			"block_order": [
-				"heading_iWqg9U",
-				"text_TAGzUM",
-				"button_3QjgEN"
-			],
+			"block_order": ["complete", "creatine", "hydration"],
 			"settings": {
-				"color_scheme": "",
-				"desktop_content_position": "center",
-				"content_alignment": "center",
-				"full_width": true,
-				"space_above": 4,
-				"mobile_space_above": -1
+				"heading": "Save with Bundles",
+				"body": "<p>Choose a bundle and save 15% compared to buying items individually. Simply select your bundle and the discount is applied automatically.</p>",
+				"button_label": "Shop All",
+				"button_link": "shopify://collections/all",
+				"tab_label": "Choose a bundle"
 			}
 		},
-		"0026a19f-baba-419e-b405-504c014c4a12": {
-			"type": "collage",
+		"content_block": {
+			"type": "custom-home-content",
 			"blocks": {
-				"template--21632493683004__0026a19f-baba-419e-b405-504c014c4a12-image-1": {
-					"type": "image",
+				"technology": {
+					"type": "foulplay-content-card",
 					"settings": {
-						"image": "shopify://shop_images/Screen_Shot_2023-03-28_at_2.09_2.jpg"
+						"variant": "technology",
+						"image_alt": "Creatine gummies displayed on clear laboratory plinths",
+						"technology_1_title": "HI-TECH",
+						"technology_1_body": "<p>Our proprietary process* has allowed us to transcend the category to deliver the highest amount of creatine per gummy: 1.8g. That’s 20% more creatine than other products in the market. This is Hi-Creatine.</p>",
+						"technology_2_title": "PUREST-TECH",
+						"technology_2_body": "<p>PUREST uses a patented form of creatine monohydrate tested to be purer than anything else on the market. 99.99% purity. No solvents. No residue. No compromise. The difference in a nutshell:</p>",
+						"link_label": "Read More",
+						"link": "/pages/science"
 					}
 				},
-				"image_wEYkDw": {
-					"type": "image",
+				"editorial": {
+					"type": "foulplay-content-card",
 					"settings": {
-						"image": "shopify://shop_images/Screen_Shot_2023-03-28_at_2.09_1.jpg"
-					}
-				},
-				"image_MYdLGc": {
-					"type": "image",
-					"settings": {
-						"image": "shopify://shop_images/IMG_9944_2.jpg"
+						"variant": "editorial",
+						"image_alt": "Close-up portrait of an athlete",
+						"heading": "FOULPLAY",
+						"body": "<p>With FOULPLAY we drew inspiration from the mindset of competitive sport, where the difference between good and great comes down to marginal gains.</p>",
+						"link_label": "Read More",
+						"link": "/blogs/journal"
 					}
 				}
 			},
-			"block_order": [
-				"template--21632493683004__0026a19f-baba-419e-b405-504c014c4a12-image-1",
-				"image_wEYkDw",
-				"image_MYdLGc"
-			],
+			"block_order": ["technology", "editorial"],
+			"settings": {}
+		},
+		"roster": {
+			"type": "custom-home-roster",
+			"blocks": {
+				"dean_ho": {
+					"type": "foulplay-person",
+					"settings": {
+						"name": "Dr. Dean Ho",
+						"role": "Provost’s Chair Professor, PhD. in Biomedical Engineering"
+					}
+				}
+			},
+			"block_order": ["dean_ho"],
 			"settings": {
-				"heading": "Multimedia collage",
-				"heading_size": "h1",
-				"desktop_layout": "left",
-				"mobile_layout": "column",
-				"card_styles": "product-card-wrapper contains-card--product",
-				"color_scheme": "",
-				"space_above": 4,
-				"mobile_space_above": -1
+				"heading": "FOULPLAY ROSTER",
+				"image_alt": "Athlete carrying a weighted bag across their shoulders",
+				"body": "<p>Meet the athletes and advisors who bring their experience, expertise and competitive spirit to FOULPLAY.</p>",
+				"button_label": "Join",
+				"button_link": "/pages/contact"
 			}
 		},
-		"hero_MK4cWj": {
-			"type": "hero",
+		"journal": {
+			"type": "custom-home-journal",
 			"blocks": {
-				"media_dXAyMb": {
-					"type": "media",
+				"home_of_football": {
+					"type": "foulplay-journal",
 					"settings": {
-						"color_scheme": "",
-						"position": "center",
-						"wrap_width": 700,
-						"mobile_wrap_percent": 100,
-						"eyebrow": "",
-						"title": "Image banner",
-						"heading_size": "h1",
-						"text": "",
-						"button_label": "Button label",
-						"button_link": "",
-						"full_block_clickable": false,
-						"image": "shopify://shop_images/IMG_9944_2.jpg",
-						"x_position_desktop": 50,
-						"y_position_desktop": 50,
-						"override_shopify_position_desktop": true,
-						"image_overlay_opacity": 10,
-						"mobile_image": "shopify://shop_images/Screen_Shot_2023-03-28_at_2.09_2.jpg",
-						"x_position_mobile": 50,
-						"y_position_mobile": 50,
-						"override_shopify_position_mobile": true
+						"title": "FOULPLAY on display at homeoffootballnyc",
+						"date": "18 August 2026",
+						"excerpt": "<p>Created with Home of Football and Air Afrique, Home of Football: Home & Away brings together architecture, art, and more than 60 historic objects within a series of interconnected environments. A mint-green palette and circular forms draw from the visual language of the game, shaping an experience that explores football beyond the field.</p>",
+						"link": "/blogs/journal"
 					}
 				},
-				"media_gGXX9b": {
-					"type": "media",
+				"utmb": {
+					"type": "foulplay-journal",
 					"settings": {
-						"color_scheme": "transparent-bg",
-						"position": "center",
-						"wrap_width": 700,
-						"mobile_wrap_percent": 100,
-						"eyebrow": "",
-						"title": "Image banner",
-						"heading_size": "h1",
-						"text": "",
-						"button_label": "Button label",
-						"button_link": "",
-						"full_block_clickable": false,
-						"image": "shopify://shop_images/IMG_9944.jpg",
-						"x_position_desktop": 50,
-						"y_position_desktop": 50,
-						"override_shopify_position_desktop": true,
-						"image_overlay_opacity": 10,
-						"mobile_image": "shopify://shop_images/IMG_9945.jpg",
-						"x_position_mobile": 50,
-						"y_position_mobile": 50,
-						"override_shopify_position_mobile": true
+						"title": "FOULPLAY at UTMB",
+						"date": "24 June 2026",
+						"excerpt": "<p>116km. 5,400m of elevation gain. Two nights through the jungles of southern Thailand. A 32-hour cutoff. @kanishkkaran tells us about his first UTMB 100m series.</p>",
+						"link": "/blogs/journal"
+					}
+				},
+				"hiking_patrol": {
+					"type": "foulplay-journal",
+					"settings": {
+						"title": "FOULPLAY + HIKING PATROL",
+						"date": "2 April 2026",
+						"excerpt": "<p>Created exclusively for Paris Fashion Week, this limited collaboration brings together everyday performance and functional exploration, conceived as tools for exploration across movement, environment, and mindset.</p>",
+						"link": "/blogs/journal"
+					}
+				},
+				"salomon": {
+					"type": "foulplay-journal",
+					"settings": {
+						"title": "FOULPLAY + Salomon",
+						"date": "24 June 2026",
+						"excerpt": "<p>FOULPLAY’s natural electrolytes for @salomon_sg x @lart x @easypaceonly L’ART community run.</p>",
+						"link": "/blogs/journal"
 					}
 				}
 			},
 			"block_order": [
-				"media_dXAyMb",
-				"media_gGXX9b"
+				"home_of_football",
+				"utmb",
+				"hiking_patrol",
+				"salomon"
 			],
 			"settings": {
-				"height": "large",
-				"space_above": 0,
-				"mobile_space_above": -1
+				"heading": "Journal",
+				"filter_label": "Journal categories"
 			}
 		}
 	},
 	"order": [
-		"hero_MK4cWi",
-		"featured_collection_L3RcEq",
-		"rich_text",
-		"rich_text_RhK3RR",
-		"rich_text_ztxYpi",
-		"0026a19f-baba-419e-b405-504c014c4a12",
-		"hero_MK4cWj"
+		"opening_image",
+		"hi_creatine_stage",
+		"purest_creatine_stage",
+		"product_showcase",
+		"science",
+		"bundles",
+		"content_block",
+		"roster",
+		"journal"
 	]
 }

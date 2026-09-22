@@ -1,0 +1,94 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders a merchant-selected article as a reusable journal card.
+	- Supports reference content when an article is not selected.
+
+
+	Section Author: rishi@subject-matter.studio
+{% endcomment %}
+
+{% liquid
+	assign card_article = block.settings.article
+	assign card_title = block.settings.title
+	if card_title == blank and card_article != blank
+		assign card_title = card_article.title
+	endif
+	assign card_url = block.settings.link
+	if card_url == blank and card_article != blank
+		assign card_url = card_article.url
+	endif
+	assign card_image = block.settings.image
+	if card_image == blank and card_article != blank
+		assign card_image = card_article.image
+	endif
+	assign reference_asset = blank
+	if card_title == 'FOULPLAY on display at homeoffootballnyc'
+		assign reference_asset = 'foulplay-journal-football.jpeg'
+	elsif card_title == 'FOULPLAY at UTMB'
+		assign reference_asset = 'foulplay-journal-utmb.jpeg'
+	elsif card_title == 'FOULPLAY + HIKING PATROL'
+		assign reference_asset = 'foulplay-journal-hiking.jpeg'
+	endif
+%}
+
+<a
+	class="foulplay-journal-card"
+	href="{{ card_url | default: routes.root_url }}"
+	{{ block.shopify_attributes }}
+>
+	<picture class="foulplay-journal-card__media" data-no-fade>
+		{% if card_image != blank %}
+			{{
+				card_image
+				| image_url: width: 1400
+				| image_tag:
+					widths: '453, 750, 1000, 1400',
+					sizes: '(min-width: 1000px) 453px, 84vw',
+					loading: 'lazy',
+					alt: card_title
+			}}
+		{% elsif reference_asset != blank %}
+			<img
+				src="{{ reference_asset | asset_url }}"
+				width="1080"
+				height="1440"
+				alt="{{ card_title | escape }}"
+				loading="lazy"
+			>
+		{% endif %}
+	</picture>
+	<div class="foulplay-journal-card__copy">
+		<div>
+			<p class="foulplay-journal-card__title">{{ card_title | escape }}</p>
+			{% if card_article != blank %}
+				<time datetime="{{ card_article.published_at | date: '%Y-%m-%d' }}">
+					{{- card_article.published_at | date: '%-d %B %Y' -}}
+				</time>
+			{% elsif block.settings.date != blank %}
+				<time>{{ block.settings.date | escape }}</time>
+			{% endif %}
+		</div>
+		{% if block.settings.excerpt != blank %}
+			<div class="foulplay-journal-card__excerpt">{{ block.settings.excerpt }}</div>
+		{% elsif card_article.excerpt != blank %}
+			<div class="foulplay-journal-card__excerpt">{{ card_article.excerpt }}</div>
+		{% endif %}
+		<span class="foulplay-button foulplay-button--pill">Read More</span>
+	</div>
+</a>
+
+{% schema %}
+	{
+		"name": "Journal card",
+		"settings": [
+			{ "type": "article", "id": "article", "label": "Article" },
+			{ "type": "image_picker", "id": "image", "label": "Image override" },
+			{ "type": "text", "id": "title", "label": "Title override" },
+			{ "type": "text", "id": "date", "label": "Date override" },
+			{ "type": "richtext", "id": "excerpt", "label": "Excerpt override" },
+			{ "type": "url", "id": "link", "label": "Link override" }
+		],
+		"presets": [{ "name": "Journal card" }]
+	}
+{% endschema %}

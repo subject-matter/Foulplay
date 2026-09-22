@@ -1,0 +1,85 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders one flavour note for a selected Foulplay product profile.
+	- Positions the note with merchant-controlled desktop coordinates.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+<article
+	class="foulplay-flavour-note"
+	data-foulplay-panel-item="{{ block.settings.group }}"
+	style="--note-x: {{ block.settings.position_x }}%; --note-y: {{ block.settings.position_y }}%;"
+	{{ block.shopify_attributes }}
+>
+	{% if block.settings.icon != blank %}
+		{{
+			block.settings.icon
+			| image_url: width: 160
+			| image_tag:
+				widths: '80, 120, 160',
+				sizes: '80px',
+				loading: 'lazy',
+				alt: ''
+		}}
+	{% endif %}
+	<div>
+		<h3>{{ block.settings.heading | escape }}</h3>
+		{% if block.settings.body != blank %}
+			<p>{{ block.settings.body | escape }}</p>
+		{% endif %}
+	</div>
+</article>
+
+{% schema %}
+	{
+		"name": "Foulplay flavour note",
+		"settings": [
+			{
+				"type": "select",
+				"id": "group",
+				"label": "Profile",
+				"options": [
+					{ "value": "profile-one", "label": "Profile one" },
+					{ "value": "profile-two", "label": "Profile two" }
+				],
+				"default": "profile-one"
+			},
+			{
+				"type": "text",
+				"id": "heading",
+				"label": "Heading",
+				"default": "Flavour note"
+			},
+			{ "type": "text", "id": "body", "label": "Description" },
+			{
+				"type": "image_picker",
+				"id": "icon",
+				"label": "Icon or ingredient image"
+			},
+			{
+				"type": "range",
+				"id": "position_x",
+				"label": "Desktop horizontal position",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "%",
+				"default": 50
+			},
+			{
+				"type": "range",
+				"id": "position_y",
+				"label": "Desktop vertical position",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "%",
+				"default": 50
+			}
+		],
+		"presets": [{ "name": "Foulplay flavour note" }]
+	}
+{% endschema %}

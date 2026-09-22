@@ -1,0 +1,83 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Shows the Foulplay roster with a large image and rotating profile card.
+	- Supports manual previous and next controls.
+
+
+	Section Author: rishi@subject-matter.studio
+{% endcomment %}
+
+<foulplay-roster class="foulplay-roster-section" data-node-id="3223:34042">
+	<header class="foulplay-roster-section__header">
+		<h2>{{ section.settings.heading | escape }}</h2>
+	</header>
+	<div class="foulplay-roster-section__content">
+		<picture class="foulplay-roster-section__hero" data-no-fade>
+			{% if section.settings.image != blank %}
+				{{
+					section.settings.image
+					| image_url: width: 2400
+					| image_tag:
+						widths: '750, 1200, 1600, 2000, 2400',
+						sizes: '(min-width: 1000px) calc(75vw - 40px), calc(100vw - 32px)',
+						loading: 'lazy',
+						alt: section.settings.image_alt
+				}}
+			{% else %}
+				<img
+					src="{{ 'foulplay-roster-hero.png' | asset_url }}"
+					width="720"
+					height="1280"
+					alt="{{ section.settings.image_alt | escape }}"
+					loading="lazy"
+				>
+			{% endif %}
+		</picture>
+		<div class="foulplay-roster-section__side">
+			<div class="foulplay-roster-section__profiles" data-roster-profiles>
+				{% content_for 'blocks' %}
+			</div>
+			<div class="foulplay-roster-section__intro">
+				{% if section.settings.body != blank %}
+					<div>{{ section.settings.body }}</div>
+				{% endif %}
+				{% render 'custom-foulplay-button',
+					label: section.settings.button_label,
+					url: section.settings.button_link,
+					style: 'pill'
+				%}
+			</div>
+		</div>
+	</div>
+</foulplay-roster>
+
+{% schema %}
+	{
+		"name": "Roster",
+		"tag": "section",
+		"class": "section section--home-roster",
+		"disabled_on": { "groups": ["header", "footer"] },
+		"blocks": [{ "type": "foulplay-person" }],
+		"max_blocks": 8,
+		"settings": [
+			{
+				"type": "text",
+				"id": "heading",
+				"label": "Heading",
+				"default": "FOULPLAY ROSTER"
+			},
+			{ "type": "image_picker", "id": "image", "label": "Large image" },
+			{ "type": "text", "id": "image_alt", "label": "Large image alt text" },
+			{ "type": "richtext", "id": "body", "label": "Body" },
+			{
+				"type": "text",
+				"id": "button_label",
+				"label": "Button label",
+				"default": "Join"
+			},
+			{ "type": "url", "id": "button_link", "label": "Button link" }
+		],
+		"presets": [{ "name": "Roster", "blocks": [{ "type": "foulplay-person" }] }]
+	}
+{% endschema %}

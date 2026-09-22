@@ -47,7 +47,7 @@ $breakpoints: (
     $mobileMax: ($value * 0.1 * 1rem);
     $mobileMin: ($value * 0.09 * 1rem);
     // assumes mobile design is 375px. 1/375 * 100 = 0.266666667
-    $mobileVw: ($mobile * 0.2778 * 1vw);
+    $mobileVw: ($value * 0.2778 * 1vw);
     @return clamp(#{$mobileMin}, #{$mobileVw}, #{$mobileMax});
   } @else {
     $desktopMax: ($value * 0.1 * 1rem);

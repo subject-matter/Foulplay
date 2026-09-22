@@ -1,0 +1,157 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Shows the full-bleed science image and the testing programme message.
+	- Switches between creatine and hydration benefits.
+	- Changes the supporting copy when a benefit receives focus, hover, or a click.
+
+
+	Section Author: rishi@subject-matter.studio
+{% endcomment %}
+
+{% liquid
+	assign background_image = section.settings.image
+%}
+
+{% # MARK:- Homepage science section from Figma node 1287:41749 %}
+<foulplay-science-switcher
+	class="foulplay-science"
+	data-node-id="1287:41749"
+	data-header-theme="dark"
+>
+	<picture class="foulplay-science__background" data-no-fade>
+		{% if background_image != blank %}
+			{{
+				background_image
+				| image_url: width: 2880
+				| image_tag:
+					widths: '750, 1080, 1440, 1920, 2400, 2880',
+					sizes: '100vw',
+					loading: 'lazy',
+					alt: ''
+			}}
+		{% else %}
+			<img
+				src="{{ 'foulplay-home-science.png' | asset_url }}"
+				width="1080"
+				height="1920"
+				alt=""
+				loading="lazy"
+			>
+		{% endif %}
+	</picture>
+
+	<div class="foulplay-science__content">
+		<div class="foulplay-science__intro">
+			<div class="foulplay-science__intro-copy">
+				<h2>{{ section.settings.heading | escape }}</h2>
+				{% if section.settings.body != blank %}
+					<div>{{ section.settings.body }}</div>
+				{% endif %}
+				{% if section.settings.certificate_label != blank
+					and section.settings.certificate_link != blank
+				%}
+					<a
+						href="{{ section.settings.certificate_link }}"
+						target="_blank"
+						rel="noopener"
+					>
+						{{- section.settings.certificate_label | escape -}}
+					</a>
+				{% endif %}
+			</div>
+			{% render 'custom-foulplay-button',
+				label: section.settings.button_label,
+				url: section.settings.button_link,
+				style: 'secondary'
+			%}
+		</div>
+
+		<div class="foulplay-science__module">
+			<div
+				class="foulplay-science__filters"
+				aria-label="{{ section.settings.filter_label | escape }}"
+			>
+				<button
+					type="button"
+					aria-pressed="true"
+					data-science-filter="creatine"
+				>
+					{{ section.settings.creatine_label | escape }}
+				</button>
+				<button
+					type="button"
+					aria-pressed="false"
+					data-science-filter="hydration"
+				>
+					{{ section.settings.hydration_label | escape }}
+				</button>
+			</div>
+			<div class="foulplay-science__benefits" data-science-benefits>
+				{% content_for 'blocks' %}
+			</div>
+		</div>
+	</div>
+</foulplay-science-switcher>
+
+{% schema %}
+	{
+		"name": "Science",
+		"tag": "section",
+		"class": "section section--home-science",
+		"disabled_on": { "groups": ["header", "footer"] },
+		"blocks": [{ "type": "foulplay-benefit" }],
+		"max_blocks": 12,
+		"settings": [
+			{
+				"type": "image_picker",
+				"id": "image",
+				"label": "Background image"
+			},
+			{
+				"type": "text",
+				"id": "heading",
+				"label": "Heading",
+				"default": "Scientifically Tested"
+			},
+			{ "type": "richtext", "id": "body", "label": "Body" },
+			{
+				"type": "text",
+				"id": "certificate_label",
+				"label": "Certificate label",
+				"default": "View certificate of analysis"
+			},
+			{
+				"type": "url",
+				"id": "certificate_link",
+				"label": "Certificate link"
+			},
+			{
+				"type": "text",
+				"id": "button_label",
+				"label": "Button label",
+				"default": "View Science"
+			},
+			{ "type": "url", "id": "button_link", "label": "Button link" },
+			{
+				"type": "text",
+				"id": "filter_label",
+				"label": "Filter label",
+				"default": "Product benefits"
+			},
+			{
+				"type": "text",
+				"id": "creatine_label",
+				"label": "Creatine label",
+				"default": "Creatine"
+			},
+			{
+				"type": "text",
+				"id": "hydration_label",
+				"label": "Hydration label",
+				"default": "Hydration"
+			}
+		],
+		"presets": [{ "name": "Science" }]
+	}
+{% endschema %}

@@ -2,7 +2,6 @@ import shopify from 'vite-plugin-shopify'
 import { resolve } from 'node:path'
 import cssnano from 'cssnano'
 import advancedPreset from 'cssnano-preset-advanced'
-import basicSsl from '@vitejs/plugin-basic-ssl'
 
 export default {
 	css: {
@@ -19,14 +18,14 @@ export default {
 					})
 				),
 			],
-		}
+		},
 	},
 	server: {
 		secure: false,
 		host: 'localhost',
-		https: true,
+		https: false,
 		port: 3000,
-	} ,
+	},
 	publicDir: 'public',
 	resolve: {
 		alias: {
@@ -35,14 +34,13 @@ export default {
 		},
 	},
 	plugins: [
-		basicSsl(),
 		shopify({
 			themeRoot: './',
 			sourceCodeDir: 'src',
 			entrypointsDir: 'src/entry',
 			additionalEntrypoints: [],
 			snippetFile: 'vite.liquid',
-			versionNumbers: true
+			versionNumbers: true,
 		}),
 	],
 	build: {
@@ -60,8 +58,8 @@ export default {
 						'cart-chunk': (id) => id.includes('/src/cart/'),
 						'customer-chunk': (id) => id.includes('/src/customer/'),
 					},
-				}
-			}
-		}
+				},
+			},
+		},
 	},
 }

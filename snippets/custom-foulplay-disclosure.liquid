@@ -1,0 +1,32 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders an accessible Foulplay accordion row with native disclosure behaviour.
+
+
+	=== PARAMETERS ===
+
+	- "heading" is the disclosure summary.
+	- "content" is the rich text panel content.
+	- "id" is the unique disclosure ID.
+	- "open" controls the initial open state.
+	- "attributes" contains optional Shopify block attributes.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+<details
+	class="foulplay-disclosure"
+	id="{{ id }}"
+	{% if open %}
+		open
+	{% endif %}
+	{{ attributes }}
+>
+	<summary class="foulplay-disclosure__summary">
+		<span>{{ heading | escape }}</span>
+		<span class="foulplay-disclosure__icon" aria-hidden="true"></span>
+	</summary>
+	<div class="foulplay-disclosure__content rte">{{ content }}</div>
+</details>

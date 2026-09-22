@@ -1,0 +1,9 @@
+{% assign placeholder_images = 'foulplay-journal-hiking.jpeg,foulplay-journal-football.jpeg,foulplay-journal-utmb.jpeg,foulplay-home-science.png' | split: ',' %}
+{% assign placeholder_titles = 'FOULPLAY x Satisfy,FOULPLAY x Hackney Half Marathon,FOULPLAY presents The Hardest Geezer,FOULPLAY Lab Notes' | split: ',' %}
+{% for image_name in placeholder_images %}
+  <a class="fp-header__article" href="{{ routes.root_url }}">
+    <img src="{{ image_name | asset_url }}" alt="" width="453" height="560" loading="lazy">
+    <span class="fp-header__article-title">{{ placeholder_titles[forloop.index0] }}</span>
+    <span class="fp-header__muted">Explore training, performance, and the people who move culture forward.</span>
+  </a>
+{% endfor %}

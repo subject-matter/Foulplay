@@ -1,0 +1,42 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders the shared Foulplay button styles as a link or button.
+	- Supports primary, secondary, inline, and icon treatments.
+
+
+	=== PARAMETERS ===
+
+	- "label" is the visible button text.
+	- "url" is an optional link destination.
+	- "style" selects the visual treatment.
+	- "type" sets the native button type when no URL exists.
+	- "disabled" controls the native disabled state.
+	- "class" adds optional classes.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% liquid
+	assign button_style = style | default: 'primary'
+	assign button_type = type | default: 'button'
+	assign button_class = 'foulplay-button foulplay-button--' | append: button_style
+	if class != blank
+		assign button_class = button_class | append: ' ' | append: class
+	endif
+%}
+
+{% if url != blank %}
+	<a class="{{ button_class }}" href="{{ url }}">{{ label | escape }}</a>
+{% else %}
+	<button
+		class="{{ button_class }}"
+		type="{{ button_type }}"
+		{% if disabled %}
+			disabled
+		{% endif %}
+	>
+		{{ label | escape }}
+	</button>
+{% endif %}

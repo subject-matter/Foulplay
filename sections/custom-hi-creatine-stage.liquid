@@ -1,0 +1,99 @@
+{% liquid
+	assign desktop_image = section.settings.desktop_image
+	assign mobile_image = section.settings.mobile_image
+	assign destination = section.settings.destination | default: routes.all_products_collection_url
+	assign stage_product = section.settings.product | default: all_products['hi-creatine']
+%}
+
+{% # MARK:- HI-CREATINE homepage stage from Figma nodes 1287:41753 and 1287:41790 %}
+<section
+	class="foulplay-product-hero foulplay-product-hero--hi-creatine"
+	data-node-id="1287:41753"
+	data-header-theme="dark"
+	data-header-product="{{ stage_product.handle }}"
+>
+	<div class="foulplay-product-hero__stage">
+		<a
+			class="foulplay-product-hero__media"
+			href="{{ destination }}"
+			aria-label="{{ section.settings.link_label | escape }}"
+		>
+			<picture data-no-fade>
+				{% if mobile_image != blank %}
+					<source
+						media="(max-width: 749px)"
+						srcset="{{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 1100 }} 1100w"
+						sizes="100vw"
+					>
+				{% endif %}
+				{% if desktop_image != blank %}
+					{{
+						desktop_image
+						| image_url: width: 2880
+						| image_tag:
+							widths: '960, 1440, 1920, 2400, 2880',
+							sizes: '100vw',
+							loading: 'lazy',
+							alt: ''
+					}}
+				{% else %}
+					<img
+						src="{{ 'foulplay-home-hero-gummy.png' | asset_url }}"
+						width="1920"
+						height="1080"
+						alt=""
+						loading="lazy"
+					>
+				{% endif %}
+			</picture>
+		</a>
+		<div class="foulplay-product-hero__shade" aria-hidden="true"></div>
+		<div
+			class="foulplay-product-hero__highlights"
+			data-node-id="1287:41794"
+		>
+			{% content_for 'blocks' %}
+		</div>
+	</div>
+	<template data-header-product-source="{{ section.id }}">
+		{% if stage_product != blank %}
+			{% render 'custom-header-product-bar',
+				product: stage_product,
+				slot: section.id
+			%}
+		{% endif %}
+	</template>
+</section>
+
+{% schema %}
+	{
+		"name": "HI-CREATINE stage",
+		"tag": "section",
+		"class": "section section--product-stage",
+		"disabled_on": { "groups": ["header", "footer"] },
+		"blocks": [{ "type": "foulplay-highlight" }],
+		"max_blocks": 3,
+		"settings": [
+			{ "type": "product", "id": "product", "label": "Header product" },
+			{
+				"type": "image_picker",
+				"id": "desktop_image",
+				"label": "Desktop image"
+			},
+			{
+				"type": "image_picker",
+				"id": "mobile_image",
+				"label": "Mobile image",
+				"info": "Uses the desktop image when empty."
+			},
+			{ "type": "url", "id": "destination", "label": "Product link" },
+			{
+				"type": "text",
+				"id": "link_label",
+				"label": "Link label",
+				"default": "Shop HI-CREATINE"
+			}
+		],
+		"presets": [{ "name": "HI-CREATINE stage" }]
+	}
+{% endschema %}
