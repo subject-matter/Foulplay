@@ -1,0 +1,86 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders one reusable roster profile.
+	- Supplies its related large roster image to the section carousel.
+
+
+	Section Author: rishi@subject-matter.studio
+{% endcomment %}
+
+{% liquid
+	assign profile_image = block.settings.image
+	assign hero_image = block.settings.hero_image
+	if hero_image != blank
+		assign hero_url = hero_image | image_url: width: 2400
+	else
+		assign hero_url = 'foulplay-roster-hero.png' | asset_url
+	endif
+%}
+
+<article
+	class="foulplay-roster-card"
+	data-roster-card
+	data-roster-hero="{{ hero_url }}"
+	{{ block.shopify_attributes }}
+>
+	<div class="foulplay-roster-card__media" data-no-fade>
+		{% if profile_image != blank %}
+			{{
+				profile_image
+				| image_url: width: 1000
+				| image_tag:
+					widths: '336, 500, 750, 1000',
+					sizes: '(min-width: 1000px) 336px, calc(100vw - 32px)',
+					loading: 'lazy',
+					alt: block.settings.name
+			}}
+		{% else %}
+			<img
+				src="{{ 'foulplay-roster-dean.png' | asset_url }}"
+				width="908"
+				height="1024"
+				alt="{{ block.settings.name | escape }}"
+				loading="lazy"
+			>
+		{% endif %}
+		<div class="foulplay-roster-card__scrim"></div>
+		<div class="foulplay-roster-card__controls">
+			<button type="button" data-roster-previous aria-label="Previous profile">
+				<span aria-hidden="true">‹</span>
+			</button>
+			<button type="button" data-roster-next aria-label="Next profile">
+				<span aria-hidden="true">›</span>
+			</button>
+		</div>
+	</div>
+	<div class="foulplay-roster-card__copy">
+		<p>{{ block.settings.name | escape }}</p>
+		{% if block.settings.role != blank %}
+			<p>{{ block.settings.role | escape }}</p>
+		{% endif %}
+	</div>
+</article>
+
+{% schema %}
+	{
+		"name": "Roster profile",
+		"settings": [
+			{ "type": "image_picker", "id": "hero_image", "label": "Large image" },
+			{ "type": "image_picker", "id": "image", "label": "Profile image" },
+			{
+				"type": "text",
+				"id": "name",
+				"label": "Name",
+				"default": "Dr. Dean Ho"
+			},
+			{
+				"type": "text",
+				"id": "role",
+				"label": "Role",
+				"default": "Provost’s Chair Professor, PhD. in Biomedical Engineering"
+			}
+		],
+		"presets": [{ "name": "Roster profile" }]
+	}
+{% endschema %}

@@ -1,0 +1,128 @@
+{% # MARK:- Reusable Foulplay highlight component %}
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Shows a solid or outline Foulplay callout.
+	- Supports large and small sizes with optional media and supporting text.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+<article
+	class="foulplay-highlight foulplay-highlight--{{ block.settings.size }}"
+	{{ block.shopify_attributes }}
+>
+	<div class="foulplay-highlight__badge foulplay-highlight__badge--{{ block.settings.style }}">
+		{% if block.settings.variant == 'benefits' %}
+			<img
+				class="foulplay-highlight__benefit-icon"
+				src="{{ 'foulplay-icon-performance.svg' | asset_url }}"
+				width="31"
+				height="22"
+				alt=""
+				loading="lazy"
+			>
+		{% elsif block.settings.image != blank %}
+			<div class="foulplay-highlight__media">
+				{{
+					block.settings.image
+					| image_url: width: 640
+					| image_tag:
+						widths: '160, 320, 480, 640',
+						loading: 'lazy',
+						alt: ''
+				}}
+			</div>
+		{% elsif block.settings.value != blank %}
+			<p class="foulplay-highlight__value" aria-hidden="true">
+				{{ block.settings.value | escape | newline_to_br }}
+			</p>
+		{% endif %}
+	</div>
+	<div class="foulplay-highlight__copy">
+		<h3 class="foulplay-highlight__title">
+			{{ block.settings.heading | escape }}
+		</h3>
+		{% if block.settings.body != blank %}
+			<div class="foulplay-highlight__body">
+				{{ block.settings.body }}
+			</div>
+		{% endif %}
+		{% if block.settings.variant == 'flavour' %}
+			<div class="foulplay-highlight__ratings" aria-label="Flavour profile">
+				{% assign rating_labels = 'Tartness,Sweetness,Flavour' | split: ',' %}
+				{% for label in rating_labels %}
+					{% case forloop.index %}
+						{% when 1 %}
+							{% assign rating = block.settings.tartness %}
+						{% when 2 %}
+							{% assign rating = block.settings.sweetness %}
+						{% else %}
+							{% assign rating = block.settings.flavour %}
+					{% endcase %}
+					<div class="foulplay-highlight__rating">
+						<span class="foulplay-highlight__rating-dots" aria-hidden="true">
+							{% for index in (1..5) %}
+								<span{% if index <= rating %} class="is-filled"{% endif %}></span>
+							{% endfor %}
+						</span>
+						<span>{{ label }}</span>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+</article>
+
+{% schema %}
+	{
+		"name": "Highlight",
+		"settings": [
+			{
+				"type": "select",
+				"id": "variant",
+				"label": "Content",
+				"options": [
+					{ "value": "text", "label": "Text" },
+					{ "value": "benefits", "label": "Benefits" },
+					{ "value": "flavour", "label": "Flavour" }
+				],
+				"default": "text"
+			},
+			{
+				"type": "select",
+				"id": "size",
+				"label": "Size",
+				"options": [
+					{ "value": "small", "label": "Small" },
+					{ "value": "large", "label": "Large" }
+				],
+				"default": "small"
+			},
+			{
+				"type": "select",
+				"id": "style",
+				"label": "Style",
+				"options": [
+					{ "value": "solid", "label": "Solid" },
+					{ "value": "outline", "label": "Outline" }
+				],
+				"default": "solid"
+			},
+			{ "type": "image_picker", "id": "image", "label": "Icon or image" },
+			{ "type": "text", "id": "value", "label": "Value" },
+			{
+				"type": "text",
+				"id": "heading",
+				"label": "Heading",
+				"default": "Highlight"
+			},
+			{ "type": "richtext", "id": "body", "label": "Body" },
+			{ "type": "range", "id": "tartness", "label": "Tartness", "min": 0, "max": 5, "step": 1, "default": 1, "visible_if": "{{ block.settings.variant == 'flavour' }}" },
+			{ "type": "range", "id": "sweetness", "label": "Sweetness", "min": 0, "max": 5, "step": 1, "default": 4, "visible_if": "{{ block.settings.variant == 'flavour' }}" },
+			{ "type": "range", "id": "flavour", "label": "Flavour", "min": 0, "max": 5, "step": 1, "default": 5, "visible_if": "{{ block.settings.variant == 'flavour' }}" }
+		],
+		"presets": [{ "name": "Highlight" }]
+	}
+{% endschema %}

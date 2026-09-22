@@ -20,7 +20,7 @@
     "dom-event-types": "^1.1.0",
     "hls.js": "^1.5.7",
     "prettier": "^3.2.5",
-    "sass": "^1.77.1",
+    "sass": "1.77.1",
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
     "vite-plugin-mkcert": "^1.17.5",

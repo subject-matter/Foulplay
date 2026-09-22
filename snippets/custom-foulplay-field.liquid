@@ -1,0 +1,42 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders a labelled text field with the Foulplay input treatment.
+	- Uses native validation, autocomplete, and focus behaviour.
+
+
+	=== PARAMETERS ===
+
+	- "label" is the visible field label.
+	- "name" is the submitted field name.
+	- "id" is the unique field ID.
+	- "type" is the native input type.
+	- "value" is the optional current value.
+	- "autocomplete" is the optional autocomplete token.
+	- "required" controls native required validation.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+<label class="foulplay-field" for="{{ id }}">
+	<span class="foulplay-field__label">
+		{{- label | escape -}}
+		{%- if required -%}
+			<span aria-hidden="true">*</span>
+		{%- endif -%}
+	</span>
+	<input
+		id="{{ id }}"
+		class="foulplay-field__input"
+		type="{{ type | default: 'text' }}"
+		name="{{ name }}"
+		value="{{ value | escape }}"
+		{% if autocomplete != blank %}
+			autocomplete="{{ autocomplete }}"
+		{% endif %}
+		{% if required %}
+			required aria-required="true"
+		{% endif %}
+	>
+</label>

@@ -1,0 +1,82 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Shows the homepage bundle introduction, sticky bundle selector, and purchase panels.
+	- Uses reusable bundle theme blocks for product data and component choices.
+
+
+	Section Author: rishi@subject-matter.studio
+{% endcomment %}
+
+{% # MARK:- Homepage bundles section from Figma node 3223:33648 %}
+<foulplay-bundle-showcase class="foulplay-bundles" data-node-id="3223:33648">
+	<div class="foulplay-bundles__intro">
+		<div class="foulplay-bundles__intro-copy">
+			<h2>{{ section.settings.heading | escape }}</h2>
+			{% if section.settings.body != blank %}
+				<div>{{ section.settings.body }}</div>
+			{% endif %}
+		</div>
+		{% render 'custom-foulplay-button',
+			label: section.settings.button_label,
+			url: section.settings.button_link,
+			style: 'secondary'
+		%}
+	</div>
+
+	<div class="foulplay-bundles__tabs-track">
+		<div class="foulplay-bundles__tabs-shell">
+			<div
+				class="foulplay-bundles__tabs"
+				role="tablist"
+				aria-label="{{ section.settings.tab_label | escape }}"
+				data-bundle-tabs
+			></div>
+		</div>
+	</div>
+
+	<div class="foulplay-bundles__panels" data-bundle-panels></div>
+	<div class="foulplay-bundles__source" data-bundle-source hidden>
+		{% content_for 'blocks' %}
+	</div>
+	<p
+		class="visually-hidden"
+		role="status"
+		aria-live="polite"
+		data-bundle-status
+	></p>
+</foulplay-bundle-showcase>
+
+{% schema %}
+	{
+		"name": "Bundles",
+		"tag": "section",
+		"class": "section section--home-bundles",
+		"disabled_on": { "groups": ["header", "footer"] },
+		"blocks": [{ "type": "foulplay-bundle-choice" }],
+		"max_blocks": 6,
+		"settings": [
+			{
+				"type": "text",
+				"id": "heading",
+				"label": "Heading",
+				"default": "Save with Bundles"
+			},
+			{ "type": "richtext", "id": "body", "label": "Body" },
+			{
+				"type": "text",
+				"id": "button_label",
+				"label": "Button label",
+				"default": "Shop All"
+			},
+			{ "type": "url", "id": "button_link", "label": "Button link" },
+			{
+				"type": "text",
+				"id": "tab_label",
+				"label": "Tab label",
+				"default": "Choose a bundle"
+			}
+		],
+		"presets": [{ "name": "Bundles" }]
+	}
+{% endschema %}

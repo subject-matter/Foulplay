@@ -1,0 +1,118 @@
+/* MARK:- Foulplay design tokens from Figma node 1011:192583 */
+
+:root {
+	/* Brand colours */
+	--fp-color-blue: #1f35c5;
+	--fp-color-pink: #ff008b;
+
+	/* System colours */
+	--fp-color-black: #000;
+	--fp-color-black-900: #101010;
+	--fp-color-charcoal-900: #323232;
+	--fp-color-charcoal-750: #6f6f6f;
+	--fp-color-charcoal-500: #919191;
+	--fp-color-charcoal-250: #c6c6c6;
+	--fp-color-charcoal-100: #e5e5e5;
+	--fp-color-charcoal-50: #efefef;
+	--fp-color-charcoal-25: #f2f2f2;
+	--fp-color-white: #fff;
+	--fp-color-off-white: #fdfdfd;
+	--fp-color-success: #3a7d33;
+	--fp-color-error: #d31d1d;
+	--fp-color-overlay: rgb(0 0 0 / 30%);
+	--fp-color-glass-strong: rgb(255 255 255 / 95%);
+	--fp-color-glass-medium: rgb(255 255 255 / 60%);
+	--fp-color-glass-light: rgb(255 255 255 / 30%);
+
+	/* Spacing scale */
+	--fp-space-2: 2px;
+	--fp-space-4: 4px;
+	--fp-space-8: 8px;
+	--fp-space-16: 16px;
+	--fp-space-24: 24px;
+	--fp-space-32: 32px;
+	--fp-space-40: 40px;
+	--fp-space-64: 64px;
+	--fp-space-80: 80px;
+	--fp-space-120: 120px;
+	--fp-space-200: 200px;
+	--fp-space-300: 300px;
+
+	/* Typography */
+	--fp-font-display: 'Microgramma', sans-serif;
+	--fp-font-brand: 'FOULPLAY', sans-serif;
+	--fp-font-text: 'Neue Haas Grotesk Text Pro', Arial, sans-serif;
+	--fp-type-display-size: 32px;
+	--fp-type-display-line-height: 32px;
+	--fp-type-display-tracking: 0.015em;
+	--fp-type-brand-size: 24px;
+	--fp-type-brand-line-height: 24px;
+	--fp-type-brand-tracking: 0.01em;
+	--fp-type-heading-size: 16px;
+	--fp-type-heading-line-height: 18px;
+	--fp-type-heading-tracking: 0.005em;
+	--fp-type-body-size: 12px;
+	--fp-type-body-line-height: 16px;
+	--fp-type-body-tracking: 0.02em;
+	--fp-type-caption-size: 11px;
+	--fp-type-caption-line-height: 14px;
+	--fp-type-caption-tracking: 0.02em;
+
+	/* Image ratios */
+	--fp-ratio-square: 1 / 1;
+	--fp-ratio-landscape: 3 / 2;
+	--fp-ratio-portrait-tall: 5 / 7;
+	--fp-ratio-video: 16 / 9;
+	--fp-ratio-portrait: 4 / 5;
+	--fp-ratio-landscape-tall: 3 / 4;
+	--fp-ratio-flex: auto;
+
+	/* Motion */
+	--fp-motion-instant: 0ms;
+	--fp-motion-default: 300ms;
+	--fp-motion-slow: 600ms;
+	--fp-ease-out: cubic-bezier(0, 0, 0.58, 1);
+	--fp-ease-out-slow: cubic-bezier(0.5, 0, 0, 1);
+
+	/* Small grid: 0–499px */
+	--fp-grid-columns: 6;
+	--fp-grid-margin: 16px;
+	--fp-grid-gutter: 16px;
+}
+
+@media (min-width: 500px) {
+	:root {
+		/* Medium grid: 500–999px */
+		--fp-grid-columns: 12;
+	}
+}
+
+@media (min-width: 1000px) {
+	:root {
+		/* Large grid: 1000–1999px */
+		--fp-grid-columns: 24;
+		--fp-grid-margin: 24px;
+	}
+}
+
+@media (min-width: 2000px) {
+	:root {
+		/* Extra-large grid: 2000px and above */
+		--fp-grid-columns: 24;
+	}
+}
+
+@media (min-width: 1000px) {
+	:root {
+		--fp-type-display-size: 52px;
+		--fp-type-display-line-height: 52px;
+		--fp-type-display-tracking: 0.025em;
+		--fp-type-brand-size: 28px;
+		--fp-type-brand-line-height: 28px;
+		--fp-type-heading-size: 18px;
+		--fp-type-heading-line-height: 20px;
+		--fp-type-body-size: 13px;
+		--fp-type-body-line-height: 17px;
+		--fp-type-caption-size: 12px;
+	}
+}

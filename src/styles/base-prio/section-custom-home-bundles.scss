@@ -1,0 +1,442 @@
+/* MARK:- Homepage bundles from Figma node 3223:33648 */
+
+.foulplay-bundles {
+	position: relative;
+	display: block;
+	background: var(--fp-color-white);
+	color: var(--fp-color-black);
+	font: 400 var(--fp-type-body-size) / var(--fp-type-body-line-height)
+		var(--fp-font-text);
+	letter-spacing: var(--fp-type-body-tracking);
+	overflow: clip;
+}
+
+.foulplay-bundles h2,
+.foulplay-bundles h3,
+.foulplay-bundles p {
+	margin: 0;
+}
+
+.foulplay-bundles__intro {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	border-top: 1px solid var(--fp-color-charcoal-100);
+	padding-top: 16px;
+}
+
+.foulplay-bundles__intro-copy {
+	width: 277px;
+}
+
+.foulplay-bundles__intro-copy h2,
+.foulplay-bundle-panel__summary h3,
+.foulplay-bundle-option__label {
+	font: inherit;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.foulplay-bundles__intro-copy div,
+.foulplay-bundle-panel__description,
+.foulplay-bundle-panel__review > :last-child,
+.foulplay-bundle-option__control > [data-option-flavour] {
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-bundles__intro .foulplay-button,
+.foulplay-bundle-panel__form > .foulplay-button,
+.foulplay-bundle-panel__copy > .foulplay-button {
+	min-block-size: 32px;
+	max-block-size: 32px;
+	border-radius: 40px;
+	padding: 7px 16px 8px;
+}
+
+.foulplay-bundles__tabs {
+	display: flex;
+	gap: 8px;
+	border-bottom: 1px solid var(--fp-color-charcoal-100);
+	overflow-x: auto;
+	padding-bottom: 8px;
+	scrollbar-width: none;
+}
+
+.foulplay-bundles__tabs::-webkit-scrollbar {
+	display: none;
+}
+
+.foulplay-bundle-tab {
+	display: flex;
+	height: 82px;
+	flex: 0 0 auto;
+	align-items: center;
+	appearance: none;
+	border: 1px solid transparent;
+	background: transparent;
+	color: inherit;
+	cursor: pointer;
+	font: inherit;
+	letter-spacing: inherit;
+	padding: 0 8px;
+	text-align: start;
+	transition: background-color var(--fp-motion-default) var(--fp-ease-out);
+}
+
+.foulplay-bundle-tab--complete {
+	width: 398px;
+}
+
+.foulplay-bundle-tab--creatine {
+	width: 299px;
+}
+
+.foulplay-bundle-tab--hydration {
+	width: 242px;
+}
+
+.foulplay-bundle-tab[aria-selected='true'] {
+	background: var(--fp-color-charcoal-50);
+}
+
+.foulplay-bundle-tab:focus-visible,
+.foulplay-bundle-panel a:focus-visible,
+.foulplay-bundle-option:has(select:focus-visible) {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+.foulplay-bundle-tab__artwork {
+	display: flex;
+	align-self: stretch;
+	align-items: center;
+	padding-block: 8px;
+}
+
+.foulplay-bundle-thumb {
+	position: relative;
+	display: block;
+	width: 64px;
+	height: 64px;
+	background: var(--fp-color-white);
+	overflow: hidden;
+}
+
+.foulplay-bundle-thumb img {
+	position: absolute;
+	max-width: none;
+}
+
+.foulplay-bundle-thumb--hi img {
+	top: -49.33%;
+	left: -16.79%;
+	width: 133.58%;
+	height: 184.23%;
+}
+
+.foulplay-bundle-thumb--purest img {
+	top: -59.42%;
+	left: -28.57%;
+	width: 157.14%;
+	height: 218.84%;
+}
+
+.foulplay-bundle-thumb--electrolytes img {
+	top: -14.56%;
+	left: -26.56%;
+	width: 107.11%;
+	height: 133.88%;
+}
+
+.foulplay-bundle-tab__copy {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 8px 40px 8px 12px;
+	white-space: nowrap;
+}
+
+.foulplay-bundle-tab__rating,
+.foulplay-bundle-panel__review,
+.foulplay-bundle-panel__price,
+.foulplay-bundle-option__control {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.foulplay-bundle-tab__rating {
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-bundle-tab__rating img,
+.foulplay-bundle-panel__review img {
+	width: 16px;
+	height: 16px;
+}
+
+.foulplay-bundle-panel[hidden] {
+	display: none;
+}
+
+.foulplay-bundle-panel__summary {
+	display: flex;
+	width: 277px;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.foulplay-bundle-panel__summary h3 {
+	width: 389px;
+}
+
+.foulplay-bundle-panel__summary h3 a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.foulplay-bundle-panel__price s {
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-bundle-panel__description p {
+	margin: 0;
+}
+
+.foulplay-bundle-panel__form,
+.foulplay-bundle-panel__copy {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.foulplay-bundle-panel__copy {
+	gap: 16px;
+}
+
+.foulplay-bundle-panel__form {
+	width: 392px;
+	gap: 16px;
+}
+
+.foulplay-bundle-panel__options {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.foulplay-bundle-option {
+	display: flex;
+	min-height: 54px;
+	flex-direction: column;
+	border-top: 1px solid var(--fp-color-charcoal-100);
+	cursor: pointer;
+	padding-block: 8px;
+}
+
+.foulplay-bundle-option__label {
+	font-size: var(--fp-type-caption-size);
+	line-height: 16px;
+}
+
+.foulplay-bundle-option__control {
+	position: relative;
+	min-height: 22px;
+}
+
+.foulplay-bundle-option__pill {
+	border: 1px solid var(--fp-color-charcoal-100);
+	border-radius: 40px;
+	color: var(--fp-color-charcoal-900);
+	font-size: var(--fp-type-caption-size);
+	letter-spacing: var(--fp-type-caption-tracking);
+	line-height: 14px;
+	padding: 4px 8px;
+}
+
+.foulplay-bundle-option__chevron {
+	width: 6px;
+	height: 6px;
+	border-right: 1px solid currentColor;
+	border-bottom: 1px solid currentColor;
+	margin: 0 5px 4px;
+	transform: rotate(45deg);
+}
+
+.foulplay-bundle-option select {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	appearance: none;
+	cursor: pointer;
+	opacity: 0;
+}
+
+.foulplay-bundle-panel__media {
+	display: block;
+	aspect-ratio: 1;
+	overflow: hidden;
+}
+
+.foulplay-bundle-panel__media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+@media (min-width: 1000px) {
+	.foulplay-bundles {
+		height: 1536px;
+	}
+
+	.foulplay-bundles__intro {
+		position: absolute;
+		top: 0;
+		left: 24px;
+		right: 24px;
+		height: 101px;
+	}
+
+	.foulplay-bundles__tabs-track {
+		position: absolute;
+		z-index: 3;
+		top: 227px;
+		bottom: 200px;
+		left: 0;
+		right: 0;
+		pointer-events: none;
+	}
+
+	.foulplay-bundles__tabs-shell {
+		position: sticky;
+		top: 0;
+		background: var(--fp-color-white);
+		padding-top: 72px;
+		pointer-events: auto;
+	}
+
+	.foulplay-bundles__tabs {
+		height: 90px;
+		padding-inline: 24px;
+	}
+
+	.foulplay-bundles__panels {
+		position: absolute;
+		top: 413px;
+		left: 24px;
+		right: 24px;
+	}
+
+	.foulplay-bundle-panel {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(0, 453fr) minmax(0, 923fr);
+		gap: 16px;
+	}
+
+	.foulplay-bundle-panel__left-track {
+		position: absolute;
+		top: -443px;
+		left: 0;
+		width: 32.54%;
+		height: 1366px;
+		pointer-events: none;
+	}
+
+	.foulplay-bundle-panel__copy {
+		position: sticky;
+		top: 0;
+		width: 100%;
+		height: 900px;
+		justify-content: flex-end;
+		padding: 226px 0 24px;
+		pointer-events: auto;
+	}
+
+	.foulplay-bundle-panel__media {
+		grid-column: 2;
+		width: 100%;
+		height: auto;
+	}
+}
+
+@media (max-width: 999px) {
+	.foulplay-bundles {
+		padding: 0 16px 64px;
+	}
+
+	.foulplay-bundles__intro {
+		flex-direction: column;
+		gap: 24px;
+		padding-bottom: 64px;
+	}
+
+	.foulplay-bundles__intro-copy {
+		width: min(277px, 100%);
+	}
+
+	.foulplay-bundles__tabs-track {
+		position: sticky;
+		z-index: 3;
+		top: 64px;
+		margin-inline: -16px;
+		background: var(--fp-color-white);
+		padding-left: 16px;
+	}
+
+	.foulplay-bundles__tabs {
+		padding-right: 16px;
+	}
+
+	.foulplay-bundle-tab {
+		width: auto;
+		min-width: 242px;
+	}
+
+	.foulplay-bundle-tab--complete {
+		min-width: 330px;
+	}
+
+	.foulplay-bundle-thumb {
+		width: 52px;
+		height: 52px;
+	}
+
+	.foulplay-bundle-tab__copy {
+		padding-right: 16px;
+	}
+
+	.foulplay-bundles__panels {
+		padding-top: 24px;
+	}
+
+	.foulplay-bundle-panel {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.foulplay-bundle-panel__left-track {
+		order: 2;
+	}
+
+	.foulplay-bundle-panel__media {
+		order: 1;
+		margin-inline: -16px;
+	}
+
+	.foulplay-bundle-panel__summary,
+	.foulplay-bundle-panel__summary h3,
+	.foulplay-bundle-panel__form {
+		width: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.foulplay-bundle-tab {
+		transition-duration: var(--fp-motion-instant);
+	}
+}

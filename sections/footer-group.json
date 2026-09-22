@@ -1,50 +1,39 @@
 {
-  "name": "t:sections.footer.name",
-  "type": "footer",
-  "sections": {
-    "footer": {
-      "type": "footer",
-      "blocks": {
-        "footer-0": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Quick links",
-            "menu": "footer"
-          }
-        },
-        "footer-1": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Info",
-            "menu": "footer"
-          }
-        },
-        "footer-2": {
-          "type": "text",
-          "settings": {
-            "heading": "Our mission",
-            "subtext": "<p>Share contact information, store details, and brand content with your customers.<\/p>"
-          }
-        }
-      },
-      "block_order": [
-        "footer-0",
-        "footer-1",
-        "footer-2"
-      ],
-      "settings": {
-        "color_scheme": "background-1",
-        "newsletter_enable": true,
-        "newsletter_heading": "Subscribe to our emails",
-        "show_social": true,
-        "enable_country_selector": false,
-        "enable_language_selector": false,
-        "payment_enable": true,
-        "show_policy": false
-      }
-    }
-  },
-  "order": [
-    "footer"
-  ]
+	"name": "Footer group",
+	"type": "footer",
+	"sections": {
+		"custom_footer": {
+			"type": "custom-footer",
+			"settings": {
+				"newsletter_heading": "Newsletter",
+				"newsletter_body": "Sign up to discover more about FOULPLAY and get 15% off your first order",
+				"email_label": "Email Address*",
+				"phone_label": "Phone",
+				"consent_prefix": "By submitting, you agree to the",
+				"consent_joiner": "and",
+				"terms_label": "Terms & Conditions",
+				"privacy_label": "Privacy Policy",
+				"submit_label": "Submit",
+				"success_message": "Thank you for signing up.",
+				"customer_heading": "Customer Care",
+				"contact_label": "Contact Us",
+				"contact_url": "/pages/contact",
+				"shipping_label": "Shipping & Delivery",
+				"shipping_url": "",
+				"returns_label": "Returns & Exchanges",
+				"returns_url": "/policies/refund-policy",
+				"legal_heading": "Legal",
+				"cookies_label": "Cookies Policy",
+				"cookies_url": "",
+				"social_heading": "Social",
+				"instagram_label": "Instagram",
+				"instagram_url": "https://www.instagram.com/usefoulplay/",
+				"tiktok_label": "TikTok",
+				"disclaimer": "All of our products are sold as food supplements and not intended to diagnose, cure, prevent or treat disease. Always consult your health professional before taking any food supplements.",
+				"site_credits_label": "Site Credits",
+				"image_alt": "Close-up portrait holding a purple gummy between their teeth"
+			}
+		}
+	},
+	"order": ["custom_footer"]
 }

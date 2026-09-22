@@ -1,0 +1,22 @@
+{% if product != blank %}
+  <a class="fp-header__product" href="{{ product.url }}">
+    <span class="fp-header__product-image{% if image_variant != blank %} fp-header__product-image--{{ image_variant }}{% endif %}">
+      {% if image_asset != blank %}
+        <img src="{{ image_asset | asset_url }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" width="1169" height="1628" loading="lazy">
+      {% elsif product.featured_image %}
+        {{ product.featured_image | image_url: width: 192 | image_tag: loading: 'lazy', widths: '64, 128, 192', alt: product.featured_image.alt | default: product.title }}
+      {% endif %}
+    </span>
+    <span class="fp-header__product-copy">
+      <span class="fp-header__eyebrow">{{ eyebrow | default: product.title }}</span>
+      {% if subtitle != blank %}<span>{{ subtitle }}</span>{% endif %}
+      {% if description != blank %}<span class="fp-header__muted">{{ description }}</span>{% endif %}
+      {% if badge != blank or pack != blank %}
+        <span class="fp-header__pills">
+          {% if badge != blank %}<span>{{ badge }}</span>{% endif %}
+          {% if pack != blank %}<span>{{ pack }}</span>{% endif %}
+        </span>
+      {% endif %}
+    </span>
+  </a>
+{% endif %}

@@ -1,0 +1,39 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders the homepage technology and editorial content cards.
+	- Accepts reusable content-card theme blocks.
+
+
+	Section Author: rishi@subject-matter.studio
+{% endcomment %}
+
+{% # MARK:- Homepage content block from Figma node 1287:41693 %}
+<div
+	class="foulplay-content-block"
+	data-node-id="1287:41693"
+	data-section-id="{{ section.id }}"
+>
+	{% content_for 'blocks' %}
+</div>
+
+{% schema %}
+	{
+		"name": "Content block",
+		"tag": "section",
+		"class": "section section--home-content",
+		"disabled_on": { "groups": ["header", "footer"] },
+		"blocks": [{ "type": "foulplay-content-card" }],
+		"max_blocks": 2,
+		"settings": [],
+		"presets": [
+			{
+				"name": "Content block",
+				"blocks": [
+					{ "type": "foulplay-content-card" },
+					{ "type": "foulplay-content-card" }
+				]
+			}
+		]
+	}
+{% endschema %}

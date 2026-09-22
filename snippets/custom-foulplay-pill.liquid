@@ -1,0 +1,23 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders outline, solid, and review pills from the Figma component library.
+
+
+	=== PARAMETERS ===
+
+	- "label" is the pill text.
+	- "style" selects outline, solid, or review.
+	- "rating" is the review value for the review treatment.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% assign pill_style = style | default: 'outline' %}
+<span class="foulplay-pill foulplay-pill--{{ pill_style }}">
+	{% if pill_style == 'review' -%}
+		<span class="foulplay-pill__star" aria-hidden="true">★</span>
+	{%- endif %}
+	{{ rating | default: label | escape }}
+</span>

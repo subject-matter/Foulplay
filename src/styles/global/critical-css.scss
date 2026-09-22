@@ -1,5 +1,6 @@
 @import './variables.scss';
 @import './functions.scss';
+@import './foulplay-tokens.scss';
 
 // root CSS vars
 :root {
@@ -664,7 +665,7 @@ deferred-media {
 		--announcement-height: calc(var(--ax) * 27);
 		--header-height: calc(var(--ax) * 73);
 		--viewport-minus-header: calc(
-						var(--viewport-height) - var(--header-height)
+			var(--viewport-height) - var(--header-height)
 		);
 
 		--ax: #{$desktopBaseScale};
@@ -703,7 +704,7 @@ deferred-media {
 	.vp-combined--m-up {
 		@include media-query($m-up) {
 			height: calc(
-							#{$viewport} - #{$headerHeight} - #{$announcementHeight}
+				#{$viewport} - #{$headerHeight} - #{$announcementHeight}
 			);
 		}
 	}
@@ -713,16 +714,16 @@ ucoast-video[data-uc-has-played='false'] video {
 	opacity: 0;
 	backdrop-filter: blur(15px);
 	transition:
-					opacity 0.3s cubic-bezier(0.32, 0.24, 0.15, 1),
-					filter 0.3s cubic-bezier(0.32, 0.24, 0.15, 1);
+		opacity 0.3s cubic-bezier(0.32, 0.24, 0.15, 1),
+		filter 0.3s cubic-bezier(0.32, 0.24, 0.15, 1);
 }
 
 ucoast-video[data-uc-has-played='true'] video {
 	opacity: 1;
 	backdrop-filter: blur(0);
 	transition:
-					opacity 0.3s cubic-bezier(0.32, 0.24, 0.15, 1),
-					filter 0.3s cubic-bezier(0.32, 0.24, 0.15, 1);
+		opacity 0.3s cubic-bezier(0.32, 0.24, 0.15, 1),
+		filter 0.3s cubic-bezier(0.32, 0.24, 0.15, 1);
 }
 
 .p-section-background {

@@ -1,0 +1,182 @@
+.foulplay-journal-section {
+	background: var(--fp-color-white);
+	color: var(--fp-color-black);
+	display: flex;
+	flex-direction: column;
+	gap: var(--fp-space-16);
+	min-height: 1132px;
+	overflow: hidden;
+	padding: var(--fp-space-80) 0 120px var(--fp-space-24);
+}
+
+.foulplay-journal-section__header {
+	border-bottom: 1px solid var(--fp-color-charcoal-100);
+	display: grid;
+	gap: var(--fp-space-16);
+	grid-template-columns: 453px minmax(0, 1fr);
+	min-height: 100px;
+	padding: 0 var(--fp-space-24) var(--fp-space-16) 0;
+}
+
+.foulplay-journal-section__header h2 {
+	font-family: var(--font-heading-family), var(--fp-font-text);
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0.005em;
+	line-height: 16.5px;
+	margin: 0;
+}
+
+.foulplay-journal-section__header-content {
+	display: flex;
+	justify-content: space-between;
+}
+
+.foulplay-journal-section__header nav {
+	display: flex;
+	flex-direction: column;
+	width: 276px;
+}
+
+.foulplay-journal-section__header nav button {
+	appearance: none;
+	background: transparent;
+	border: 0;
+	color: var(--fp-color-charcoal-750);
+	cursor: pointer;
+	font: 400 13px / 17px var(--fp-font-text);
+	letter-spacing: 0.02em;
+	min-height: 17px;
+	padding: 0;
+	text-align: left;
+	transition: color var(--fp-motion-default) var(--fp-ease-out);
+}
+
+.foulplay-journal-section__header nav button:first-child,
+.foulplay-journal-section__header nav button:hover {
+	color: var(--fp-color-black);
+}
+
+.foulplay-journal-section__controls button {
+	border-color: var(--fp-color-charcoal-250);
+	color: var(--fp-color-black);
+}
+
+.foulplay-journal-section__controls button:hover {
+	background: var(--fp-color-black);
+	border-color: var(--fp-color-black);
+	color: var(--fp-color-white);
+}
+
+.foulplay-journal-section__track {
+	display: flex;
+	gap: var(--fp-space-16);
+	overflow-x: auto;
+	padding-right: var(--fp-space-24);
+	scrollbar-width: none;
+	scroll-snap-type: x mandatory;
+}
+
+.foulplay-journal-section__track::-webkit-scrollbar {
+	display: none;
+}
+
+.foulplay-journal-section__track > .shopify-block {
+	flex: 0 0 453px;
+	scroll-snap-align: start;
+}
+
+.foulplay-journal-card {
+	color: inherit;
+	display: flex;
+	flex-direction: column;
+	gap: var(--fp-space-8);
+	text-decoration: none;
+}
+
+.foulplay-journal-card__media {
+	display: block;
+	height: 565px;
+	overflow: hidden;
+	width: 453px;
+}
+
+.foulplay-journal-card__media img {
+	display: block;
+	height: 100%;
+	object-fit: cover;
+	transition: transform var(--fp-motion-slow) var(--fp-ease-out-slow);
+	width: 100%;
+}
+
+.foulplay-journal-card:hover .foulplay-journal-card__media img {
+	transform: scale(1.015);
+}
+
+.foulplay-journal-card__copy {
+	display: flex;
+	flex-direction: column;
+	font: 400 13px / 17px var(--fp-font-text);
+	gap: var(--fp-space-8);
+	letter-spacing: 0.02em;
+	width: 277px;
+}
+
+.foulplay-journal-card__copy p,
+.foulplay-journal-card__excerpt {
+	margin: 0;
+}
+
+.foulplay-journal-card time,
+.foulplay-journal-card__excerpt {
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-journal-card__excerpt p {
+	margin: 0;
+}
+
+.foulplay-journal-card .foulplay-button {
+	align-self: flex-start;
+	margin-top: var(--fp-space-8);
+	opacity: 0;
+	transition:
+		opacity var(--fp-motion-default) var(--fp-ease-out),
+		background-color var(--fp-motion-default) var(--fp-ease-out),
+		color var(--fp-motion-default) var(--fp-ease-out),
+		border-color var(--fp-motion-default) var(--fp-ease-out);
+}
+
+.foulplay-journal-card:hover .foulplay-button,
+.foulplay-journal-card:focus-visible .foulplay-button {
+	opacity: 1;
+}
+
+@media (max-width: 999px) {
+	.foulplay-journal-section {
+		min-height: 0;
+		padding: var(--fp-space-80) 0 var(--fp-space-80) var(--fp-space-16);
+	}
+
+	.foulplay-journal-section__header {
+		grid-template-columns: minmax(0, 1fr);
+		padding-right: var(--fp-space-16);
+	}
+
+	.foulplay-journal-section__track > .shopify-block {
+		flex-basis: min(453px, 84vw);
+	}
+
+	.foulplay-journal-card__media {
+		aspect-ratio: 453 / 565;
+		height: auto;
+		width: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.foulplay-journal-card__media img,
+	.foulplay-journal-card .foulplay-button {
+		transition: none;
+	}
+}

@@ -1,0 +1,292 @@
+/* MARK:- Homepage product showcase from Figma node 3223:34281 */
+
+.section--product-stage + .section--home-products,
+.section--home-products + .section--home-science {
+	margin-top: 0;
+}
+
+.foulplay-product-module {
+	box-sizing: border-box;
+	display: block;
+	height: 1085px;
+	padding: 16px 24px 200px;
+	font-family: var(--fp-font-text);
+	font-size: var(--fp-type-body-size);
+	line-height: var(--fp-type-body-line-height);
+	letter-spacing: var(--fp-type-body-tracking);
+	color: var(--fp-color-black);
+}
+
+.foulplay-product-module__intro {
+	display: flex;
+	min-height: 303px;
+	width: 336px;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 16px;
+}
+
+.foulplay-product-module__intro-copy {
+	width: 276px;
+}
+
+.foulplay-product-module__intro h2,
+.foulplay-product-module__intro p {
+	margin: 0;
+	font: inherit;
+}
+
+.foulplay-product-module__intro h2 {
+	width: 336px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.foulplay-product-module__intro-copy div {
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-product-module .foulplay-button {
+	min-block-size: 32px;
+	max-block-size: 32px;
+	border-color: var(--fp-color-charcoal-250);
+	border-radius: 40px;
+	padding: 7px 16px 8px;
+}
+
+.foulplay-product-module__filters {
+	display: flex;
+	height: 38px;
+	align-items: flex-start;
+	gap: 16px;
+	border-bottom: 1px solid var(--fp-color-charcoal-100);
+	margin-top: 16px;
+}
+
+.foulplay-product-module__filters button {
+	position: relative;
+	display: inline-flex;
+	min-height: 38px;
+	align-items: flex-start;
+	gap: 4px;
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: var(--fp-color-charcoal-750);
+	cursor: pointer;
+	font: inherit;
+	letter-spacing: inherit;
+	padding: 0 0 16px;
+}
+
+.foulplay-product-module__filters button[aria-pressed='true'] {
+	color: var(--fp-color-black);
+}
+
+.foulplay-product-module__filters button:disabled {
+	cursor: default;
+}
+
+.foulplay-product-module__filters button[aria-pressed='true']::after {
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background: currentColor;
+	content: '';
+}
+
+.foulplay-product-module__filters button:focus-visible,
+.foulplay-science__filters button:focus-visible,
+.foulplay-benefit__trigger:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 3px;
+}
+
+.foulplay-product-module__count {
+	display: none;
+	min-width: 24px;
+	min-height: 22px;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--fp-color-charcoal-100);
+	border-radius: 40px;
+	color: var(--fp-color-charcoal-900);
+	font-size: var(--fp-type-caption-size);
+	line-height: var(--fp-type-caption-line-height);
+}
+
+.foulplay-product-module__filters
+	button[aria-pressed='true']
+	.foulplay-product-module__count {
+	display: inline-flex;
+}
+
+.foulplay-product-module__items {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 16px;
+	margin-top: 16px;
+}
+
+.foulplay-product-module__items > .shopify-block {
+	min-width: 0;
+}
+
+.foulplay-product-module .foulplay-card--product {
+	display: flex;
+	min-height: 496px;
+	width: 100%;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.foulplay-product-module .foulplay-card__media {
+	position: relative;
+	display: block;
+	width: 100%;
+	aspect-ratio: 1;
+	background: var(--fp-color-charcoal-25);
+	overflow: hidden;
+}
+
+.foulplay-product-module .foulplay-card__media img,
+.foulplay-product-module .foulplay-card__media svg {
+	position: absolute;
+	max-width: none;
+	object-fit: fill;
+	transition: transform var(--fp-motion-slow) var(--fp-ease-out-slow);
+}
+
+.foulplay-product-module
+	[data-product-artwork='hi-creatine']
+	.foulplay-card__media
+	img {
+	top: -50.27%;
+	left: -21.08%;
+	width: 142.16%;
+	height: 187.1%;
+}
+
+.foulplay-product-module
+	[data-product-artwork='purest-creatine-sachets']
+	.foulplay-card__media
+	img,
+.foulplay-product-module
+	[data-product-artwork='purest-creatine']
+	.foulplay-card__media
+	img {
+	top: -64.29%;
+	left: -32.06%;
+	width: 164.13%;
+	height: 228.57%;
+}
+
+.foulplay-product-module
+	[data-product-artwork='electrolytes']
+	.foulplay-card__media
+	img {
+	top: -14.56%;
+	left: -26.56%;
+	width: 107.11%;
+	height: 133.88%;
+}
+
+.foulplay-product-module .foulplay-card__body {
+	display: flex;
+	min-height: 152px;
+	width: 277px;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0;
+}
+
+.foulplay-product-module .foulplay-card__title,
+.foulplay-product-module .foulplay-card__subtitle,
+.foulplay-product-module .foulplay-card__price {
+	margin: 0;
+	font: inherit;
+	letter-spacing: inherit;
+}
+
+.foulplay-product-module .foulplay-card__title {
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.foulplay-product-module .foulplay-card__subtitle {
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-product-module .foulplay-card__price {
+	margin: 0;
+}
+
+.foulplay-product-module .foulplay-card__tags {
+	display: flex;
+	align-items: flex-start;
+	gap: 4px;
+	margin-top: 8px;
+}
+
+.foulplay-product-module .foulplay-pill--review img {
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.foulplay-product-module .foulplay-card__media:hover img {
+		transform: scale(1.02);
+	}
+}
+
+@media (max-width: 999px) {
+	.foulplay-product-module {
+		height: auto;
+		min-height: 860px;
+	}
+
+	.foulplay-product-module__items {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 499px) {
+	.foulplay-product-module {
+		min-height: 0;
+		padding: 16px 16px 80px;
+	}
+
+	.foulplay-product-module__intro {
+		min-height: 220px;
+		width: 100%;
+	}
+
+	.foulplay-product-module__intro h2,
+	.foulplay-product-module__intro-copy {
+		width: 100%;
+	}
+
+	.foulplay-product-module__filters {
+		overflow-x: auto;
+	}
+
+	.foulplay-product-module__items {
+		display: flex;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+	}
+
+	.foulplay-product-module__items > .shopify-block {
+		flex: 0 0 84vw;
+		scroll-snap-align: start;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.foulplay-product-module .foulplay-card__media img {
+		transition: none;
+	}
+}

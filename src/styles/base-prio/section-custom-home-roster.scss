@@ -1,0 +1,193 @@
+.foulplay-roster-section {
+	background: var(--fp-color-white);
+	color: var(--fp-color-black);
+	display: flex;
+	flex-direction: column;
+	gap: var(--fp-space-16);
+	min-height: 1587px;
+	padding: 120px var(--fp-space-24);
+}
+
+.foulplay-roster-section__header {
+	border-bottom: 1px solid var(--fp-color-charcoal-100);
+	min-height: 33px;
+}
+
+.foulplay-roster-section__header h2 {
+	font: 400 13px / 17px var(--fp-font-text);
+	letter-spacing: 0.04em;
+	margin: 0;
+	text-transform: uppercase;
+}
+
+.foulplay-roster-section__content {
+	display: grid;
+	gap: var(--fp-space-16);
+	grid-template-columns: minmax(0, 1040px) 336px;
+}
+
+.foulplay-roster-section__hero {
+	display: block;
+	height: 1298px;
+	overflow: hidden;
+}
+
+.foulplay-roster-section__hero img {
+	display: block;
+	height: 100%;
+	object-fit: fill;
+	opacity: 1;
+	transition: opacity var(--fp-motion-default) var(--fp-ease-out);
+	width: 100%;
+}
+
+.foulplay-roster-section__hero img.is-changing {
+	opacity: 0;
+}
+
+.foulplay-roster-section__side {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.foulplay-roster-section__profiles > .shopify-block:not(:first-child) {
+	display: none;
+}
+
+.foulplay-roster-card {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fp-space-8);
+}
+
+.foulplay-roster-card__media {
+	height: 419px;
+	overflow: hidden;
+	position: relative;
+	width: 336px;
+}
+
+.foulplay-roster-card__media > img {
+	display: block;
+	height: 100%;
+	object-fit: cover;
+	width: 100%;
+}
+
+.foulplay-roster-card__scrim {
+	background: linear-gradient(to bottom, transparent, rgb(0 0 0 / 50%));
+	inset: 0;
+	pointer-events: none;
+	position: absolute;
+}
+
+.foulplay-roster-card__controls,
+.foulplay-journal-section__controls {
+	display: flex;
+	gap: var(--fp-space-4);
+}
+
+.foulplay-roster-card__controls {
+	bottom: var(--fp-space-16);
+	left: var(--fp-space-16);
+	position: absolute;
+}
+
+.foulplay-roster-card__controls button,
+.foulplay-journal-section__controls button {
+	align-items: center;
+	appearance: none;
+	background: transparent;
+	border: 1px solid rgb(255 255 255 / 30%);
+	border-radius: 50%;
+	color: var(--fp-color-white);
+	cursor: pointer;
+	display: inline-flex;
+	font: 400 16px / 1 var(--fp-font-text);
+	height: 32px;
+	justify-content: center;
+	padding: 0;
+	transition:
+		background-color var(--fp-motion-default) var(--fp-ease-out),
+		color var(--fp-motion-default) var(--fp-ease-out);
+	width: 32px;
+}
+
+.foulplay-roster-card__controls button:hover {
+	background: var(--fp-color-white);
+	color: var(--fp-color-black);
+}
+
+.foulplay-roster-card__copy {
+	font: 400 13px / 17px var(--fp-font-text);
+	letter-spacing: 0.02em;
+	width: 219px;
+}
+
+.foulplay-roster-card__copy p {
+	margin: 0;
+}
+
+.foulplay-roster-card__copy p + p,
+.foulplay-roster-section__intro {
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-roster-section__intro {
+	display: flex;
+	flex-direction: column;
+	font: 400 13px / 17px var(--fp-font-text);
+	gap: var(--fp-space-16);
+	letter-spacing: 0.02em;
+	width: 336px;
+}
+
+.foulplay-roster-section__intro > div,
+.foulplay-roster-section__intro p {
+	margin: 0;
+}
+
+.foulplay-roster-section__intro > div {
+	width: 276px;
+}
+
+.foulplay-roster-section__intro .foulplay-button {
+	align-self: flex-start;
+}
+
+@media (max-width: 999px) {
+	.foulplay-roster-section {
+		min-height: 0;
+		padding: var(--fp-space-80) var(--fp-space-16);
+	}
+
+	.foulplay-roster-section__content {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.foulplay-roster-section__hero {
+		aspect-ratio: var(--fp-ratio-portrait);
+		height: auto;
+	}
+
+	.foulplay-roster-section__hero img {
+		object-fit: cover;
+	}
+
+	.foulplay-roster-card__media,
+	.foulplay-roster-section__intro {
+		width: 100%;
+	}
+
+	.foulplay-roster-card__media {
+		aspect-ratio: 336 / 419;
+		height: auto;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.foulplay-roster-section__hero img {
+		transition: none;
+	}
+}

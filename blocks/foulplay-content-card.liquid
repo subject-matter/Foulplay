@@ -1,0 +1,222 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders a technology or editorial content card.
+	- Uses merchant-selected media when it is available.
+	- Keeps the homepage reference assets as the initial theme content.
+
+
+	Section Author: rishi@subject-matter.studio
+{% endcomment %}
+
+{% liquid
+	assign card_variant = block.settings.variant | default: 'technology'
+	assign card_image = block.settings.image
+	assign card_alt = block.settings.image_alt | default: block.settings.heading
+	assign image_asset = 'foulplay-home-technology.png'
+	if card_variant == 'editorial'
+		assign image_asset = 'foulplay-home-founder-closeup.png'
+	endif
+%}
+
+{% capture card_media %}
+	<picture class="foulplay-content-card__media" data-no-fade>
+		{% if card_image != blank %}
+			{{
+				card_image
+				| image_url: width: 1800
+				| image_tag:
+					widths: '500, 750, 1000, 1400, 1800',
+					sizes: '(min-width: 1000px) calc((100vw - 64px) / 2), calc(100vw - 32px)',
+					loading: 'lazy',
+					alt: card_alt
+			}}
+		{% else %}
+			<img
+				src="{{ image_asset | asset_url }}"
+				width="{% if card_variant == 'editorial' %}2160{% else %}1512{% endif %}"
+				height="{% if card_variant == 'editorial' %}3840{% else %}1918{% endif %}"
+				alt="{{ card_alt | escape }}"
+				loading="lazy"
+			>
+		{% endif %}
+	</picture>
+{% endcapture %}
+
+{% if card_variant == 'editorial' %}
+	<a
+		class="foulplay-content-card foulplay-content-card--editorial"
+		href="{{ block.settings.link | default: routes.root_url }}"
+		{{ block.shopify_attributes }}
+	>
+		{{ card_media }}
+		<div class="foulplay-content-card__editorial-copy">
+			{% if block.settings.heading != blank %}
+				<p class="foulplay-content-card__title">
+					{{ block.settings.heading | escape }}
+				</p>
+			{% endif %}
+			{% if block.settings.body != blank %}
+				<div class="foulplay-content-card__body">
+					{{ block.settings.body }}
+				</div>
+			{% endif %}
+			{% if block.settings.link_label != blank %}
+				<span class="foulplay-button foulplay-button--pill">
+					{{- block.settings.link_label | escape -}}
+				</span>
+			{% endif %}
+		</div>
+	</a>
+{% else %}
+	<article
+		class="foulplay-content-card foulplay-content-card--technology"
+		{{ block.shopify_attributes }}
+	>
+		{{ card_media }}
+		<div class="foulplay-content-card__technology-copy">
+			<div class="foulplay-content-card__technology-row">
+				<div class="foulplay-content-card__technology-logo">
+					{% if block.settings.technology_1_logo != blank %}
+						{{
+							block.settings.technology_1_logo
+							| image_url: width: 440
+							| image_tag:
+							widths: '100, 200, 300, 440',
+							sizes: '218px',
+							loading: 'lazy',
+							alt: block.settings.technology_1_title
+						}}
+					{% else %}
+						<img
+							src="{{ 'foulplay-hi-tech-logo.png' | asset_url }}"
+							width="91"
+							height="46"
+							alt="{{ block.settings.technology_1_title | escape }}"
+							loading="lazy"
+						>
+					{% endif %}
+				</div>
+				<div class="foulplay-content-card__technology-text">
+					<p class="foulplay-content-card__title">
+						{{- block.settings.technology_1_title | escape -}}
+					</p>
+					<div class="foulplay-content-card__body">
+						{{- block.settings.technology_1_body -}}
+					</div>
+				</div>
+			</div>
+
+			<div class="foulplay-content-card__technology-row">
+				<div class="foulplay-content-card__technology-logo">
+					{% if block.settings.technology_2_logo != blank %}
+						{{
+							block.settings.technology_2_logo
+							| image_url: width: 440
+							| image_tag:
+							widths: '100, 200, 300, 440',
+							sizes: '218px',
+							loading: 'lazy',
+							alt: block.settings.technology_2_title
+						}}
+					{% else %}
+						<img
+							src="{{ 'foulplay-purest-tech-logo.png' | asset_url }}"
+							width="113"
+							height="46"
+							alt="{{ block.settings.technology_2_title | escape }}"
+							loading="lazy"
+						>
+					{% endif %}
+				</div>
+				<div class="foulplay-content-card__technology-text">
+					<p class="foulplay-content-card__title">
+						{{- block.settings.technology_2_title | escape -}}
+					</p>
+					<div class="foulplay-content-card__body">
+						{{- block.settings.technology_2_body -}}
+					</div>
+				</div>
+			</div>
+
+			{% if block.settings.link_label != blank %}
+				<div class="foulplay-content-card__technology-action">
+					{% render 'custom-foulplay-button',
+						label: block.settings.link_label,
+						url: block.settings.link,
+						style: 'pill'
+					%}
+				</div>
+			{% endif %}
+		</div>
+	</article>
+{% endif %}
+
+{% schema %}
+	{
+		"name": "Content card",
+		"settings": [
+			{
+				"type": "select",
+				"id": "variant",
+				"label": "Layout",
+				"options": [
+					{ "value": "technology", "label": "Technology" },
+					{ "value": "editorial", "label": "Editorial" }
+				],
+				"default": "technology"
+			},
+			{ "type": "image_picker", "id": "image", "label": "Image" },
+			{ "type": "text", "id": "image_alt", "label": "Image alt text" },
+			{
+				"type": "text",
+				"id": "heading",
+				"label": "Editorial heading",
+				"default": "FOULPLAY"
+			},
+			{ "type": "richtext", "id": "body", "label": "Editorial body" },
+			{ "type": "header", "content": "First technology" },
+			{
+				"type": "image_picker",
+				"id": "technology_1_logo",
+				"label": "Logo"
+			},
+			{
+				"type": "text",
+				"id": "technology_1_title",
+				"label": "Title",
+				"default": "HI-TECH"
+			},
+			{
+				"type": "richtext",
+				"id": "technology_1_body",
+				"label": "Body"
+			},
+			{ "type": "header", "content": "Second technology" },
+			{
+				"type": "image_picker",
+				"id": "technology_2_logo",
+				"label": "Logo"
+			},
+			{
+				"type": "text",
+				"id": "technology_2_title",
+				"label": "Title",
+				"default": "PUREST-TECH"
+			},
+			{
+				"type": "richtext",
+				"id": "technology_2_body",
+				"label": "Body"
+			},
+			{
+				"type": "text",
+				"id": "link_label",
+				"label": "Link label",
+				"default": "Read More"
+			},
+			{ "type": "url", "id": "link", "label": "Link" }
+		],
+		"presets": [{ "name": "Content card" }]
+	}
+{% endschema %}

@@ -1,0 +1,326 @@
+{% liquid
+  assign featured_product_1 = section.settings.featured_product_1
+  assign featured_product_2 = section.settings.featured_product_2
+
+  if featured_product_1 == blank
+    assign featured_product_1 = all_products['hi-creatine']
+  endif
+
+  if featured_product_2 == blank
+    assign featured_product_2 = all_products['purest-creatine-sachets']
+  endif
+%}
+
+<foulplay-header
+  class="fp-header{% if request.page_type == 'index' %} fp-header--home{% endif %}"
+  data-section-id="{{ section.id }}"
+>
+  <header class="fp-header__shell" data-header-shell>
+    <div class="fp-header__grid" data-header-grid>
+      <a class="fp-header__cell fp-header__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name }} home">
+        <span class="fp-header__frame" aria-hidden="true"></span>
+        <img
+          class="fp-header__wordmark"
+          src="{{ 'foulplay-wordmark.svg' | asset_url }}"
+          width="136"
+          height="24"
+          alt="{{ shop.name }}"
+        >
+        <span class="fp-header__tagline">{{ section.settings.tagline | newline_to_br }}</span>
+      </a>
+
+      <div class="fp-header__menus">
+        <nav class="fp-header__primary" aria-label="Primary navigation">
+          <button
+            class="fp-header__cell fp-header__nav-cell"
+            type="button"
+            data-shop-trigger
+            aria-expanded="false"
+            aria-controls="FpShopMenu-{{ section.id }}"
+          >
+            <span class="fp-header__frame" aria-hidden="true"></span>
+            <span class="fp-header__nav-label">Shop</span>
+          </button>
+
+          <a class="fp-header__cell fp-header__nav-cell" href="{{ section.settings.science_url | default: routes.root_url }}">
+            <span class="fp-header__frame" aria-hidden="true"></span>
+            <span class="fp-header__nav-label">Science</span>
+          </a>
+
+          <div class="fp-header__cell fp-header__nav-cell fp-header__nav-cell--actions">
+            <span class="fp-header__frame" aria-hidden="true"></span>
+            <button
+              class="fp-header__nav-label fp-header__plain-button"
+              type="button"
+              data-drawer-trigger="journal"
+              aria-expanded="false"
+              aria-controls="FpJournalDrawer-{{ section.id }}"
+            >
+              Journal
+            </button>
+            <span class="fp-header__actions">
+              <a class="fp-header__icon-link" href="{{ routes.account_url }}" aria-label="Account">
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                  <circle cx="8" cy="5" r="2.25"></circle>
+                  <path d="M3.5 13.5c.25-2.65 1.75-4 4.5-4s4.25 1.35 4.5 4h-9Z"></path>
+                </svg>
+              </a>
+              <button
+                class="fp-header__plain-button fp-header__cart-count"
+                type="button"
+                data-drawer-trigger="cart"
+                aria-expanded="false"
+                aria-controls="FpCartDrawer-{{ section.id }}"
+                aria-label="Open cart, {{ cart.item_count }} items"
+              >
+                {{ cart.item_count }}
+              </button>
+            </span>
+          </div>
+        </nav>
+
+        <div class="fp-header__expanded-row" data-expanded-row>
+          <div class="fp-header__cell fp-header__offer">
+            <span class="fp-header__frame" aria-hidden="true"></span>
+            <div class="fp-header__offer-track" data-offer-track>
+              {% for block in section.blocks %}
+                {% if block.type == 'message' %}
+                  <p
+                    class="fp-header__offer-message{% if forloop.first %} is-active{% endif %}"
+                    data-offer-message
+                    {{ block.shopify_attributes }}
+                  >
+                    {{ block.settings.text | newline_to_br }}
+                  </p>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% assign message_blocks = section.blocks | where: 'type', 'message' %}
+            {% if message_blocks.size > 1 %}
+              <div class="fp-header__pagination" aria-label="Select promotion">
+                {% for block in message_blocks limit: 3 %}
+                  <button
+                    class="fp-header__dot{% if forloop.first %} is-active{% endif %}"
+                    type="button"
+                    data-offer-dot="{{ forloop.index0 }}"
+                    aria-label="Show promotion {{ forloop.index }}"
+                    {% if forloop.first %}aria-current="true"{% endif %}
+                  ></button>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="fp-header__cell fp-header__statement">
+            <span class="fp-header__frame" aria-hidden="true"></span>
+            <p>{{ section.settings.statement }}</p>
+          </div>
+
+          <div class="fp-header__cell fp-header__cta-cell">
+            <span class="fp-header__frame" aria-hidden="true"></span>
+            <a class="fp-header__button" href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}">
+              {{ section.settings.cta_label }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="fp-header__shop"
+      id="FpShopMenu-{{ section.id }}"
+      data-shop-menu
+      aria-hidden="true"
+    >
+      <nav class="fp-header__shop-tabs" aria-label="Shop categories">
+        <a class="is-active" href="{{ routes.all_products_collection_url }}">Featured <span>2</span></a>
+        <a href="{{ section.settings.creatine_url | default: routes.all_products_collection_url }}">Creatine</a>
+        <a href="{{ section.settings.hydration_url | default: routes.all_products_collection_url }}">Hydration</a>
+        <a href="{{ section.settings.complements_url | default: routes.all_products_collection_url }}">Complements</a>
+      </nav>
+
+      <div class="fp-header__shop-content">
+        <div class="fp-header__featured-products">
+          {% render 'custom-header-product',
+            product: featured_product_1,
+            image_asset: 'foulplay-header-hi-creatine.png',
+            image_variant: 'hi-creatine',
+            eyebrow: 'HI-CREATINE',
+            subtitle: 'High-strength Creatine Bites',
+            description: 'The most potent creatine edible. 1800mg creatine monohydrate per bite.',
+            badge: 'New',
+            pack: '60 Bites (20 servings)'
+          %}
+          {% render 'custom-header-product',
+            product: featured_product_2,
+            image_asset: 'foulplay-header-purest-creatine.png',
+            image_variant: 'purest-creatine',
+            eyebrow: 'PUREST-CREATINE',
+            subtitle: 'Ultra Pure Creatine Monohydrate',
+            description: 'The purest creatine monohydrate powder at 99.9% purity.',
+            badge: 'Best Seller',
+            pack: '30 Sachets'
+          %}
+        </div>
+
+        <div class="fp-header__shop-promo">
+          <div>
+            <p class="fp-header__eyebrow">Save with Bundles</p>
+            <p class="fp-header__muted">Choose a bundle and save 15% compared to buying items individually. Simply select your bundle and the discount is applied automatically.</p>
+          </div>
+          <a class="fp-header__button fp-header__button--dark" href="{{ section.settings.bundles_url | default: routes.all_products_collection_url }}">Shop Bundles</a>
+        </div>
+
+        <div class="fp-header__shop-promo">
+          <div>
+            <p class="fp-header__eyebrow">Save with Subscriptions</p>
+            <p class="fp-header__muted">Stay consistent and save effortlessly with subscriptions.</p>
+            <p class="fp-header__included">Included :</p>
+            <ul class="fp-header__muted">
+              <li>15% Off Every Order</li>
+              <li>Bonus Gifts Included</li>
+              <li>Free delivery (save $3.99)</li>
+              <li>Pause or Cancel Anytime</li>
+            </ul>
+          </div>
+          <a class="fp-header__button fp-header__button--dark" href="{{ section.settings.subscription_url | default: routes.all_products_collection_url }}">Create Subscription</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="fp-header__backdrop" data-drawer-backdrop hidden></div>
+
+  <aside
+    class="fp-header__drawer fp-header__drawer--journal"
+    id="FpJournalDrawer-{{ section.id }}"
+    data-drawer="journal"
+    aria-hidden="true"
+    aria-label="Journal"
+  >
+    <div class="fp-header__drawer-nav">
+      <nav aria-label="Journal categories">
+        <a class="is-active" href="{{ section.settings.journal_url | default: routes.root_url }}">All</a>
+        <a href="{{ section.settings.journal_url | default: routes.root_url }}">Discover</a>
+        <a href="{{ section.settings.journal_url | default: routes.root_url }}">Events</a>
+        <a href="{{ section.settings.journal_url | default: routes.root_url }}">Foulplay Presents</a>
+      </nav>
+      <button class="fp-header__drawer-close" type="button" data-drawer-close aria-label="Close journal">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 3 10 10M13 3 3 13"></path></svg>
+      </button>
+    </div>
+    <div class="fp-header__journal-grid">
+      {% assign journal_blog = section.settings.journal_blog %}
+      {% if journal_blog != blank and journal_blog.articles_count > 0 %}
+        {% for article in journal_blog.articles limit: 8 %}
+          <a class="fp-header__article" href="{{ article.url }}">
+            {% if article.image %}
+              {{ article.image | image_url: width: 920 | image_tag: loading: 'lazy', widths: '360, 540, 720, 920', alt: article.image.alt | default: article.title }}
+            {% endif %}
+            <span class="fp-header__article-title">{{ article.title }}</span>
+            <span class="fp-header__muted">{{ article.excerpt_or_content | strip_html | truncatewords: 24 }}</span>
+          </a>
+        {% endfor %}
+      {% else %}
+        {% render 'custom-header-journal-placeholder' %}
+      {% endif %}
+    </div>
+  </aside>
+
+  <aside
+    class="fp-header__drawer fp-header__drawer--cart"
+    id="FpCartDrawer-{{ section.id }}"
+    data-drawer="cart"
+    aria-hidden="true"
+    aria-label="Cart"
+  >
+    <div class="fp-header__cart-heading">
+      <span>Cart ({{ cart.item_count }})</span>
+      <button class="fp-header__plain-button" type="button" data-drawer-close>Close</button>
+    </div>
+    <div class="fp-header__cart-body">
+      {% if cart.item_count == 0 %}
+        <p>Your cart is currently empty</p>
+      {% else %}
+        {% for item in cart.items %}
+          <a class="fp-header__cart-item" href="{{ item.url }}">
+            {% if item.image %}
+              {{ item.image | image_url: width: 160 | image_tag: loading: 'lazy', width: 80, height: 80, alt: item.image.alt | default: item.product.title }}
+            {% endif %}
+            <span>{{ item.product.title }}<br>{{ item.final_line_price | money }}</span>
+          </a>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <div class="fp-header__cart-upsells">
+      <p>Best Sellers</p>
+      {% render 'custom-header-product', product: featured_product_1, image_asset: 'foulplay-header-hi-creatine.png', image_variant: 'hi-creatine', eyebrow: 'HI-CREATINE', subtitle: 'High-strength Creatine Bites', badge: 'New', pack: '60 Bites' %}
+      {% render 'custom-header-product', product: featured_product_2, image_asset: 'foulplay-header-purest-creatine.png', image_variant: 'purest-creatine', eyebrow: 'PUREST-CREATINE', subtitle: 'Ultra Pure Creatine Monohydrate', badge: 'Best Seller', pack: '30 Sachets' %}
+    </div>
+  </aside>
+</foulplay-header>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "section",
+  "class": "section-header",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "A new vision for\nperformance nutrition"
+    },
+    {
+      "type": "textarea",
+      "id": "statement",
+      "label": "Statement",
+      "default": "Performance nutrition should work for your lifestyle, not complicate it. That’s exactly where FOULPLAY stands apart."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Call to action label",
+      "default": "Explore All Products"
+    },
+    { "type": "url", "id": "cta_url", "label": "Call to action link" },
+    { "type": "url", "id": "science_url", "label": "Science link" },
+    { "type": "url", "id": "journal_url", "label": "Journal link" },
+    { "type": "url", "id": "creatine_url", "label": "Creatine link" },
+    { "type": "url", "id": "hydration_url", "label": "Hydration link" },
+    { "type": "url", "id": "complements_url", "label": "Complements link" },
+    { "type": "url", "id": "bundles_url", "label": "Bundles link" },
+    { "type": "url", "id": "subscription_url", "label": "Subscription link" },
+    { "type": "product", "id": "featured_product_1", "label": "First featured product" },
+    { "type": "product", "id": "featured_product_2", "label": "Second featured product" },
+    { "type": "blog", "id": "journal_blog", "label": "Journal blog" }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Promotion",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Get 15% off your first order\n“NEW16”"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header",
+      "blocks": [
+        { "type": "message" },
+        { "type": "message", "settings": { "text": "Free delivery on subscriptions\nSUBSCRIBE" } },
+        { "type": "message", "settings": { "text": "Build a complete routine\nSHOP BUNDLES" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

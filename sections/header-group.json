@@ -1,50 +1,47 @@
 {
-  "name": "t:sections.header.name",
-  "type": "header",
-  "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
-          "settings": {
-            "text": "Welcome to our store",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "announcement-bar-0"
-      ],
-      "settings": {
-        "color_scheme": "",
-        "show_line_separator": true,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 3
-      }
-    },
-    "header": {
-      "type": "header",
-      "settings": {
-        "logo_position": "middle-left",
-        "menu": "main-menu",
-        "menu_type_desktop": "mega",
-        "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
-        "color_scheme": "background-1",
-        "menu_color_scheme": "",
-        "enable_country_selector": false,
-        "enable_language_selector": false,
-        "mobile_logo_position": "center",
-        "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
-    }
-  },
-  "order": [
-    "announcement-bar",
-    "header"
-  ]
+	"name": "Header group",
+	"type": "header",
+	"sections": {
+		"custom_header": {
+			"type": "custom-header",
+			"blocks": {
+				"promotion_1": {
+					"type": "message",
+					"settings": {
+						"text": "Get 15% off your first order\n“NEW16”"
+					}
+				},
+				"promotion_2": {
+					"type": "message",
+					"settings": {
+						"text": "Free delivery on subscriptions\nSUBSCRIBE"
+					}
+				},
+				"promotion_3": {
+					"type": "message",
+					"settings": {
+						"text": "Build a complete routine\nSHOP BUNDLES"
+					}
+				}
+			},
+			"block_order": ["promotion_1", "promotion_2", "promotion_3"],
+			"settings": {
+				"tagline": "A new vision for\nperformance nutrition",
+				"statement": "Performance nutrition should work for your lifestyle, not complicate it. That’s exactly where FOULPLAY stands apart.",
+				"cta_label": "Explore All Products",
+				"cta_url": "shopify://collections/all",
+				"science_url": "",
+				"journal_url": "",
+				"creatine_url": "shopify://collections/all",
+				"hydration_url": "shopify://collections/all",
+				"complements_url": "shopify://collections/all",
+				"bundles_url": "shopify://collections/all",
+				"subscription_url": "shopify://collections/all",
+				"featured_product_1": "hi-creatine",
+				"featured_product_2": "purest-creatine-sachets",
+				"journal_blog": ""
+			}
+		}
+	},
+	"order": ["custom_header"]
 }
