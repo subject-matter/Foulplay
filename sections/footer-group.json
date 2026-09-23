@@ -33,7 +33,13 @@
 				"site_credits_label": "Site Credits",
 				"image_alt": "Close-up portrait holding a purple gummy between their teeth"
 			}
+		},
+		"newsletter_popup": {
+			"type": "custom-newsletter-popup",
+			"settings": {
+				"enabled": false
+			}
 		}
 	},
-	"order": ["custom_footer"]
+	"order": ["custom_footer", "newsletter_popup"]
 }

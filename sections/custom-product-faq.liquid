@@ -1,0 +1,46 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders a centred FAQ accordion using native disclosure rows.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% # MARK:- FAQ module from Figma node 1287:42437 %}
+<section class="foulplay-module foulplay-faq" data-node-id="1287:42437">
+	<div class="foulplay-accordion">
+		<h2 class="foulplay-section__title">{{ section.settings.heading | escape }}</h2>
+		{% for block in section.blocks %}
+			{% assign faq_id = 'Faq-' | append: block.id %}
+			{% render 'custom-foulplay-disclosure',
+				heading: block.settings.question,
+				content: block.settings.answer,
+				id: faq_id,
+				attributes: block.shopify_attributes
+			%}
+		{% endfor %}
+	</div>
+</section>
+
+{% schema %}
+	{
+		"name": "FAQ",
+		"tag": "section",
+		"class": "section section--faq",
+		"blocks": [
+			{
+				"type": "question",
+				"name": "Question",
+				"settings": [
+					{ "type": "text", "id": "question", "label": "Question", "default": "Question" },
+					{ "type": "richtext", "id": "answer", "label": "Answer" }
+				]
+			}
+		],
+		"settings": [
+			{ "type": "text", "id": "heading", "label": "Heading", "default": "FAQ" }
+		],
+		"presets": [{ "name": "FAQ" }]
+	}
+{% endschema %}

@@ -52,6 +52,25 @@
 	padding: 0;
 }
 
+.foulplay-button--pill {
+	background: transparent;
+	border: 1px solid var(--fp-color-charcoal-250);
+	border-radius: 40px;
+	color: var(--fp-color-charcoal-900);
+	font-size: var(--fp-type-caption-size);
+	line-height: var(--fp-type-caption-line-height);
+	letter-spacing: var(--fp-type-caption-tracking);
+	min-block-size: 32px;
+	padding: 4px 16px;
+}
+
+.foulplay-button--pill:hover,
+.foulplay-button--pill:active {
+	background: var(--fp-color-black);
+	border-color: var(--fp-color-black);
+	color: var(--fp-color-white);
+}
+
 .foulplay-button:disabled,
 .foulplay-button[aria-disabled='true'] {
 	cursor: not-allowed;

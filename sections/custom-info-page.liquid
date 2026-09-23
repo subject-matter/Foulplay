@@ -1,0 +1,112 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Shared layout for Contact and the customer-care / legal pages.
+	- Renders a customer-care sub-nav, an image, and page content.
+	- Contact rows use blocks; policy pages use the page body.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% # MARK:- Shared info page from Figma node 1337:173561 %}
+{% liquid
+	assign body = section.settings.content
+	if body == blank
+		assign body = page.content
+	endif
+	assign rows = section.blocks | where: 'type', 'row'
+%}
+
+<section class="foulplay-info" data-node-id="1337:173561">
+	{% if section.settings.menu != blank and linklists[section.settings.menu].links.size > 0 %}
+		<nav class="foulplay-info__subnav" aria-label="{{ section.settings.menu_label | default: 'Customer care' }}">
+			<p class="foulplay-info__subnav-label">
+				{{ section.settings.menu_label | default: 'Customer Care' }}
+			</p>
+			<ul>
+				{% for link in linklists[section.settings.menu].links %}
+					<li>
+						<a
+							href="{{ link.url }}"
+							{% if link.current %}
+								aria-current="page"
+							{% endif %}
+						>
+							{{- link.title | escape -}}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</nav>
+	{% endif %}
+
+	<div class="foulplay-info__body">
+		{% if section.settings.image != blank %}
+			<div class="foulplay-info__media">
+				{{
+					section.settings.image
+					| image_url: width: 1376
+					| image_tag:
+						widths: '400, 688, 960, 1376',
+						sizes: '(min-width: 1000px) 688px, 100vw',
+						loading: 'lazy',
+						alt: section.settings.image.alt
+				}}
+			</div>
+		{% endif %}
+
+		<div class="foulplay-info__content">
+			{% if page.title != blank and section.settings.show_title %}
+				<h1 class="foulplay-info__title">{{ page.title | escape }}</h1>
+			{% endif %}
+
+			{% if rows.size > 0 %}
+				<div class="foulplay-info__rows">
+					{% for block in rows %}
+						<div class="foulplay-info__row" {{ block.shopify_attributes }}>
+							<p class="foulplay-info__row-heading">
+								{{ block.settings.heading | escape }}
+							</p>
+							{% if block.settings.text != blank %}
+								<div class="foulplay-info__row-text rte">
+									{{ block.settings.text }}
+								</div>
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+
+			{% if body != blank %}
+				<div class="foulplay-info__rte rte">{{ body }}</div>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{% schema %}
+	{
+		"name": "Info page",
+		"tag": "section",
+		"class": "section section--info",
+		"blocks": [
+			{
+				"type": "row",
+				"name": "Detail row",
+				"settings": [
+					{ "type": "text", "id": "heading", "label": "Heading", "default": "General Enquiries" },
+					{ "type": "richtext", "id": "text", "label": "Text" }
+				]
+			}
+		],
+		"settings": [
+			{ "type": "link_list", "id": "menu", "label": "Sub-navigation menu" },
+			{ "type": "text", "id": "menu_label", "label": "Sub-navigation label", "default": "Customer Care" },
+			{ "type": "checkbox", "id": "show_title", "label": "Show page title", "default": false },
+			{ "type": "image_picker", "id": "image", "label": "Image" },
+			{ "type": "richtext", "id": "content", "label": "Content override", "info": "Falls back to the page body." }
+		],
+		"presets": [{ "name": "Info page" }]
+	}
+{% endschema %}

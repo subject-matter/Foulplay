@@ -1,0 +1,131 @@
+/* MARK:- Newsletter pop-up from Figma node 3170:31865 */
+
+.foulplay-popup {
+	position: fixed;
+	inset: auto auto 16px 16px;
+	z-index: 60;
+	width: calc(100% - 32px);
+	max-width: 395px;
+	font-family: var(--fp-font-text);
+}
+
+.foulplay-popup[hidden] {
+	display: none;
+}
+
+.foulplay-popup__dialog {
+	display: grid;
+	gap: 16px;
+	padding: 16px;
+	background: var(--fp-color-blue);
+	color: var(--fp-color-white);
+	font-size: var(--fp-type-body-size);
+	line-height: var(--fp-type-body-line-height);
+	letter-spacing: var(--fp-type-body-tracking);
+}
+
+.foulplay-popup__dialog:focus-visible {
+	outline: 2px solid var(--fp-color-white);
+	outline-offset: 2px;
+}
+
+.foulplay-popup__head {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+}
+
+.foulplay-popup__eyebrow {
+	margin: 0;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.foulplay-popup__close {
+	appearance: none;
+	border: 0;
+	background: none;
+	color: inherit;
+	cursor: pointer;
+	font: inherit;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.foulplay-popup__close:focus-visible {
+	outline: 2px solid var(--fp-color-white);
+	outline-offset: 2px;
+}
+
+.foulplay-popup__text {
+	margin: 0;
+	max-width: 280px;
+}
+
+.foulplay-popup__form {
+	display: grid;
+	gap: 16px;
+}
+
+.foulplay-popup__fields {
+	display: flex;
+	gap: 16px;
+}
+
+.foulplay-popup .foulplay-field {
+	flex: 1 0 0;
+	border-color: rgb(255 255 255 / 50%);
+}
+
+.foulplay-popup .foulplay-field:focus-within,
+.foulplay-popup .foulplay-field:hover {
+	border-color: var(--fp-color-white);
+}
+
+.foulplay-popup .foulplay-field__label {
+	color: rgb(255 255 255 / 80%);
+}
+
+.foulplay-popup .foulplay-field__input {
+	color: var(--fp-color-white);
+}
+
+.foulplay-popup .foulplay-field__input::placeholder {
+	color: rgb(255 255 255 / 60%);
+}
+
+.foulplay-popup__terms {
+	margin: 0;
+	color: rgb(255 255 255 / 80%);
+	font-size: var(--fp-type-caption-size);
+	line-height: var(--fp-type-caption-line-height);
+}
+
+.foulplay-popup__terms a {
+	color: inherit;
+}
+
+.foulplay-popup .foulplay-button--pill {
+	width: max-content;
+	border-color: rgb(255 255 255 / 60%);
+	color: var(--fp-color-white);
+}
+
+.foulplay-popup .foulplay-button--pill:hover {
+	background: var(--fp-color-white);
+	border-color: var(--fp-color-white);
+	color: var(--fp-color-blue);
+}
+
+.foulplay-popup__error,
+.foulplay-popup__success {
+	margin: 0;
+	font-size: var(--fp-type-caption-size);
+}
+
+@media (max-width: 499px) {
+	.foulplay-popup {
+		inset: auto 8px 8px;
+		max-width: none;
+	}
+}

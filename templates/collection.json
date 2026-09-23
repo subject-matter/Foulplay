@@ -1,11 +1,18 @@
 {
 	"sections": {
-		"main-banner": {
-			"type": "main-collection-banner"
-		},
-		"main-product-grid": {
-			"type": "main-collection-product-grid"
+		"collection_grid": {
+			"type": "custom-collection-grid",
+			"settings": {
+				"products_per_page": 24,
+				"all_label": "All",
+				"filter_1_label": "Creatine",
+				"filter_1_value": "Creatine",
+				"filter_2_label": "Hydration",
+				"filter_2_value": "Hydration",
+				"filter_3_label": "Complements",
+				"filter_3_value": "Complements"
+			}
 		}
 	},
-	"order": ["main-banner", "main-product-grid"]
+	"order": ["collection_grid"]
 }

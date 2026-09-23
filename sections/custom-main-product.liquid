@@ -1,0 +1,620 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders the Foulplay product landing: gallery, buy area, bundles, and details.
+	- Handles flavour swatches, subscription gifts, selling plans, and live pricing.
+	- Reuses the shared product form so add-to-cart opens the cart drawer.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% # MARK:- Product landing from Figma node 1287:42477 %}
+{% render 'vite', vite: 'js-dir-product.ts' %}
+
+{% liquid
+	assign current_variant = product.selected_or_first_available_variant
+	assign current_plan = product.selling_plan_groups.first.selling_plans.first
+	assign has_plans = false
+	if current_plan != blank
+		assign has_plans = true
+	endif
+
+	assign subtitle = product.metafields.custom.subtitle | default: product.type
+	assign short_description = product.metafields.custom.short_description
+	assign serving_size = product.metafields.custom.serving_size
+	assign coa = product.metafields.custom.certificate_of_analysis
+	assign rating = product.metafields.reviews.rating.value
+	assign rating_count = product.metafields.reviews.rating_count.value
+
+	assign best_seller = false
+	if product.metafields.custom.best_seller == true or product.tags contains 'Best Seller'
+		assign best_seller = true
+	endif
+
+	assign option1 = product.options_with_values[0]
+	assign option2 = product.options_with_values[1]
+	assign form_id = 'FpProductForm-' | append: section.id
+%}
+
+<foulplay-product
+	class="foulplay-pdp{% if has_plans %} is-subscription{% endif %}"
+	data-section-id="{{ section.id }}"
+>
+	<div class="foulplay-pdp__grid">
+		<div class="foulplay-pdp__gallery">
+			<div class="foulplay-pdp__stage" data-fp-media-stage>
+				{% for media in product.media %}
+					<div
+						class="foulplay-pdp__media"
+						data-fp-media="{{ media.id }}"
+						{% unless forloop.first %}
+							hidden
+						{% endunless %}
+					>
+						{{
+							media
+							| image_url: width: 1400
+							| image_tag:
+								widths: '569, 720, 960, 1200, 1400',
+								sizes: '(min-width: 1000px) 569px, 100vw',
+								loading: 'eager',
+								alt: media.alt
+						}}
+					</div>
+				{% else %}
+					<div class="foulplay-pdp__media">
+						{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+					</div>
+				{% endfor %}
+			</div>
+			{% if product.media.size > 1 %}
+				<div class="foulplay-pdp__thumbs" role="group" aria-label="Product media">
+					{% for media in product.media %}
+						<button
+							type="button"
+							class="foulplay-pdp__thumb"
+							data-fp-thumb="{{ media.id }}"
+							aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+						>
+							<img
+								src="{{ media | image_url: width: 160 }}"
+								width="80"
+								height="80"
+								loading="lazy"
+								alt="{{ media.alt | escape }}"
+							>
+						</button>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+
+		<div class="foulplay-pdp__info">
+			<header class="foulplay-pdp__intro">
+				<div class="foulplay-pdp__title-row">
+					<h1 class="foulplay-pdp__title">{{ product.title | escape }}</h1>
+					{% if best_seller %}
+						{% render 'custom-foulplay-pill', label: 'Best Seller', style: 'solid' %}
+					{% endif %}
+				</div>
+				{% if subtitle != blank %}
+					<p class="foulplay-pdp__subtitle">{{ subtitle | escape }}</p>
+				{% endif %}
+				{% if short_description != blank %}
+					<p class="foulplay-pdp__short">{{ short_description }}</p>
+				{% endif %}
+				{% if coa != blank %}
+					<a
+						class="foulplay-button foulplay-button--inline foulplay-pdp__coa"
+						href="{{ coa }}"
+						{% if coa.media_type or coa contains '.pdf' %}
+							target="_blank"
+							rel="noopener"
+						{% endif %}
+					>
+						{{ section.settings.coa_label | default: 'View certificate of analysis' }}
+					</a>
+				{% endif %}
+				{% if rating != blank %}
+					<div class="foulplay-pdp__rating">
+						<img
+							src="{{ 'foulplay-icon-star.svg' | asset_url }}"
+							width="16"
+							height="16"
+							alt=""
+						>
+						<span class="visually-hidden">Rated </span>
+						{{ rating | round: 1 }}
+						<span class="visually-hidden"> out of 5</span>
+						{% if rating_count != blank %}
+							<span class="foulplay-pdp__review-count">
+								({{- rating_count }} {{ section.settings.reviews_word | default: 'reviews' -}})
+							</span>
+						{% endif %}
+					</div>
+				{% endif %}
+			</header>
+
+			<product-form class="product-form foulplay-pdp__form">
+				<div
+					class="foulplay-pdp__error"
+					data-uc-product-form-error-message-wrapper
+					role="alert"
+					hidden
+				>
+					<span data-uc-product-form-error-message></span>
+				</div>
+
+				{% form 'product',
+					product,
+					id: form_id,
+					class: 'foulplay-pdp__form-inner',
+					novalidate: 'novalidate',
+					data-type: 'add-to-cart-form'
+				%}
+					{% if option1 and product.has_only_default_variant == false %}
+						<fieldset class="foulplay-pdp__variant">
+							<legend class="foulplay-pdp__variant-label">
+								{{ option1.name | escape }}:
+							</legend>
+							<div class="foulplay-pdp__swatches">
+								{% for value in option1.values %}
+									{% liquid
+										assign swatch_image = value.variant.featured_media
+										if swatch_image == blank
+											assign swatch_image = value.image
+										endif
+									%}
+									<button
+										type="button"
+										class="foulplay-pdp__swatch"
+										data-fp-swatch="{{ value.name | escape }}"
+										data-fp-swatch-position="1"
+										aria-pressed="{% if value.selected %}true{% else %}false{% endif %}"
+									>
+										{% if swatch_image != blank %}
+											<img
+												src="{{ swatch_image | image_url: width: 128 }}"
+												width="64"
+												height="64"
+												loading="lazy"
+												alt=""
+											>
+										{% endif %}
+										<span class="visually-hidden">{{ value.name | escape }}</span>
+									</button>
+								{% endfor %}
+							</div>
+							<p class="foulplay-pdp__variant-selected">
+								<span data-fp-flavour-label>
+									{{- current_variant.option1 | escape -}}
+								</span>
+								{% if serving_size != blank %}
+									{% render 'custom-foulplay-pill', label: serving_size, style: 'outline' %}
+								{% elsif option2 %}
+									{% render 'custom-foulplay-pill', label: current_variant.option2, style: 'outline' %}
+								{% endif %}
+							</p>
+						</fieldset>
+					{% endif %}
+
+					<fieldset class="foulplay-pdp__purchase">
+						<legend class="visually-hidden">Purchase option</legend>
+						<label class="foulplay-pdp__option">
+							<input
+								type="radio"
+								name="purchase_option"
+								value="one-time"
+								data-fp-purchase-option
+								{% unless has_plans %}
+									checked
+								{% endunless %}
+							>
+							<span class="foulplay-pdp__option-mark" aria-hidden="true"></span>
+							<span class="foulplay-pdp__option-copy">
+								<span class="foulplay-pdp__option-name">Buy It Once</span>
+								<span class="foulplay-pdp__option-price">
+									{{- current_variant.price | money -}}
+								</span>
+							</span>
+						</label>
+
+						{% if has_plans %}
+							<label class="foulplay-pdp__option foulplay-pdp__option--sub">
+								<input
+									type="radio"
+									name="purchase_option"
+									value="subscription"
+									data-fp-purchase-option
+									checked
+								>
+								<span class="foulplay-pdp__option-mark" aria-hidden="true"></span>
+								<span class="foulplay-pdp__option-copy">
+									<span class="foulplay-pdp__option-name">
+										{{ section.settings.subscription_label | default: 'Subscribe & Save 15%' }}
+									</span>
+									<span class="foulplay-pdp__option-price">
+										{% assign first_allocation = current_variant.selling_plan_allocations | first %}
+										{{ first_allocation.price | default: current_variant.price | money }}
+									</span>
+								</span>
+								<span class="foulplay-pdp__gifts">
+									<span class="foulplay-pdp__gifts-head">
+										<span class="foulplay-pdp__eyebrow">
+											{{ section.settings.gifts_heading | default: 'includes 3 FREE gifts:' }}
+										</span>
+										{% if section.settings.gifts_value != blank %}
+											<span class="foulplay-pdp__gifts-value">
+												{{ section.settings.gifts_value }}
+											</span>
+										{% endif %}
+									</span>
+									{% assign gift_blocks = section.blocks | where: 'type', 'gift' %}
+									{% if gift_blocks.size > 0 %}
+										<span class="foulplay-pdp__gift-list">
+											{% for block in gift_blocks %}
+												<span
+													class="foulplay-pdp__gift"
+													{{ block.shopify_attributes }}
+												>
+													<span class="foulplay-pdp__gift-media">
+														{% if block.settings.product.featured_media != blank %}
+															<img
+																src="{{ block.settings.product.featured_media | image_url: width: 128 }}"
+																width="64"
+																height="64"
+																loading="lazy"
+																alt=""
+															>
+														{% endif %}
+													</span>
+													<span class="foulplay-pdp__eyebrow">
+														{{ block.settings.month_label | escape }}
+													</span>
+													<span class="foulplay-pdp__gift-name">
+														{{ block.settings.product.title | default: block.settings.title | escape }}
+													</span>
+													<span class="foulplay-pdp__gift-price">
+														{% if block.settings.product.price != blank %}
+															<s>{{ block.settings.product.price | money }}</s>
+														{% endif %}
+														<span class="foulplay-pdp__eyebrow">FREE</span>
+													</span>
+												</span>
+											{% endfor %}
+										</span>
+									{% endif %}
+									{% if section.settings.also_included != blank %}
+										<span class="foulplay-pdp__included">
+											<span class="foulplay-pdp__eyebrow">
+												{{ section.settings.also_included_label | default: 'Also Included:' }}
+											</span>
+											<span class="foulplay-pdp__included-list rte">
+												{{ section.settings.also_included }}
+											</span>
+										</span>
+									{% endif %}
+								</span>
+							</label>
+						{% endif %}
+					</fieldset>
+
+					<div class="foulplay-pdp__buy">
+						<div class="foulplay-pdp__selectors">
+							{% if has_plans %}
+								<label class="foulplay-pdp__select">
+									<span class="visually-hidden">Delivery frequency</span>
+									<select name="selling_plan" data-fp-selling-plan>
+										{% for group in product.selling_plan_groups %}
+											{% for plan in group.selling_plans %}
+												<option value="{{ plan.id }}">
+													{{- plan.name -}}
+												</option>
+											{% endfor %}
+										{% endfor %}
+									</select>
+								</label>
+							{% endif %}
+
+							{% if option2 %}
+								<label class="foulplay-pdp__select">
+									<span class="visually-hidden">{{ option2.name | escape }}</span>
+									<select data-fp-option-select data-fp-option-position="2">
+										{% for value in option2.values %}
+											<option
+												value="{{ value.name | escape }}"
+												{% if value.selected %}
+													selected
+												{% endif %}
+											>
+												{{- value.name | escape -}}
+											</option>
+										{% endfor %}
+									</select>
+								</label>
+							{% endif %}
+						</div>
+
+						<input
+							type="hidden"
+							name="id"
+							value="{{ current_variant.id }}"
+							data-fp-variant-id
+						>
+
+						<button
+							type="submit"
+							name="add"
+							class="foulplay-pdp__submit"
+							data-fp-submit
+							{% unless current_variant.available %}
+								disabled aria-disabled="true"
+							{% endunless %}
+						>
+							<span data-fp-submit-label>
+								{%- if current_variant.available -%}
+									Add to Cart
+								{%- else -%}
+									Sold Out
+								{%- endif -%}
+							</span>
+							<span class="foulplay-pdp__submit-price">
+								<s data-fp-compare
+									{% unless current_variant.compare_at_price > current_variant.price %}
+										hidden
+									{% endunless %}
+								>
+									{{- current_variant.compare_at_price | money -}}
+								</s>
+								<span data-fp-price>{{ current_variant.price | money }}</span>
+							</span>
+							<span class="hidden" data-uc-loading-overlay-spinner aria-hidden="true">
+								<svg
+									focusable="false"
+									class="spinner"
+									viewBox="0 0 66 66"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+								</svg>
+							</span>
+						</button>
+					</div>
+
+					<script type="application/json" data-fp-product-data>
+						{
+							"variants": [
+								{% for variant in product.variants %}
+									{
+										"id": {{ variant.id | json }},
+										"available": {{ variant.available | json }},
+										"option1": {{ variant.option1 | json }},
+										"option2": {{ variant.option2 | json }},
+										"option3": {{ variant.option3 | json }},
+										"price": {{ variant.price | money | json }},
+										"compareAtPrice": {% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | json }}{% else %}null{% endif %},
+										"mediaId": {{ variant.featured_media.id | json }},
+										"sellingPlans": {
+											{% for allocation in variant.selling_plan_allocations %}
+												"{{ allocation.selling_plan.id }}": {{ allocation.price | money | json }}{% unless forloop.last %},{% endunless %}
+											{% endfor %}
+										}
+									}{% unless forloop.last %},{% endunless %}
+								{% endfor %}
+							]
+						}
+					</script>
+				{% endform %}
+			</product-form>
+
+			{% if section.settings.bundle_product != blank %}
+				{% liquid
+					assign bundle = section.settings.bundle_product
+					assign bundle_button_label = section.settings.bundle_button_label | default: 'Shop All'
+					assign bundle_included_label = section.settings.bundle_included_label | default: "What's Included"
+					assign bundle_included_id = 'BundleIncluded-' | append: section.id
+				%}
+				<div class="foulplay-pdp__bundles">
+					<div class="foulplay-pdp__bundles-intro">
+						<h2 class="foulplay-pdp__eyebrow">
+							{{ section.settings.bundle_heading | default: 'Save with Bundles' }}
+						</h2>
+						{% if section.settings.bundle_body != blank %}
+							<div class="foulplay-pdp__bundles-body">
+								{{ section.settings.bundle_body }}
+							</div>
+						{% endif %}
+						{% render 'custom-foulplay-button',
+							label: bundle_button_label,
+							url: section.settings.bundle_button_link,
+							style: 'secondary',
+							class: 'foulplay-button--pill'
+						%}
+					</div>
+					<div class="foulplay-pdp__bundle">
+						<a class="foulplay-pdp__bundle-media" href="{{ bundle.url }}">
+							{% if bundle.featured_media != blank %}
+								<img
+									src="{{ bundle.featured_media | image_url: width: 240 }}"
+									width="120"
+									height="120"
+									loading="lazy"
+									alt="{{ bundle.featured_media.alt | escape }}"
+								>
+							{% endif %}
+						</a>
+						<div class="foulplay-pdp__bundle-copy">
+							<div class="foulplay-card__tags">
+								{% if bundle.metafields.custom.card_badge != blank %}
+									{% render 'custom-foulplay-pill', label: bundle.metafields.custom.card_badge, style: 'solid' %}
+								{% endif %}
+								{% if bundle.metafields.reviews.rating.value != blank %}
+									<span class="foulplay-pill foulplay-pill--review">
+										<img src="{{ 'foulplay-icon-star.svg' | asset_url }}" width="16" height="16" alt="">
+										{{ bundle.metafields.reviews.rating.value | round: 1 }}
+									</span>
+								{% endif %}
+							</div>
+							<h3 class="foulplay-pdp__bundle-title">
+								<a href="{{ bundle.url }}">{{ bundle.title | escape }}</a>
+							</h3>
+							<div class="foulplay-pdp__bundle-price">
+								{% if bundle.compare_at_price > bundle.price %}
+									<s>{{ bundle.compare_at_price | money }}</s>
+								{% endif %}
+								<span>{{ bundle.price | money }}</span>
+							</div>
+							{% if bundle.metafields.custom.whats_included != blank %}
+								{% render 'custom-foulplay-disclosure',
+									heading: bundle_included_label,
+									content: bundle.metafields.custom.whats_included,
+									id: bundle_included_id
+								%}
+							{% endif %}
+							{% render 'custom-foulplay-button',
+								label: 'Add to Cart',
+								url: bundle.url,
+								style: 'secondary',
+								class: 'foulplay-button--pill'
+							%}
+						</div>
+					</div>
+				</div>
+			{% endif %}
+
+			<div class="foulplay-pdp__more">
+				<div class="foulplay-pdp__details">
+					<h2 class="foulplay-pdp__eyebrow">
+						{{ section.settings.details_label | default: 'Details' }}
+					</h2>
+					{% if product.metafields.custom.ref != blank
+						or product.metafields.custom.lot != blank
+					%}
+						<dl class="foulplay-pdp__spec">
+							{% if product.metafields.custom.ref != blank %}
+								<div>
+									<dt>ref</dt>
+									<dd>{{ product.metafields.custom.ref }}</dd>
+								</div>
+							{% endif %}
+							{% if product.metafields.custom.lot != blank %}
+								<div>
+									<dt>lot</dt>
+									<dd>{{ product.metafields.custom.lot }}</dd>
+								</div>
+							{% endif %}
+						</dl>
+					{% endif %}
+					{% if product.description != blank %}
+						<div class="foulplay-pdp__description rte">
+							{{ product.description }}
+						</div>
+					{% endif %}
+					{% assign detail_blocks = section.blocks | where: 'type', 'detail' %}
+					{% if detail_blocks.size > 0 %}
+						<div class="foulplay-pdp__accordion">
+							{% for block in detail_blocks %}
+								{% assign detail_id = 'ProductDetail-' | append: block.id %}
+								{% render 'custom-foulplay-disclosure',
+									heading: block.settings.heading,
+									content: block.settings.content,
+									id: detail_id,
+									attributes: block.shopify_attributes
+								%}
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+
+				<div class="foulplay-pdp__badges">
+					{% if section.settings.verified_badge != blank %}
+						<img
+							class="foulplay-pdp__verified"
+							src="{{ section.settings.verified_badge | image_url: width: 260 }}"
+							width="130"
+							height="80"
+							loading="lazy"
+							alt="Verified product by Foulplay"
+						>
+					{% endif %}
+					{% assign attribute_blocks = section.blocks | where: 'type', 'attribute' %}
+					{% if attribute_blocks.size > 0 %}
+						<ul class="foulplay-pdp__attributes">
+							{% for block in attribute_blocks %}
+								<li {{ block.shopify_attributes }}>
+									{% render 'custom-foulplay-pill', label: block.settings.label, style: 'solid' %}
+								</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<p class="visually-hidden" role="status" aria-live="polite" data-fp-status></p>
+</foulplay-product>
+
+{% schema %}
+	{
+		"name": "Product landing",
+		"tag": "section",
+		"class": "section section--product",
+		"blocks": [
+			{
+				"type": "gift",
+				"name": "Subscription gift",
+				"settings": [
+					{ "type": "text", "id": "month_label", "label": "Month label", "default": "Month 1" },
+					{ "type": "product", "id": "product", "label": "Gift product" },
+					{ "type": "text", "id": "title", "label": "Title override" }
+				]
+			},
+			{
+				"type": "detail",
+				"name": "Detail row",
+				"settings": [
+					{ "type": "text", "id": "heading", "label": "Heading", "default": "How to Use" },
+					{ "type": "richtext", "id": "content", "label": "Content" }
+				]
+			},
+			{
+				"type": "attribute",
+				"name": "Attribute pill",
+				"settings": [
+					{ "type": "text", "id": "label", "label": "Label", "default": "Third-Party Tested" }
+				]
+			}
+		],
+		"settings": [
+			{
+				"type": "header",
+				"content": "Purchase"
+			},
+			{ "type": "text", "id": "coa_label", "label": "Certificate link label", "default": "View certificate of analysis" },
+			{ "type": "text", "id": "reviews_word", "label": "Reviews word", "default": "reviews" },
+			{ "type": "text", "id": "subscription_label", "label": "Subscription label", "default": "Subscribe & Save 15%" },
+			{ "type": "text", "id": "gifts_heading", "label": "Gifts heading", "default": "includes 3 FREE gifts:" },
+			{ "type": "text", "id": "gifts_value", "label": "Gifts value", "default": "Valued at $47" },
+			{ "type": "text", "id": "also_included_label", "label": "Also included label", "default": "Also Included:" },
+			{ "type": "richtext", "id": "also_included", "label": "Also included list" },
+			{
+				"type": "header",
+				"content": "Bundle cross-sell"
+			},
+			{ "type": "product", "id": "bundle_product", "label": "Bundle product" },
+			{ "type": "text", "id": "bundle_heading", "label": "Heading", "default": "Save with Bundles" },
+			{ "type": "richtext", "id": "bundle_body", "label": "Body" },
+			{ "type": "text", "id": "bundle_button_label", "label": "Button label", "default": "Shop All" },
+			{ "type": "url", "id": "bundle_button_link", "label": "Button link" },
+			{ "type": "text", "id": "bundle_included_label", "label": "Included label", "default": "What's Included" },
+			{
+				"type": "header",
+				"content": "Details"
+			},
+			{ "type": "text", "id": "details_label", "label": "Details heading", "default": "Details" },
+			{ "type": "image_picker", "id": "verified_badge", "label": "Verified badge image" }
+		]
+	}
+{% endschema %}

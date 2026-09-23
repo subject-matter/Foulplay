@@ -1,0 +1,398 @@
+/* MARK:- Product editorial from Figma node 1287:42104 */
+
+.foulplay-product-editorial {
+	box-sizing: border-box;
+	display: flex;
+	gap: 16px;
+	align-items: flex-start;
+	padding: 0 24px 80px;
+	color: var(--fp-color-black);
+	font-family: var(--fp-font-text);
+	font-size: var(--fp-type-body-size);
+	line-height: var(--fp-type-body-line-height);
+	letter-spacing: var(--fp-type-body-tracking);
+}
+
+.foulplay-product-editorial__media {
+	flex: 0 0 auto;
+	width: 923px;
+	max-width: 64%;
+	aspect-ratio: 1;
+	background: var(--fp-color-charcoal-25);
+	overflow: hidden;
+}
+
+.foulplay-product-editorial__media img,
+.foulplay-product-editorial__media svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.foulplay-product-editorial__content {
+	display: flex;
+	gap: 16px;
+	align-items: flex-start;
+}
+
+.foulplay-product-editorial__callouts {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.foulplay-product-editorial__stat {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	width: 219px;
+	height: 219px;
+	padding: 16px;
+	background: var(--fp-color-charcoal-50);
+	text-align: center;
+}
+
+.foulplay-product-editorial__stat-top,
+.foulplay-product-editorial__stat-label {
+	font-size: var(--fp-type-caption-size);
+	line-height: var(--fp-type-caption-line-height);
+	letter-spacing: var(--fp-type-caption-tracking);
+}
+
+.foulplay-product-editorial__stat-value {
+	font-size: var(--fp-type-heading-size);
+	line-height: var(--fp-type-heading-line-height);
+}
+
+.foulplay-product-editorial__copy {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 219px;
+}
+
+.foulplay-product-editorial__lede p,
+.foulplay-product-editorial__tech div p {
+	margin: 0;
+}
+
+.foulplay-product-editorial__lede {
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-product-editorial__lede p:first-child {
+	color: var(--fp-color-black);
+}
+
+.foulplay-product-editorial__tech-title {
+	margin: 0;
+	color: var(--fp-color-black);
+}
+
+.foulplay-product-editorial__tech div {
+	color: var(--fp-color-charcoal-750);
+}
+
+/* MARK:- Reviews module from Figma node 1287:42333 */
+
+.foulplay-reviews {
+	box-sizing: border-box;
+	display: grid;
+	grid-template-columns: 220px minmax(0, 1fr) minmax(0, 600px);
+	gap: 24px;
+	padding: 40px 24px 80px;
+	color: var(--fp-color-black);
+	font-family: var(--fp-font-text);
+	font-size: var(--fp-type-body-size);
+	line-height: var(--fp-type-body-line-height);
+	letter-spacing: var(--fp-type-body-tracking);
+}
+
+.foulplay-reviews__eyebrow {
+	margin: 0 0 16px;
+	font-size: var(--fp-type-body-size);
+	font-weight: 400;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	border-bottom: 1px solid var(--fp-color-charcoal-100);
+	padding-bottom: 16px;
+}
+
+.foulplay-reviews__summary-head {
+	display: flex;
+	gap: 8px;
+	align-items: baseline;
+}
+
+.foulplay-reviews__sort {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	margin: 0;
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-reviews__stats {
+	display: grid;
+	gap: 8px;
+}
+
+.foulplay-reviews__total,
+.foulplay-reviews__average {
+	display: grid;
+	margin: 0;
+}
+
+.foulplay-reviews__total strong,
+.foulplay-reviews__average strong {
+	font-weight: 400;
+}
+
+.foulplay-reviews__average strong {
+	display: inline-block;
+}
+
+.foulplay-reviews__stats span {
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-reviews__stats .foulplay-button {
+	margin-top: 8px;
+	width: max-content;
+}
+
+.foulplay-reviews__list {
+	display: grid;
+	gap: 0;
+}
+
+.foulplay-review {
+	display: grid;
+	gap: 8px;
+	padding: 24px 0;
+	border-top: 1px solid var(--fp-color-charcoal-100);
+}
+
+.foulplay-review:first-child {
+	border-top: 0;
+	padding-top: 0;
+}
+
+.foulplay-review__stars,
+.foulplay-reviews__stars {
+	margin: 0;
+	letter-spacing: 2px;
+}
+
+.foulplay-review__title {
+	margin: 0;
+	font: inherit;
+}
+
+.foulplay-review__body {
+	color: var(--fp-color-charcoal-750);
+	max-width: 40ch;
+}
+
+.foulplay-review__body p {
+	margin: 0;
+}
+
+.foulplay-review__media {
+	width: 130px;
+	height: 130px;
+	overflow: hidden;
+}
+
+.foulplay-review__media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.foulplay-review__meta {
+	display: grid;
+	gap: 2px;
+}
+
+.foulplay-review__author {
+	margin: 0;
+}
+
+.foulplay-review__verified,
+.foulplay-review__date {
+	display: block;
+	color: var(--fp-color-charcoal-750);
+	font-size: var(--fp-type-caption-size);
+}
+
+.foulplay-review__date {
+	margin: 0;
+}
+
+/* Ambassadors */
+
+.foulplay-ambassadors {
+	display: block;
+}
+
+.foulplay-ambassadors__inner {
+	display: grid;
+	grid-template-columns: 130px minmax(0, 1fr);
+	gap: 16px;
+}
+
+.foulplay-ambassadors__names {
+	display: grid;
+	gap: 4px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-ambassadors__names li:first-child {
+	color: var(--fp-color-black);
+}
+
+.foulplay-ambassadors__stage {
+	display: grid;
+	gap: 16px;
+}
+
+.foulplay-roster-section__hero {
+	position: relative;
+	aspect-ratio: var(--fp-ratio-portrait);
+	overflow: hidden;
+	background: var(--fp-color-charcoal-50);
+}
+
+.foulplay-roster-section__hero img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: opacity var(--fp-motion-default) var(--fp-ease-out);
+}
+
+.foulplay-roster-section__hero img.is-changing {
+	opacity: 0;
+}
+
+.foulplay-ambassadors__controls {
+	position: absolute;
+	left: 16px;
+	bottom: 16px;
+	display: flex;
+	gap: 8px;
+}
+
+.foulplay-ambassadors__controls button {
+	appearance: none;
+	width: 32px;
+	height: 32px;
+	border: 1px solid var(--fp-color-glass-medium);
+	border-radius: 50%;
+	background: var(--fp-color-glass-light);
+	color: var(--fp-color-white);
+	cursor: pointer;
+	line-height: 1;
+}
+
+.foulplay-ambassadors__controls button:focus-visible {
+	outline: 2px solid var(--fp-color-white);
+	outline-offset: 2px;
+}
+
+.foulplay-ambassadors__profile[hidden] {
+	display: none;
+}
+
+.foulplay-ambassadors__quote {
+	margin: 0 0 8px;
+	font-size: var(--fp-type-heading-size);
+	line-height: var(--fp-type-heading-line-height);
+}
+
+.foulplay-ambassadors__quote p {
+	margin: 0;
+}
+
+.foulplay-ambassadors__name {
+	margin: 0;
+}
+
+.foulplay-ambassadors__role {
+	margin: 0;
+	color: var(--fp-color-charcoal-750);
+}
+
+/* MARK:- Related products from Figma node 1287:42457 */
+
+.foulplay-related {
+	display: block;
+	padding: 40px 24px 80px;
+	color: var(--fp-color-black);
+	font-family: var(--fp-font-text);
+}
+
+.foulplay-related__header {
+	border-bottom: 1px solid var(--fp-color-charcoal-100);
+	padding-bottom: 16px;
+	margin-bottom: 40px;
+}
+
+.foulplay-related__header h2 {
+	margin: 0;
+	font-size: var(--fp-type-body-size);
+	font-weight: 400;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.foulplay-related__grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 16px;
+}
+
+@media (max-width: 999px) {
+	.foulplay-product-editorial {
+		flex-direction: column;
+	}
+
+	.foulplay-product-editorial__media {
+		width: 100%;
+		max-width: none;
+	}
+
+	.foulplay-reviews {
+		grid-template-columns: 1fr;
+	}
+
+	.foulplay-related__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 499px) {
+	.foulplay-product-editorial__content,
+	.foulplay-product-editorial__callouts {
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.foulplay-product-editorial__stat,
+	.foulplay-product-editorial__copy {
+		width: 100%;
+	}
+
+	.foulplay-ambassadors__inner {
+		grid-template-columns: 1fr;
+	}
+
+	.foulplay-related__grid {
+		grid-template-columns: 1fr;
+	}
+}

@@ -354,29 +354,79 @@
 		</div>
 		<div class="fp-header__cart-body" data-header-cart-body>
 			{% if cart.item_count == 0 %}
-				<p>Your cart is currently empty</p>
-			{% else %}
-				{% for item in cart.items %}
-					<a class="fp-header__cart-item" href="{{ item.url }}">
-						{% if item.image %}
-							{{
-								item.image
-								| image_url: width: 160
-								| image_tag:
-									loading: 'lazy',
-									width: 80,
-									height: 80,
-									alt: item.image.alt
-								| default: item.product.title
-							}}
-						{% endif %}
-						<span>
-							{{- item.product.title -}}
-							<br>
-							{{ item.final_line_price | money -}}
-						</span>
+				<div class="fp-header__cart-empty">
+					<p>{{ section.settings.cart_empty_text | default: 'Your cart is currently empty' }}</p>
+					<a
+						class="foulplay-button foulplay-button--pill"
+						href="{{ routes.all_products_collection_url }}"
+						data-drawer-close
+					>
+						{{ section.settings.cart_empty_cta | default: 'Shop All' }}
 					</a>
-				{% endfor %}
+				</div>
+			{% else %}
+				<ul class="fp-header__cart-items">
+					{% for item in cart.items %}
+						<li class="fp-header__cart-item">
+							<a class="fp-header__cart-item-media" href="{{ item.url }}">
+								{% if item.image %}
+									{{
+										item.image
+										| image_url: width: 200
+										| image_tag:
+											loading: 'lazy',
+											width: 100,
+											height: 100,
+											alt: item.image.alt | default: item.product.title
+									}}
+								{% endif %}
+							</a>
+							<div class="fp-header__cart-item-copy">
+								<div class="fp-header__cart-item-head">
+									<div>
+										<p class="fp-header__cart-item-title">
+											{{- item.product.title | escape -}}
+										</p>
+										{% if item.product.metafields.custom.subtitle != blank %}
+											<p class="fp-header__cart-item-subtitle">
+												{{ item.product.metafields.custom.subtitle | escape }}
+											</p>
+										{% endif %}
+									</div>
+									<div class="fp-header__cart-item-price">
+										{% if item.original_line_price > item.final_line_price %}
+											<s>{{ item.original_line_price | money }}</s>
+										{% endif %}
+										<span>{{ item.final_line_price | money }}</span>
+									</div>
+								</div>
+								{% unless item.variant.title contains 'Default' %}
+									<p class="fp-header__cart-item-variant">
+										{{ item.variant.title | escape }}
+									</p>
+								{% endunless %}
+								{% if item.selling_plan_allocation != blank %}
+									<p class="fp-header__cart-item-plan">
+										{{ item.selling_plan_allocation.selling_plan.name | escape }}
+									</p>
+								{% endif %}
+								<div class="fp-header__cart-item-qty">
+									<a
+										class="fp-header__cart-qty-button"
+										href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+										aria-label="Decrease {{ item.product.title | escape }} quantity"
+									>−</a>
+									<span aria-live="polite">{{ item.quantity }}</span>
+									<a
+										class="fp-header__cart-qty-button"
+										href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+										aria-label="Increase {{ item.product.title | escape }} quantity"
+									>+</a>
+								</div>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
 			{% endif %}
 		</div>
 		<div class="fp-header__cart-upsells">
@@ -400,6 +450,58 @@
 				pack: '30 Sachets'
 			%}
 		</div>
+		{% if cart.item_count > 0 %}
+			<div class="fp-header__cart-footer" data-header-cart-footer>
+				{% liquid
+					assign threshold = section.settings.free_shipping_threshold | times: 100
+					assign remaining = threshold | minus: cart.total_price
+					assign progress = 0
+					if threshold > 0
+						assign progress = cart.total_price | times: 100 | divided_by: threshold
+						if progress > 100
+							assign progress = 100
+						endif
+					endif
+				%}
+				{% if threshold > 0 %}
+					<div class="fp-header__cart-shipping">
+						<p>
+							{% if remaining > 0 %}
+								{{ remaining | money }} away from Free Shipping
+							{% else %}
+								You have unlocked Free Shipping
+							{% endif %}
+						</p>
+						<div
+							class="fp-header__cart-progress"
+							role="progressbar"
+							aria-label="{{ section.settings.cart_shipping_label | default: 'Free shipping progress' }}"
+							aria-valuemin="0"
+							aria-valuemax="100"
+							aria-valuenow="{{ progress }}"
+						>
+							<span style="width: {{ progress }}%;"></span>
+						</div>
+					</div>
+				{% endif %}
+				<div class="fp-header__cart-total">
+					<span>{{ section.settings.cart_total_label | default: 'Estimated Total' }}</span>
+					<span data-header-cart-total>{{ cart.total_price | money_with_currency }}</span>
+				</div>
+				<form action="{{ routes.cart_url }}" method="post" novalidate>
+					<button
+						type="submit"
+						name="checkout"
+						class="fp-header__cart-checkout"
+					>
+						{{ section.settings.cart_checkout_label | default: 'Proceed to Checkout' }}
+					</button>
+				</form>
+				<p class="fp-header__cart-note">
+					{{ section.settings.cart_note | default: 'Taxes, shipping and promos are calculated at checkout.' }}
+				</p>
+			</div>
+		{% endif %}
 	</aside>
 </foulplay-header>
 
@@ -454,7 +556,19 @@
 				"id": "featured_product_2",
 				"label": "Second featured product"
 			},
-			{ "type": "blog", "id": "journal_blog", "label": "Journal blog" }
+			{ "type": "blog", "id": "journal_blog", "label": "Journal blog" },
+			{
+				"type": "number",
+				"id": "free_shipping_threshold",
+				"label": "Free shipping threshold",
+				"info": "Amount in your store currency. Set 0 to hide the bar.",
+				"default": 100
+			},
+			{ "type": "text", "id": "cart_total_label", "label": "Cart total label", "default": "Estimated Total" },
+			{ "type": "text", "id": "cart_checkout_label", "label": "Checkout label", "default": "Proceed to Checkout" },
+			{ "type": "text", "id": "cart_note", "label": "Cart note", "default": "Taxes, shipping and promos are calculated at checkout." },
+			{ "type": "text", "id": "cart_empty_text", "label": "Empty cart text", "default": "Your cart is currently empty" },
+			{ "type": "text", "id": "cart_empty_cta", "label": "Empty cart button", "default": "Shop All" }
 		],
 		"blocks": [
 			{

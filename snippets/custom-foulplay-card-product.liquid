@@ -1,0 +1,200 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders a live Shopify product as a reusable Foulplay product card.
+	- Drives collection, related, and search grids from the same markup.
+	- Shows compare-at pricing, sold-out wash, badge, rating, and a hover add-to-cart.
+
+
+	=== PARAMETERS ===
+
+	- "product" is the product object to render (required).
+	- "sizes" is the responsive image sizes attribute.
+	- "loading" is the native image loading hint.
+	- "show_quick_add" toggles the hover add-to-cart control.
+	- "section_id" scopes the add-to-cart form id.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% liquid
+	assign card_product = product
+	assign card_sizes = sizes | default: '(min-width: 1000px) 336px, 84vw'
+	assign card_loading = loading | default: 'lazy'
+	assign quick_add = show_quick_add
+	if quick_add == nil
+		assign quick_add = true
+	endif
+
+	assign card_subtitle = card_product.metafields.custom.subtitle
+	if card_subtitle == blank
+		assign card_subtitle = card_product.type
+	endif
+	assign card_badge = card_product.metafields.custom.card_badge
+
+	assign card_rating = card_product.metafields.reviews.rating.value
+	assign card_categories = ',all,'
+	assign type_key = card_product.type | handleize
+	if type_key != blank
+		assign card_categories = card_categories | append: type_key | append: ','
+	endif
+	for card_tag in card_product.tags
+		assign card_categories = card_categories | append: card_tag | handleize | append: ','
+	endfor
+
+	assign card_available = card_product.available
+	assign single_variant = false
+	if card_product.variants.size == 1
+		assign single_variant = true
+	endif
+	assign quick_add_form_id = section_id | append: card_product.id | append: '-quick-add'
+%}
+
+{% # MARK:- Foulplay product card from Figma node 1287:42703 %}
+<article
+	class="foulplay-card foulplay-card--product"
+	data-product-categories="{{ card_categories }}"
+	{% unless card_available %}
+		data-sold-out
+	{% endunless %}
+>
+	<a class="foulplay-card__media" href="{{ card_product.url }}">
+		{% if card_product.featured_media != blank %}
+			{{
+				card_product.featured_media
+				| image_url: width: 1200
+				| image_tag:
+					widths: '320, 480, 720, 960, 1200',
+					sizes: card_sizes,
+					loading: card_loading,
+					alt: card_product.featured_media.alt
+			}}
+		{% else %}
+			{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+		{% endif %}
+		{% unless card_available %}
+			<span class="foulplay-card__wash foulplay-card__wash--mono" aria-hidden="true"></span>
+			<span class="foulplay-card__wash foulplay-card__wash--blue" aria-hidden="true"></span>
+		{% endunless %}
+	</a>
+
+	<div class="foulplay-card__body">
+		<div class="foulplay-card__text">
+			<h3 class="foulplay-card__title">
+				<a href="{{ card_product.url }}">{{ card_product.title | escape }}</a>
+			</h3>
+			{% if card_subtitle != blank %}
+				<p class="foulplay-card__subtitle">{{ card_subtitle | escape }}</p>
+			{% endif %}
+			<div class="foulplay-card__price">
+				{% if card_available == false %}
+					<s>
+						<span class="visually-hidden">Regular price </span>
+						{%- if card_product.compare_at_price > card_product.price -%}
+							{{ card_product.compare_at_price | money }}
+						{%- else -%}
+							{% if card_product.price_varies %}From {% endif %}
+							{{- card_product.price | money -}}
+						{%- endif -%}
+					</s>
+					<span class="foulplay-card__soldout">
+						{{- 'products.product.sold_out' | t -}}
+					</span>
+				{% elsif card_product.compare_at_price > card_product.price %}
+					<s>
+						<span class="visually-hidden">Regular price </span>
+						{{- card_product.compare_at_price | money -}}
+					</s>
+					<span>
+						<span class="visually-hidden">Sale price </span>
+						{{- card_product.price | money -}}
+					</span>
+				{% else %}
+					<span>
+						<span class="visually-hidden">Price </span>
+						{%- if card_product.price_varies %}From {% endif -%}
+						{{ card_product.price | money -}}
+					</span>
+				{% endif %}
+			</div>
+		</div>
+
+		{% if card_badge != blank or card_rating != blank %}
+			<div class="foulplay-card__tags">
+				{% if card_badge != blank -%}
+					{%- render 'custom-foulplay-pill', label: card_badge, style: 'solid' -%}
+				{%- endif %}
+				{% if card_rating != blank %}
+					<span class="foulplay-pill foulplay-pill--review">
+						<img
+							src="{{ 'foulplay-icon-star.svg' | asset_url }}"
+							width="16"
+							height="16"
+							alt=""
+						>
+						<span class="visually-hidden">Rated </span>
+						{{- card_rating | round: 1 -}}
+						<span class="visually-hidden"> out of 5</span>
+					</span>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		{% if quick_add and card_available %}
+			<div class="foulplay-card__cta">
+				{% if single_variant %}
+					<product-form class="product-form foulplay-card__product-form">
+						{% form 'product',
+							card_product,
+							id: quick_add_form_id,
+							class: 'foulplay-card__form',
+							novalidate: 'novalidate',
+							data-type: 'add-to-cart-form'
+						%}
+							<input
+								type="hidden"
+								name="id"
+								value="{{ card_product.selected_or_first_available_variant.id }}"
+							>
+							<button
+								type="submit"
+								name="add"
+								class="foulplay-button foulplay-button--pill"
+							>
+								<span data-add-to-cart-text>Add to Cart</span>
+								<span class="visually-hidden"> — {{ card_product.title | escape }}</span>
+								<span class="hidden" data-uc-loading-overlay-spinner>
+									<svg
+										aria-hidden="true"
+										focusable="false"
+										class="spinner"
+										viewBox="0 0 66 66"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<circle
+											class="path"
+											fill="none"
+											stroke-width="6"
+											cx="33"
+											cy="33"
+											r="30"
+										></circle>
+									</svg>
+								</span>
+							</button>
+						{% endform %}
+					</product-form>
+				{% else %}
+					<a
+						class="foulplay-button foulplay-button--pill"
+						href="{{ card_product.url }}"
+					>
+						Add to Cart
+						<span class="visually-hidden"> — choose options for {{ card_product.title | escape }}</span>
+					</a>
+				{% endif %}
+			</div>
+		{% endif %}
+	</div>
+</article>

@@ -1,0 +1,49 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders the clinical studies module with evidence records.
+	- Uses reusable Foulplay study theme blocks.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% # MARK:- Clinical studies module from Figma node 1287:42133 %}
+<section class="foulplay-module foulplay-clinical" data-node-id="1287:42133">
+	<div class="foulplay-module__header">
+		<h2>{{ section.settings.heading | escape }}</h2>
+		<div>
+			{% if section.settings.body != blank %}
+				<p>{{ section.settings.body }}</p>
+			{% endif %}
+			{% if section.settings.button_label != blank %}
+				{% render 'custom-foulplay-button',
+					label: section.settings.button_label,
+					url: section.settings.button_link,
+					style: 'secondary',
+					class: 'foulplay-button--pill'
+				%}
+			{% endif %}
+		</div>
+	</div>
+	<div class="foulplay-clinical__studies">
+		{% content_for 'blocks' %}
+	</div>
+</section>
+
+{% schema %}
+	{
+		"name": "Clinical studies",
+		"tag": "section",
+		"class": "section section--clinical",
+		"blocks": [{ "type": "foulplay-study" }],
+		"max_blocks": 6,
+		"settings": [
+			{ "type": "text", "id": "heading", "label": "Heading", "default": "Clinical Studies" },
+			{ "type": "richtext", "id": "body", "label": "Body" },
+			{ "type": "text", "id": "button_label", "label": "Button label" },
+			{ "type": "url", "id": "button_link", "label": "Button link" }
+		],
+		"presets": [{ "name": "Clinical studies" }]
+	}
+{% endschema %}

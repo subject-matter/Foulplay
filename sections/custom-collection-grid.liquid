@@ -1,0 +1,190 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders the collection as the Foulplay filterable product grid.
+	- Reuses the shared product card and the homepage filter component.
+	- Filters run client-side against product type and tags.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% # MARK:- Collection product grid from Figma node 1287:42680 %}
+{% render 'vite', vite: 'js-dir-product.ts' %}
+
+{% liquid
+	assign per_page = section.settings.products_per_page | default: 24
+	assign filter_1_label = section.settings.filter_1_label
+	assign filter_1_value = section.settings.filter_1_value | handleize
+	assign filter_2_label = section.settings.filter_2_label
+	assign filter_2_value = section.settings.filter_2_value | handleize
+	assign filter_3_label = section.settings.filter_3_label
+	assign filter_3_value = section.settings.filter_3_value | handleize
+%}
+
+<foulplay-product-showcase class="foulplay-collection" data-default-filter="all">
+	<div
+		class="foulplay-collection__filters"
+		role="group"
+		aria-label="{{ section.settings.filter_label | escape }}"
+	>
+		<button type="button" aria-pressed="true" data-product-filter="all">
+			{{ section.settings.all_label | escape }}
+			<span class="foulplay-collection__count">0</span>
+		</button>
+		{% if filter_1_label != blank %}
+			<button
+				type="button"
+				aria-pressed="false"
+				data-product-filter="{{ filter_1_value }}"
+			>
+				{{ filter_1_label | escape }}
+				<span class="foulplay-collection__count">0</span>
+			</button>
+		{% endif %}
+		{% if filter_2_label != blank %}
+			<button
+				type="button"
+				aria-pressed="false"
+				data-product-filter="{{ filter_2_value }}"
+			>
+				{{ filter_2_label | escape }}
+				<span class="foulplay-collection__count">0</span>
+			</button>
+		{% endif %}
+		{% if filter_3_label != blank %}
+			<button
+				type="button"
+				aria-pressed="false"
+				data-product-filter="{{ filter_3_value }}"
+			>
+				{{ filter_3_label | escape }}
+				<span class="foulplay-collection__count">0</span>
+			</button>
+		{% endif %}
+	</div>
+
+	{% paginate collection.products by per_page %}
+		{% if collection.products.size > 0 %}
+			<div class="foulplay-collection__grid" data-product-items>
+				{% for product in collection.products %}
+					{% liquid
+						assign card_loading = 'lazy'
+						if forloop.index0 < 8
+							assign card_loading = 'eager'
+						endif
+					%}
+					{% render 'custom-foulplay-card-product',
+						product: product,
+						section_id: section.id,
+						loading: card_loading,
+						sizes: '(min-width: 1000px) 336px, (min-width: 500px) 50vw, 84vw'
+					%}
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="foulplay-collection__empty">
+				{{ 'sections.collection_template.empty' | t }}
+			</p>
+		{% endif %}
+
+		{% if paginate.pages > 1 %}
+			<nav
+				class="foulplay-collection__pagination"
+				aria-label="{{ 'general.pagination.label' | t }}"
+			>
+				{% if paginate.previous %}
+					<a href="{{ paginate.previous.url }}" rel="prev">
+						{{- 'general.pagination.previous' | t -}}
+					</a>
+				{% endif %}
+				{% for part in paginate.parts %}
+					{% if part.is_link %}
+						<a href="{{ part.url }}">{{ part.title }}</a>
+					{% else %}
+						<span aria-current="page">{{ part.title }}</span>
+					{% endif %}
+				{% endfor %}
+				{% if paginate.next %}
+					<a href="{{ paginate.next.url }}" rel="next">
+						{{- 'general.pagination.next' | t -}}
+					</a>
+				{% endif %}
+			</nav>
+		{% endif %}
+	{% endpaginate %}
+
+	<p
+		class="visually-hidden"
+		role="status"
+		aria-live="polite"
+		data-product-status
+	></p>
+</foulplay-product-showcase>
+
+{% schema %}
+	{
+		"name": "Collection grid",
+		"tag": "section",
+		"class": "section section--collection-grid",
+		"settings": [
+			{
+				"type": "range",
+				"id": "products_per_page",
+				"min": 8,
+				"max": 48,
+				"step": 4,
+				"label": "Products per page",
+				"default": 24
+			},
+			{
+				"type": "text",
+				"id": "filter_label",
+				"label": "Filter group label",
+				"default": "Filter products"
+			},
+			{
+				"type": "text",
+				"id": "all_label",
+				"label": "All filter label",
+				"default": "All"
+			},
+			{
+				"type": "text",
+				"id": "filter_1_label",
+				"label": "Filter 1 label",
+				"default": "Creatine"
+			},
+			{
+				"type": "text",
+				"id": "filter_1_value",
+				"label": "Filter 1 match (type or tag)",
+				"default": "Creatine"
+			},
+			{
+				"type": "text",
+				"id": "filter_2_label",
+				"label": "Filter 2 label",
+				"default": "Hydration"
+			},
+			{
+				"type": "text",
+				"id": "filter_2_value",
+				"label": "Filter 2 match (type or tag)",
+				"default": "Hydration"
+			},
+			{
+				"type": "text",
+				"id": "filter_3_label",
+				"label": "Filter 3 label",
+				"default": "Complements"
+			},
+			{
+				"type": "text",
+				"id": "filter_3_value",
+				"label": "Filter 3 match (type or tag)",
+				"default": "Complements"
+			}
+		]
+	}
+{% endschema %}

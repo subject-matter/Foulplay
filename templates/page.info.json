@@ -3,6 +3,8 @@
 		"main": {
 			"type": "custom-info-page",
 			"settings": {
+				"menu": "customer-care",
+				"menu_label": "Customer Care",
 				"show_title": true
 			}
 		}

@@ -8,7 +8,7 @@ export class FoulplayProductShowcase extends HTMLElement {
 			button.addEventListener('click', this.selectFilter)
 		})
 		this.updateFilterCounts()
-		this.applyFilter('featured', false)
+		this.applyFilter(this.dataset.defaultFilter || 'featured', false)
 	}
 
 	disconnectedCallback() {

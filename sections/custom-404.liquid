@@ -1,0 +1,63 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders the Foulplay 404 page with an image, error code, and recovery copy.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% liquid
+	assign btn_label = section.settings.button_label | default: 'Shop All'
+	assign btn_url = section.settings.button_link | default: routes.all_products_collection_url
+%}
+
+{% # MARK:- 404 page from Figma node 1339:181313 %}
+<section class="foulplay-404" data-node-id="1339:181313">
+	<div class="foulplay-404__media">
+		{% if section.settings.image != blank %}
+			{{
+				section.settings.image
+				| image_url: width: 1400
+				| image_tag:
+					widths: '400, 700, 1000, 1400',
+					sizes: '(min-width: 1000px) 50vw, 100vw',
+					loading: 'eager',
+					alt: section.settings.image.alt
+			}}
+		{% else %}
+			{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+		{% endif %}
+	</div>
+	<p class="foulplay-404__code">{{ section.settings.code_label | default: '404 Error' }}</p>
+	<div class="foulplay-404__copy">
+		<h1 class="foulplay-404__title">
+			{{ section.settings.heading | default: 'Page Not Found' }}
+		</h1>
+		<p class="foulplay-404__body">
+			{{ section.settings.body | default: "We can't seem to find the page you're looking for. Try going back to the previous page or navigate to the homepage." }}
+		</p>
+		{% render 'custom-foulplay-button',
+			label: btn_label,
+			url: btn_url,
+			style: 'secondary',
+			class: 'foulplay-button--pill'
+		%}
+	</div>
+</section>
+
+{% schema %}
+	{
+		"name": "404",
+		"tag": "section",
+		"class": "section section--404",
+		"settings": [
+			{ "type": "image_picker", "id": "image", "label": "Image" },
+			{ "type": "text", "id": "code_label", "label": "Error code", "default": "404 Error" },
+			{ "type": "text", "id": "heading", "label": "Heading", "default": "Page Not Found" },
+			{ "type": "textarea", "id": "body", "label": "Body", "default": "We can't seem to find the page you're looking for. Try going back to the previous page or navigate to the homepage." },
+			{ "type": "text", "id": "button_label", "label": "Button label", "default": "Shop All" },
+			{ "type": "url", "id": "button_link", "label": "Button link" }
+		]
+	}
+{% endschema %}

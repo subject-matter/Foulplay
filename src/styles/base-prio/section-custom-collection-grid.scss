@@ -1,0 +1,272 @@
+/* MARK:- Collection product grid from Figma node 1287:42680 */
+
+.foulplay-collection {
+	box-sizing: border-box;
+	color: var(--fp-color-black);
+	display: block;
+	font-family: var(--fp-font-text);
+	font-size: var(--fp-type-body-size);
+	letter-spacing: var(--fp-type-body-tracking);
+	line-height: var(--fp-type-body-line-height);
+	padding: 200px 24px 0;
+}
+
+.foulplay-collection__filters {
+	display: flex;
+	gap: 16px;
+	align-items: flex-start;
+	border-bottom: 1px solid var(--fp-color-charcoal-100);
+	margin-bottom: 40px;
+}
+
+.foulplay-collection__filters button {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	min-height: 38px;
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: var(--fp-color-charcoal-750);
+	cursor: pointer;
+	font: inherit;
+	letter-spacing: inherit;
+	padding: 0 0 16px;
+}
+
+.foulplay-collection__filters button[aria-pressed='true'] {
+	color: var(--fp-color-black);
+}
+
+.foulplay-collection__filters button:disabled {
+	cursor: default;
+	opacity: 0.4;
+}
+
+.foulplay-collection__filters button[aria-pressed='true']::after {
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background: currentColor;
+	content: '';
+}
+
+.foulplay-collection__filters button:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 3px;
+}
+
+.foulplay-collection__count {
+	display: none;
+	min-width: 24px;
+	min-height: 22px;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--fp-color-charcoal-100);
+	border-radius: 40px;
+	color: var(--fp-color-charcoal-900);
+	font-size: var(--fp-type-caption-size);
+	line-height: var(--fp-type-caption-line-height);
+	padding-inline: 8px;
+}
+
+.foulplay-collection__filters
+	button[aria-pressed='true']
+	.foulplay-collection__count {
+	display: inline-flex;
+}
+
+.foulplay-collection__grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 40px 16px;
+}
+
+/* MARK:- Foulplay product card */
+
+.foulplay-card--product {
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.foulplay-card--product .foulplay-card__media {
+	position: relative;
+	display: block;
+	width: 100%;
+	aspect-ratio: 1;
+	background: var(--fp-color-charcoal-25);
+	overflow: hidden;
+}
+
+.foulplay-card--product .foulplay-card__media img,
+.foulplay-card--product .foulplay-card__media svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform var(--fp-motion-slow) var(--fp-ease-out-slow);
+}
+
+.foulplay-card__wash {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.foulplay-card__wash--mono {
+	background: var(--fp-color-black);
+	mix-blend-mode: color;
+}
+
+.foulplay-card__wash--blue {
+	background: var(--fp-color-blue);
+	mix-blend-mode: screen;
+}
+
+.foulplay-card--product .foulplay-card__body {
+	display: flex;
+	min-height: 152px;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+}
+
+.foulplay-card--product .foulplay-card__text {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.foulplay-card--product .foulplay-card__title {
+	margin: 0;
+	font: inherit;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.foulplay-card--product .foulplay-card__title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.foulplay-card--product .foulplay-card__subtitle {
+	margin: 2px 0 0;
+	font: inherit;
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-card--product .foulplay-card__price {
+	display: flex;
+	gap: 4px;
+	margin-top: 2px;
+	font: inherit;
+}
+
+.foulplay-card--product .foulplay-card__price s {
+	color: var(--fp-color-charcoal-500);
+}
+
+.foulplay-card--product .foulplay-card__tags {
+	display: flex;
+	align-items: flex-start;
+	gap: 4px;
+}
+
+.foulplay-card--product .foulplay-pill--review img {
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+.foulplay-card__cta {
+	margin-top: auto;
+}
+
+.foulplay-card__cta .foulplay-button {
+	min-block-size: 32px;
+	max-block-size: 32px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.foulplay-card__cta {
+		opacity: 0;
+		transition: opacity var(--fp-motion-default) var(--fp-ease-out);
+	}
+
+	.foulplay-card--product:hover .foulplay-card__cta,
+	.foulplay-card--product:focus-within .foulplay-card__cta {
+		opacity: 1;
+	}
+
+	.foulplay-card--product:hover .foulplay-card__media img {
+		transform: scale(1.02);
+	}
+}
+
+.foulplay-collection__empty {
+	padding-block: 80px;
+	color: var(--fp-color-charcoal-750);
+}
+
+.foulplay-collection__pagination {
+	display: flex;
+	gap: 16px;
+	justify-content: center;
+	padding-block: 80px 40px;
+}
+
+.foulplay-collection__pagination a,
+.foulplay-collection__pagination span {
+	color: var(--fp-color-charcoal-750);
+	text-decoration: none;
+}
+
+.foulplay-collection__pagination a:hover,
+.foulplay-collection__pagination [aria-current='page'] {
+	color: var(--fp-color-black);
+}
+
+.foulplay-collection__pagination a:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 3px;
+}
+
+@media (max-width: 999px) {
+	.foulplay-collection {
+		padding-top: 160px;
+	}
+
+	.foulplay-collection__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.foulplay-collection__filters {
+		overflow-x: auto;
+	}
+}
+
+@media (max-width: 499px) {
+	.foulplay-collection {
+		padding: 120px 16px 0;
+	}
+
+	.foulplay-collection__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.foulplay-card__cta {
+		opacity: 1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.foulplay-card--product .foulplay-card__media img,
+	.foulplay-card__cta {
+		transition: none;
+	}
+}

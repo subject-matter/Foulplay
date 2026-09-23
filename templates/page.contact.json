@@ -1,21 +1,43 @@
 {
-  "sections": {
-    "main": {
-      "type": "main-page",
-      "settings": {
-      }
-    },
-    "form": {
-      "type": "contact-form",
-      "settings": {
-        "heading": "",
-        "heading_size": "h1",
-        "color_scheme": "background-1"
-      }
-    }
-  },
-  "order": [
-    "main",
-    "form"
-  ]
+	"sections": {
+		"main": {
+			"type": "custom-info-page",
+			"blocks": {
+				"general": {
+					"type": "row",
+					"settings": {
+						"heading": "General Enquiries",
+						"text": "<p>hi@usefoulplay.com</p>"
+					}
+				},
+				"partnership": {
+					"type": "row",
+					"settings": {
+						"heading": "Partnership Enquiries",
+						"text": "<p>ryan@usefoulplay.com</p>"
+					}
+				},
+				"wholesaler": {
+					"type": "row",
+					"settings": {
+						"heading": "Wholesaler Enquiries",
+						"text": "<p>ryan@usefoulplay.com</p>"
+					}
+				},
+				"social": {
+					"type": "row",
+					"settings": {
+						"heading": "Social",
+						"text": "<p>Instagram<br>TikTok</p>"
+					}
+				}
+			},
+			"block_order": ["general", "partnership", "wholesaler", "social"],
+			"settings": {
+				"menu": "customer-care",
+				"menu_label": "Customer Care"
+			}
+		}
+	},
+	"order": ["main"]
 }

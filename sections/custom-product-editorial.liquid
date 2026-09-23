@@ -1,0 +1,94 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders the product editorial block: hero image, stat call-outs, and technology copy.
+	- Uses the current product when settings are blank.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% # MARK:- Product editorial block from Figma node 1287:42104 %}
+<section class="foulplay-product-editorial" data-node-id="1287:42104">
+	<div class="foulplay-product-editorial__media">
+		{% if section.settings.image != blank %}
+			{{
+				section.settings.image
+				| image_url: width: 1846
+				| image_tag:
+					widths: '600, 900, 1200, 1600, 1846',
+					sizes: '(min-width: 1000px) 923px, 100vw',
+					loading: 'lazy',
+					alt: section.settings.image.alt
+			}}
+		{% else %}
+			{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+		{% endif %}
+	</div>
+
+	<div class="foulplay-product-editorial__content">
+		<div class="foulplay-product-editorial__callouts">
+			{% for block in section.blocks %}
+				{% if block.type == 'stat' %}
+					<div
+						class="foulplay-product-editorial__stat"
+						{{ block.shopify_attributes }}
+					>
+						<span class="foulplay-product-editorial__stat-top">
+							{{ block.settings.eyebrow | escape }}
+						</span>
+						<span class="foulplay-product-editorial__stat-value">
+							{{ block.settings.value | escape }}
+						</span>
+						<span class="foulplay-product-editorial__stat-label">
+							{{ block.settings.label | escape }}
+						</span>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+
+		<div class="foulplay-product-editorial__copy">
+			{% if section.settings.lede != blank %}
+				<div class="foulplay-product-editorial__lede">
+					{{ section.settings.lede }}
+				</div>
+			{% endif %}
+			{% if section.settings.tech_heading != blank %}
+				<div class="foulplay-product-editorial__tech">
+					<p class="foulplay-product-editorial__tech-title">
+						{{ section.settings.tech_heading | escape }}
+					</p>
+					<div>{{ section.settings.tech_body }}</div>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{% schema %}
+	{
+		"name": "Product editorial",
+		"tag": "section",
+		"class": "section section--product-editorial",
+		"blocks": [
+			{
+				"type": "stat",
+				"name": "Stat call-out",
+				"settings": [
+					{ "type": "text", "id": "eyebrow", "label": "Top label" },
+					{ "type": "text", "id": "value", "label": "Value", "default": "1800mg" },
+					{ "type": "text", "id": "label", "label": "Bottom label", "default": "Creatine monohydrate per bite" }
+				]
+			}
+		],
+		"max_blocks": 3,
+		"settings": [
+			{ "type": "image_picker", "id": "image", "label": "Hero image" },
+			{ "type": "richtext", "id": "lede", "label": "Lede copy" },
+			{ "type": "text", "id": "tech_heading", "label": "Technology heading", "default": "HI-TECH" },
+			{ "type": "richtext", "id": "tech_body", "label": "Technology body" }
+		],
+		"presets": [{ "name": "Product editorial" }]
+	}
+{% endschema %}

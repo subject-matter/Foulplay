@@ -1,0 +1,126 @@
+{
+	"sections": {
+		"hero": {
+			"type": "custom-editorial-hero",
+			"settings": {
+				"lead": "Our in-house testing programme en",
+				"body": "sures that we always meet our label claims. We work with independent labs the purity of all our products.",
+				"footer_text": "At FOULPLAY, we recognize the importance of clinically-studied ingredients."
+			}
+		},
+		"technology": {
+			"type": "custom-home-content",
+			"blocks": {
+				"technology": {
+					"type": "foulplay-content-card",
+					"settings": {
+						"variant": "technology",
+						"technology_1_title": "HI-TECH",
+						"technology_1_body": "<p>Our proprietary process* has allowed us to transcend the category to deliver the highest amount of creatine per gummy: 1.8g. That's 20% more creatine than other products in the market. This is Hi-Creatine.</p>",
+						"technology_2_title": "PUREST-TECH",
+						"technology_2_body": "<p>PUREST uses a patented form of creatine monohydrate tested to be purer than anything else on the market. 99.99% purity. No solvents. No residue. No compromise.</p>",
+						"link_label": "Read More",
+						"link": "/pages/science"
+					}
+				}
+			},
+			"block_order": ["technology"],
+			"settings": {}
+		},
+		"clinical": {
+			"type": "custom-product-clinical",
+			"blocks": {
+				"study_1": {
+					"type": "foulplay-study",
+					"settings": {
+						"value": "+20%",
+						"heading": "Higher creatine per serving",
+						"body": "<p>HI-CREATINE delivers 20% more creatine per gummy than other products in the market.</p>"
+					}
+				},
+				"study_2": {
+					"type": "foulplay-study",
+					"settings": {
+						"value": "99.99%",
+						"heading": "Purity tested",
+						"body": "<p>Independent laboratory testing confirms our label claims for every batch.</p>"
+					}
+				}
+			},
+			"block_order": ["study_1", "study_2"],
+			"settings": { "heading": "Clinical Studies" }
+		},
+		"journal": {
+			"type": "custom-home-journal",
+			"blocks": {
+				"home_of_football": {
+					"type": "foulplay-journal",
+					"settings": {
+						"title": "FOULPLAY on display at homeoffootballnyc",
+						"date": "18 August 2026",
+						"excerpt": "<p>Home of Football: Home & Away brings together architecture, art, and more than 60 historic objects within a series of interconnected environments.</p>",
+						"link": "/blogs/journal"
+					}
+				},
+				"utmb": {
+					"type": "foulplay-journal",
+					"settings": {
+						"title": "FOULPLAY at UTMB",
+						"date": "24 June 2026",
+						"excerpt": "<p>116km. 5,400m of elevation gain. Two nights through the jungles of southern Thailand.</p>",
+						"link": "/blogs/journal"
+					}
+				},
+				"salomon": {
+					"type": "foulplay-journal",
+					"settings": {
+						"title": "FOULPLAY + Salomon",
+						"date": "24 June 2026",
+						"excerpt": "<p>FOULPLAY's natural electrolytes for the L'ART community run.</p>",
+						"link": "/blogs/journal"
+					}
+				}
+			},
+			"block_order": ["home_of_football", "utmb", "salomon"],
+			"settings": { "heading": "Journal" }
+		},
+		"social_proof": {
+			"type": "custom-product-reviews",
+			"blocks": {
+				"ambassador_1": {
+					"type": "ambassador",
+					"settings": {
+						"name": "Dr. Dean Ho",
+						"role": "Provost's Chair Professor, PhD. in Biomedical Engineering",
+						"quote": "<p>I'm impressed by the team's commitment to transparency and developing a taste profile that supports adherence.</p>"
+					}
+				},
+				"review_1": {
+					"type": "review",
+					"settings": {
+						"rating": 5,
+						"title": "Amazing product!",
+						"body": "<p>The taste is great and I feel the difference in my training and recovery.</p>",
+						"author": "Jane Appleseed",
+						"verified": true,
+						"date": "2 Months ago"
+					}
+				},
+				"review_2": {
+					"type": "review",
+					"settings": {
+						"rating": 5,
+						"title": "Great daily habit",
+						"body": "<p>Easy to take and no bloating. Would recommend to anyone training regularly.</p>",
+						"author": "Jane Appleseed",
+						"verified": true,
+						"date": "3 Months ago"
+					}
+				}
+			},
+			"block_order": ["ambassador_1", "review_1", "review_2"],
+			"settings": { "heading": "Social Proof", "ambassadors_heading": "Ambassadors" }
+		}
+	},
+	"order": ["hero", "technology", "clinical", "journal", "social_proof"]
+}

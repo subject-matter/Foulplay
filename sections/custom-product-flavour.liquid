@@ -1,0 +1,51 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders the flavour profile module with positioned ingredient notes.
+	- Uses reusable Foulplay flavour note theme blocks over a profile image.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% # MARK:- Flavour profile module from Figma node 1287:42330 %}
+<section class="foulplay-module foulplay-flavour" data-node-id="1287:42330">
+	<div class="foulplay-module__header">
+		<h2>{{ section.settings.heading | escape }}</h2>
+		{% if section.settings.body != blank %}
+			<div><p>{{ section.settings.body }}</p></div>
+		{% endif %}
+	</div>
+	<div class="foulplay-flavour__canvas">
+		<div class="foulplay-flavour__media">
+			{% if section.settings.image != blank %}
+				{{
+					section.settings.image
+					| image_url: width: 2000
+					| image_tag:
+						widths: '750, 1100, 1500, 2000',
+						sizes: '100vw',
+						loading: 'lazy',
+						alt: section.settings.image.alt
+				}}
+			{% endif %}
+		</div>
+		{% content_for 'blocks' %}
+	</div>
+</section>
+
+{% schema %}
+	{
+		"name": "Flavour profile",
+		"tag": "section",
+		"class": "section section--flavour",
+		"blocks": [{ "type": "foulplay-flavour-note" }],
+		"max_blocks": 8,
+		"settings": [
+			{ "type": "text", "id": "heading", "label": "Heading", "default": "Flavour Profile" },
+			{ "type": "richtext", "id": "body", "label": "Body" },
+			{ "type": "image_picker", "id": "image", "label": "Profile image" }
+		],
+		"presets": [{ "name": "Flavour profile" }]
+	}
+{% endschema %}

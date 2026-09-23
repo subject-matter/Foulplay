@@ -1,0 +1,58 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders a large editorial statement hero with a centred image.
+	- The lead phrase stays black; the remaining copy is muted.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% # MARK:- Editorial statement hero from Figma node 1339:183682 %}
+<section class="foulplay-editorial-hero" data-node-id="1339:183682">
+	{% if section.settings.lead != blank or section.settings.body != blank %}
+		<p class="foulplay-editorial-hero__display">
+			{% if section.settings.lead != blank %}
+				<span class="foulplay-editorial-hero__lead">
+					{{- section.settings.lead | escape }}
+				</span>
+			{% endif %}
+			{{ section.settings.body | escape }}
+		</p>
+	{% endif %}
+
+	{% if section.settings.image != blank %}
+		<div class="foulplay-editorial-hero__media">
+			{{
+				section.settings.image
+				| image_url: width: 1140
+				| image_tag:
+					widths: '380, 570, 760, 1140',
+					sizes: '(min-width: 1000px) 570px, 80vw',
+					loading: 'eager',
+					alt: section.settings.image.alt
+			}}
+		</div>
+	{% endif %}
+
+	{% if section.settings.footer_text != blank %}
+		<p class="foulplay-editorial-hero__display foulplay-editorial-hero__display--muted">
+			{{ section.settings.footer_text | escape }}
+		</p>
+	{% endif %}
+</section>
+
+{% schema %}
+	{
+		"name": "Editorial hero",
+		"tag": "section",
+		"class": "section section--editorial-hero",
+		"settings": [
+			{ "type": "text", "id": "lead", "label": "Lead phrase (black)" },
+			{ "type": "textarea", "id": "body", "label": "Statement (muted)" },
+			{ "type": "image_picker", "id": "image", "label": "Image" },
+			{ "type": "textarea", "id": "footer_text", "label": "Closing statement (muted)" }
+		],
+		"presets": [{ "name": "Editorial hero" }]
+	}
+{% endschema %}

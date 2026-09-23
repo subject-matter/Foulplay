@@ -11,6 +11,8 @@ import { WaitlistForm } from '@/scripts/theme/waitlist-form'
 import { KlaviyoForm } from '@/scripts/theme/klaviyo-form'
 import { WelcomePopup } from '@/scripts/theme/welcome-popup'
 import { FoulplayHeader } from '@/scripts/theme/foulplay-header'
+import { FoulplayPopup } from '@/scripts/theme/foulplay-popup'
+import { FoulplayProduct } from '@/scripts/theme/foulplay-product'
 import {
 	FoulplayBundleShowcase,
 	FoulplayJournalCarousel,
@@ -30,6 +32,8 @@ q.safeDefineElement(KlaviyoForm)
 q.safeDefineElement(WelcomePopup)
 q.safeDefineElement(WaitlistForm)
 q.safeDefineElement(FoulplayHeader)
+q.safeDefineElement(FoulplayPopup)
+q.safeDefineElement(FoulplayProduct)
 q.safeDefineElement(FoulplayProductShowcase)
 q.safeDefineElement(FoulplayScienceSwitcher)
 q.safeDefineElement(FoulplayBundleShowcase)

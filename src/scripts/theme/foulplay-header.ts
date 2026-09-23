@@ -319,6 +319,23 @@ export class FoulplayHeader extends HTMLElement {
 			if (currentBody && nextBody) {
 				currentBody.innerHTML = nextBody.innerHTML
 			}
+
+			const cartDrawer = this.querySelector<HTMLElement>(
+				'.fp-header__drawer--cart'
+			)
+			const currentFooter = this.querySelector<HTMLElement>(
+				'[data-header-cart-footer]'
+			)
+			const nextFooter = nextHeader.querySelector<HTMLElement>(
+				'[data-header-cart-footer]'
+			)
+			if (currentFooter && nextFooter) {
+				currentFooter.replaceWith(nextFooter)
+			} else if (!currentFooter && nextFooter && cartDrawer) {
+				cartDrawer.append(nextFooter)
+			} else if (currentFooter && !nextFooter) {
+				currentFooter.remove()
+			}
 		} catch (error) {
 			console.error('Unable to refresh the custom cart drawer.', error)
 		}

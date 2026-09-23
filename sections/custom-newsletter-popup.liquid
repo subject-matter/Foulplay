@@ -1,0 +1,103 @@
+{% comment %}
+	=== FUNCTIONALITY ===
+
+	- Renders the Foulplay newsletter pop-up with a delayed, dismissible dialog.
+	- Reuses the shared customer newsletter form and remembers dismissal locally.
+
+
+	Section Author: rishi@subjectmatter.studio
+{% endcomment %}
+
+{% # MARK:- Newsletter pop-up from Figma node 3170:31865 %}
+{% if section.settings.enabled %}
+	<foulplay-popup
+		class="foulplay-popup"
+		data-popup-id="newsletter"
+		data-open-after="{{ section.settings.delay | default: 5 }}"
+		hidden
+	>
+		<div
+			class="foulplay-popup__dialog"
+			role="dialog"
+			aria-label="{{ section.settings.heading | escape }}"
+			tabindex="-1"
+		>
+			<div class="foulplay-popup__head">
+				<p class="foulplay-popup__eyebrow">
+					{{ section.settings.eyebrow | default: 'Newsletter' }}
+				</p>
+				<button type="button" class="foulplay-popup__close" data-popup-close>
+					{{ section.settings.close_label | default: 'Close' }}
+				</button>
+			</div>
+			<p class="foulplay-popup__text">{{ section.settings.heading | escape }}</p>
+
+			{% form 'customer', class: 'foulplay-popup__form' %}
+				<input type="hidden" name="contact[tags]" value="newsletter">
+				{% if form.posted_successfully? %}
+					<p class="foulplay-popup__success" role="status">
+						{{ section.settings.success_text | default: 'Thanks for signing up.' }}
+					</p>
+				{% else %}
+					<div class="foulplay-popup__fields">
+						<label class="foulplay-field">
+							<span class="foulplay-field__label">
+								{{ section.settings.email_label | default: 'Email Address' }}*
+							</span>
+							<input
+								class="foulplay-field__input"
+								type="email"
+								name="contact[email]"
+								autocomplete="email"
+								required
+								aria-required="true"
+							>
+						</label>
+						<label class="foulplay-field">
+							<span class="foulplay-field__label">
+								{{ section.settings.phone_label | default: 'Phone' }}
+							</span>
+							<input
+								class="foulplay-field__input"
+								type="tel"
+								name="contact[phone]"
+								autocomplete="tel"
+							>
+						</label>
+					</div>
+					{% if section.settings.terms != blank %}
+						<p class="foulplay-popup__terms">{{ section.settings.terms }}</p>
+					{% endif %}
+					{% if form.errors %}
+						<p class="foulplay-popup__error" role="alert">
+							{{ form.errors | default_errors }}
+						</p>
+					{% endif %}
+					<button type="submit" class="foulplay-button foulplay-button--pill">
+						{{ section.settings.button_label | default: 'Submit' }}
+					</button>
+				{% endif %}
+			{% endform %}
+		</div>
+	</foulplay-popup>
+{% endif %}
+
+{% schema %}
+	{
+		"name": "Newsletter pop-up",
+		"tag": "section",
+		"class": "section section--newsletter-popup",
+		"settings": [
+			{ "type": "checkbox", "id": "enabled", "label": "Enable pop-up", "default": false },
+			{ "type": "range", "id": "delay", "min": 0, "max": 30, "step": 1, "unit": "s", "label": "Open after", "default": 5 },
+			{ "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Newsletter" },
+			{ "type": "text", "id": "close_label", "label": "Close label", "default": "Close" },
+			{ "type": "textarea", "id": "heading", "label": "Message", "default": "Sign up to discover more about FOULPLAY and get 15% off your first order" },
+			{ "type": "text", "id": "email_label", "label": "Email label", "default": "Email Address" },
+			{ "type": "text", "id": "phone_label", "label": "Phone label", "default": "Phone" },
+			{ "type": "richtext", "id": "terms", "label": "Terms text" },
+			{ "type": "text", "id": "button_label", "label": "Button label", "default": "Submit" },
+			{ "type": "text", "id": "success_text", "label": "Success text", "default": "Thanks for signing up." }
+		]
+	}
+{% endschema %}
