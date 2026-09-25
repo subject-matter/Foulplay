@@ -22,9 +22,34 @@
 					"settings": {
 						"text": "Build a complete routine\nSHOP BUNDLES"
 					}
+				},
+				"collection_main": {
+					"type": "collection",
+					"settings": {
+						"collection": "main"
+					}
+				},
+				"collection_merch": {
+					"type": "collection",
+					"settings": {
+						"collection": "merch"
+					}
+				},
+				"collection_bundles": {
+					"type": "collection",
+					"settings": {
+						"collection": "bundles"
+					}
 				}
 			},
-			"block_order": ["promotion_1", "promotion_2", "promotion_3"],
+			"block_order": [
+				"promotion_1",
+				"promotion_2",
+				"promotion_3",
+				"collection_main",
+				"collection_merch",
+				"collection_bundles"
+			],
 			"settings": {
 				"tagline": "A new vision for\nperformance nutrition",
 				"statement": "Performance nutrition should work for your lifestyle, not complicate it. That’s exactly where FOULPLAY stands apart.",
@@ -32,16 +57,13 @@
 				"cta_url": "shopify://collections/all",
 				"science_url": "",
 				"journal_url": "",
-				"creatine_url": "shopify://collections/all",
-				"hydration_url": "shopify://collections/all",
-				"complements_url": "shopify://collections/all",
 				"bundles_url": "shopify://collections/all",
 				"subscription_url": "shopify://collections/all",
-				"featured_product_1": "hi-creatine",
-				"featured_product_2": "purest-creatine-sachets",
 				"journal_blog": ""
 			}
 		}
 	},
-	"order": ["custom_header"]
+	"order": [
+		"custom_header"
+	]
 }

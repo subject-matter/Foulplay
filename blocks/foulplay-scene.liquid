@@ -1,0 +1,169 @@
+{% liquid
+  assign scene_content = block.blocks | first
+  assign scene_product = block.settings.product
+  assign show_product_header = false
+  if scene_product != blank and block.settings.header_style != 'standard'
+    assign show_product_header = true
+  endif
+  assign has_content = false
+  if block.settings.show_highlights
+    assign has_content = true
+  endif
+  assign desktop_image = block.settings.image
+  assign mobile_image = block.settings.mobile_image
+  assign scene_video = block.settings.video
+  assign image_loading = 'lazy'
+  assign image_priority = 'auto'
+  assign first_scene = section.blocks | first
+  if block.id == first_scene.id
+    assign image_loading = 'eager'
+    assign image_priority = 'high'
+  endif
+  assign legacy_image = ''
+  assign legacy_video = ''
+  assign legacy_scene = block.id | split: '__' | last
+  case legacy_scene
+    when 'opening_image'
+      assign legacy_image = 'foulplay-home-hero-athlete.png'
+      assign legacy_video = 'foulplay-scene-opening.mp4'
+    when 'hi_creatine_stage'
+      assign legacy_image = 'foulplay-home-hero-gummy.png'
+      assign legacy_video = 'foulplay-scene-hi-creatine.mp4'
+    when 'purest_creatine_stage'
+      assign legacy_image = 'foulplay-home-hero-purest.png'
+      assign legacy_video = 'foulplay-scene-purest-creatine.mp4'
+  endcase
+%}
+
+<foulplay-scene
+  class="foulplay-scene {% if has_content %}foulplay-product-hero{% else %}home-opening{% endif %}"
+  style="--fp-product-hero-height: {{ block.settings.height | default: 1400 | at_least: 900 }}px;"
+  {% if show_product_header %}data-header-product="{{ scene_product.handle }}" data-header-product-slot="{{ block.id }}" data-header-theme="dark"{% endif %}
+  {{ block.shopify_attributes }}
+>
+  <div class="{% if has_content %}foulplay-product-hero__stage{% else %}home-opening__media{% endif %}">
+    <div class="foulplay-product-hero__media" data-no-fade>
+      {% if block.settings.media_type == 'video' and scene_video != blank %}
+        {{ scene_video | video_tag: image_size: '1920x', autoplay: false, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata' }}
+      {% elsif block.settings.media_type == 'video' and legacy_video != blank %}
+        <video muted loop playsinline preload="metadata" poster="{{ legacy_image | asset_url }}"><source src="{{ legacy_video | asset_url }}" type="video/mp4"></video>
+      {% else %}
+        <picture data-no-fade>
+          {% if mobile_image != blank %}
+            <source media="(max-width: 749px)" srcset="{{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 1100 }} 1100w" sizes="100vw">
+          {% endif %}
+          {% if desktop_image != blank %}
+            {{ desktop_image | image_url: width: 2880 | image_tag: widths: '960, 1440, 1920, 2400, 2880', sizes: '100vw', loading: image_loading, fetchpriority: image_priority, alt: '' }}
+          {% elsif legacy_image != blank %}
+            <img src="{{ legacy_image | asset_url }}" width="1920" height="1080" alt="" loading="{{ image_loading }}" fetchpriority="{{ image_priority }}">
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'foulplay-scene__placeholder' }}
+          {% endif %}
+        </picture>
+      {% endif %}
+    </div>
+    {% if has_content %}
+      <div class="foulplay-product-hero__shade" aria-hidden="true"></div>
+    {% endif %}
+  </div>
+  {% content_for 'block', type: 'foulplay-scene-content', id: 'content' %}
+  {% if show_product_header %}
+    <template data-header-product-source="{{ block.id }}">
+      {% render 'custom-header-product-bar', product: scene_product, slot: block.id, subtitle: block.settings.subtitle, summary: block.settings.summary %}
+    </template>
+  {% endif %}
+</foulplay-scene>
+
+{% schema %}
+{
+  "name": "Scene",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "photo",
+          "label": "Photo"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "photo"
+    },
+    {
+      "type": "select",
+      "id": "header_style",
+      "label": "Header style",
+      "options": [
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "product",
+          "label": "Product"
+        }
+      ],
+      "default": "standard",
+      "info": "Reorder scenes to choose the first screen. Product styles use the product selected below."
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Shows this product in the header while the scene passes beneath it. Leave empty for a media-only scene."
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Header product subtitle"
+    },
+    {
+      "type": "textarea",
+      "id": "summary",
+      "label": "Header product description",
+      "info": "Uses the product description when empty."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photo"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile photo",
+      "info": "Optional. Uses the main photo when empty."
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Replaces the photo when selected."
+    },
+    {
+      "type": "number",
+      "id": "height",
+      "label": "Desktop scene height",
+      "default": 1400,
+      "info": "Height in pixels for scenes with content. Media-only scenes fill the screen."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_highlights",
+      "label": "Show highlight cards",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scene"
+    }
+  ]
+}
+{% endschema %}

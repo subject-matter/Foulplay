@@ -1,0 +1,37 @@
+<div class="foulplay-product-hero__highlights">
+  {% content_for 'blocks' %}
+</div>
+{% if block.settings.destination != blank %}
+  <a class="foulplay-scene__link" href="{{ block.settings.destination }}" aria-label="{{ block.settings.link_label | default: 'Shop products' | escape }}"></a>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Content",
+  "tag": "div",
+  "class": "foulplay-scene-content",
+  "blocks": [
+    {
+      "type": "foulplay-highlight"
+    }
+  ],
+  "settings": [
+    {
+      "type": "url",
+      "id": "destination",
+      "label": "Scene link"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link label",
+      "default": "Shop products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content"
+    }
+  ]
+}
+{% endschema %}

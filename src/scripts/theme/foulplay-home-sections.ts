@@ -419,3 +419,36 @@ export class FoulplayJournalCarousel extends HTMLElement {
 		})
 	}
 }
+
+export class FoulplayScene extends HTMLElement {
+	static htmlSelector = 'foulplay-scene'
+	private observer?: ResizeObserver
+	private visibilityObserver?: IntersectionObserver
+	private video?: HTMLVideoElement | null
+	private reducedMotion = false
+
+	connectedCallback() {
+		const content = this.querySelector<HTMLElement>('.foulplay-product-hero__highlights')
+		if (content) {
+			this.observer = new ResizeObserver(() => {
+				this.style.setProperty('--scene-content-height', `${content.offsetHeight}px`)
+			})
+			this.observer.observe(content)
+		}
+		this.video = this.querySelector('video')
+		if (!this.video) return
+		this.video.muted = true
+		this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		this.visibilityObserver = new IntersectionObserver(entries => {
+			if (entries[0].isIntersecting && !this.reducedMotion) void this.video?.play().catch(() => {})
+			else this.video?.pause()
+		}, { threshold: 0 })
+		this.visibilityObserver.observe(this)
+	}
+
+	disconnectedCallback() {
+		this.observer?.disconnect()
+		this.visibilityObserver?.disconnect()
+		this.video?.pause()
+	}
+}

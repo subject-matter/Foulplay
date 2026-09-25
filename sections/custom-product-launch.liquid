@@ -1,0 +1,62 @@
+{% liquid
+  assign launch_product = section.settings.product
+  assign desktop_image = section.settings.image
+  assign mobile_image = section.settings.mobile_image
+%}
+<foulplay-scene
+  class="foulplay-scene home-opening fp-product-launch"
+  data-header-theme="dark"
+  {% if launch_product != blank %}data-header-product="{{ launch_product.handle }}" data-header-product-slot="{{ section.id }}"{% endif %}
+>
+  <div class="home-opening__media" data-no-fade>
+    {% if section.settings.video != blank %}
+      {{ section.settings.video | video_tag: image_size: '1920x', autoplay: false, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata' }}
+    {% else %}
+      <picture class="home-opening__media" data-no-fade>
+        {% if mobile_image != blank %}
+          <source media="(max-width: 749px)" srcset="{{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 1100 }} 1100w" sizes="100vw">
+        {% endif %}
+        {% if desktop_image != blank %}
+          {{ desktop_image | image_url: width: 2880 | image_tag: widths: '750, 1100, 1440, 1920, 2400, 2880', sizes: '100vw', loading: 'eager', fetchpriority: 'high', alt: '' }}
+        {% else %}
+          <img src="{{ 'foulplay-launch-hero.png' | asset_url }}" width="1500" height="1832" alt="" loading="eager" fetchpriority="high">
+        {% endif %}
+      </picture>
+    {% endif %}
+  </div>
+  <div class="fp-product-launch__shade" aria-hidden="true"></div>
+  {% if launch_product != blank %}
+    <template data-header-product-source="{{ section.id }}">
+      {% render 'custom-header-launch-product', product: launch_product, slot: section.id,
+        header_image: section.settings.header_image, subtitle: section.settings.subtitle,
+        heading: section.settings.heading, description: section.settings.description %}
+    </template>
+    <div class="fp-product-launch__mobile fp-header">
+      {% render 'custom-header-launch-product', product: launch_product, mobile: true,
+        header_image: section.settings.header_image, subtitle: section.settings.subtitle,
+        heading: section.settings.heading, description: section.settings.description %}
+    </div>
+  {% endif %}
+</foulplay-scene>
+
+{% schema %}
+{
+  "name": "Product launch",
+  "tag": "section",
+  "class": "section section--product-launch",
+  "enabled_on": { "templates": ["index"] },
+  "limit": 1,
+  "settings": [
+    { "type": "paragraph", "content": "Show this section and hide Homepage showcase for a product launch homepage. The header uses the product and launch message below." },
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "image_picker", "id": "image", "label": "Photo" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile photo", "info": "Uses the main photo when empty." },
+    { "type": "video", "id": "video", "label": "Video", "info": "Replaces the photo when selected." },
+    { "type": "image_picker", "id": "header_image", "label": "Header product image", "info": "Optional replacement for the product thumbnail." },
+    { "type": "text", "id": "subtitle", "label": "Product subtitle", "default": "High-strength Creatine Bites" },
+    { "type": "text", "id": "heading", "label": "Launch heading", "default": "NEW: Pomegranate hi-creatine" },
+    { "type": "textarea", "id": "description", "label": "Launch description", "default": "Discover our new limited edition flavour, created in collaboration with Agaric Fly Scents." }
+  ],
+  "presets": [{ "name": "Product launch" }]
+}
+{% endschema %}

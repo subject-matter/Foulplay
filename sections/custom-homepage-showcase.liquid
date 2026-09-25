@@ -1,0 +1,34 @@
+<div class="homepage-showcase">
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Homepage showcase",
+  "tag": "section",
+  "class": "section section--homepage-showcase",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "foulplay-scene"
+    }
+  ],
+  "settings": [],
+  "presets": [
+    {
+      "name": "Homepage showcase",
+      "blocks": [
+        {
+          "type": "foulplay-scene"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

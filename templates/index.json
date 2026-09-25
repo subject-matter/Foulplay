@@ -1,86 +1,136 @@
 {
 	"sections": {
-		"opening_image": {
-			"type": "custom-home-opening",
-			"settings": {}
-		},
-		"hi_creatine_stage": {
-			"type": "custom-hi-creatine-stage",
+		"homepage_showcase": {
+			"type": "custom-homepage-showcase",
 			"blocks": {
-				"dose": {
-					"type": "foulplay-highlight",
+				"opening_image": {
+					"type": "foulplay-scene",
 					"settings": {
-						"variant": "text",
-						"size": "small",
-						"style": "outline",
-						"value": "1800mg",
-						"heading": "The only high-performance creatine bites.",
-						"body": "<p>Powered by HI-TECH: our proprietary process that delivers 1.8g of creatine monohydrate per gummy. That's 20% more than any competitor.</p>"
+						"height": 1400,
+						"media_type": "video"
 					}
 				},
-				"benefits": {
-					"type": "foulplay-highlight",
+				"hi_creatine_stage": {
+					"type": "foulplay-scene",
 					"settings": {
-						"variant": "benefits",
-						"size": "small",
-						"style": "outline",
-						"heading": "Supports strength, recovery and cognitive function.",
-						"body": "<p>Creatine is a naturally occurring compound that supports adenosine triphosphate (ATP) recycling in our muscles and brain.</p>"
+						"height": 1648,
+						"product": "hi-creatine",
+						"subtitle": "High-strength Creatine Bites",
+						"summary": "The most potent creatine edible. 1800mg creatine monohydrate per bite.",
+						"header_style": "product",
+						"media_type": "video",
+						"show_highlights": true
+					},
+					"blocks": {
+						"content": {
+							"type": "foulplay-scene-content",
+							"settings": {
+								"destination": "shopify://collections/all",
+								"link_label": "Shop HI-CREATINE"
+							},
+							"blocks": {
+								"dose": {
+									"type": "foulplay-highlight",
+									"settings": {
+										"variant": "text",
+										"size": "small",
+										"style": "outline",
+										"value": "1800mg",
+										"heading": "The only high-performance creatine bites.",
+										"body": "<p>Powered by HI-TECH: our proprietary process that delivers 1.8g of creatine monohydrate per gummy. That's 20% more than any competitor.</p>"
+									}
+								},
+								"benefits": {
+									"type": "foulplay-highlight",
+									"settings": {
+										"variant": "benefits",
+										"size": "small",
+										"style": "outline",
+										"heading": "Supports strength, recovery and cognitive function.",
+										"body": "<p>Creatine is a naturally occurring compound that supports adenosine triphosphate (ATP) recycling in our muscles and brain.</p>"
+									}
+								},
+								"flavour": {
+									"type": "foulplay-highlight",
+									"settings": {
+										"variant": "flavour",
+										"size": "small",
+										"style": "outline",
+										"value": "Hakuto\nPeach",
+										"heading": "Naturally-flavored bites to support strength, recovery and cognition.",
+										"body": "<p>Each bite opens with a rounded sweetness, followed by a clean and refreshing finish. Made with 100% natural flavour</p>",
+										"tartness": 1,
+										"sweetness": 4,
+										"flavour": 5
+									}
+								}
+							},
+							"block_order": [
+								"dose",
+								"benefits",
+								"flavour"
+							],
+							"static": true
+						}
 					}
 				},
-				"flavour": {
-					"type": "foulplay-highlight",
+				"purest_creatine_stage": {
+					"type": "foulplay-scene",
 					"settings": {
-						"variant": "flavour",
-						"size": "small",
-						"style": "outline",
-						"value": "Hakuto\nPeach",
-						"heading": "Naturally-flavored bites to support strength, recovery and cognition.",
-						"body": "<p>Each bite opens with a rounded sweetness, followed by a clean and refreshing finish. Made with 100% natural flavour</p>",
-						"tartness": 1,
-						"sweetness": 4,
-						"flavour": 5
+						"height": 1225,
+						"product": "purest-creatine-sachets",
+						"subtitle": "Ultra Pure Creatine Monohydrate",
+						"summary": "The purest creatine monohydrate powder at 99.9% purity.",
+						"header_style": "product",
+						"media_type": "video",
+						"show_highlights": true
+					},
+					"blocks": {
+						"content": {
+							"type": "foulplay-scene-content",
+							"settings": {
+								"destination": "shopify://collections/all",
+								"link_label": "Shop PUREST-CREATINE"
+							},
+							"blocks": {
+								"dose": {
+									"type": "foulplay-highlight",
+									"settings": {
+										"variant": "text",
+										"size": "small",
+										"style": "outline",
+										"value": "5000mg",
+										"heading": "Creatine without compromise",
+										"body": "<p>PUREST uses a patented form of creatine monohydrate tested to be purer than anything else on the market. 99.99% purity. No solvents. No residue. No compromise.</p>"
+									}
+								},
+								"benefits": {
+									"type": "foulplay-highlight",
+									"settings": {
+										"variant": "benefits",
+										"size": "small",
+										"style": "outline",
+										"heading": "Supports strength, recovery and cognitive function.",
+										"body": "<p>Creatine is a naturally occurring compound that supports adenosine triphosphate (ATP) recycling in our muscles and brain.</p>"
+									}
+								}
+							},
+							"block_order": [
+								"dose",
+								"benefits"
+							],
+							"static": true
+						}
 					}
 				}
 			},
-			"block_order": ["dose", "benefits", "flavour"],
-			"settings": {
-				"product": "hi-creatine",
-				"destination": "shopify://collections/all",
-				"link_label": "Shop HI-CREATINE"
-			}
-		},
-		"purest_creatine_stage": {
-			"type": "custom-purest-creatine-stage",
-			"blocks": {
-				"dose": {
-					"type": "foulplay-highlight",
-					"settings": {
-						"variant": "text",
-						"size": "small",
-						"style": "outline",
-						"value": "5000mg",
-						"heading": "Creatine without compromise",
-						"body": "<p>PUREST uses a patented form of creatine monohydrate tested to be purer than anything else on the market. 99.99% purity. No solvents. No residue. No compromise.</p>"
-					}
-				},
-				"benefits": {
-					"type": "foulplay-highlight",
-					"settings": {
-						"variant": "benefits",
-						"size": "small",
-						"style": "outline",
-						"heading": "Supports strength, recovery and cognitive function.",
-						"body": "<p>Creatine is a naturally occurring compound that supports adenosine triphosphate (ATP) recycling in our muscles and brain.</p>"
-					}
-				}
-			},
-			"block_order": ["dose", "benefits"],
-			"settings": {
-				"product": "purest-creatine-sachets",
-				"destination": "shopify://collections/all",
-				"link_label": "Shop PUREST-CREATINE"
-			}
+			"block_order": [
+				"opening_image",
+				"hi_creatine_stage",
+				"purest_creatine_stage"
+			],
+			"settings": {},
+			"disabled": true
 		},
 		"product_showcase": {
 			"type": "custom-home-products",
@@ -125,7 +175,11 @@
 					}
 				}
 			},
-			"block_order": ["hi_creatine", "purest_creatine", "electrolytes"],
+			"block_order": [
+				"hi_creatine",
+				"purest_creatine",
+				"electrolytes"
+			],
 			"settings": {
 				"heading": "Save with Subscriptions",
 				"body": "<p>When you create a subscription for any of our core product range*, you'll receive all our Performance Novelties as a complimentary gift (valued at $47).</p>",
@@ -245,7 +299,11 @@
 					}
 				}
 			},
-			"block_order": ["complete", "creatine", "hydration"],
+			"block_order": [
+				"complete",
+				"creatine",
+				"hydration"
+			],
 			"settings": {
 				"heading": "Save with Bundles",
 				"body": "<p>Choose a bundle and save 15% compared to buying items individually. Simply select your bundle and the discount is applied automatically.</p>",
@@ -282,7 +340,10 @@
 					}
 				}
 			},
-			"block_order": ["technology", "editorial"],
+			"block_order": [
+				"technology",
+				"editorial"
+			],
 			"settings": {}
 		},
 		"roster": {
@@ -296,7 +357,9 @@
 					}
 				}
 			},
-			"block_order": ["dean_ho"],
+			"block_order": [
+				"dean_ho"
+			],
 			"settings": {
 				"heading": "FOULPLAY ROSTER",
 				"image_alt": "Athlete carrying a weighted bag across their shoulders",
@@ -355,12 +418,21 @@
 				"heading": "Journal",
 				"filter_label": "Journal categories"
 			}
+		},
+		"product_launch": {
+			"type": "custom-product-launch",
+			"settings": {
+				"product": "hi-creatine",
+				"subtitle": "High-strength Creatine Bites",
+				"heading": "NEW: Pomegranate hi-creatine",
+				"description": "Discover our new limited edition flavour, created in collaboration with Agaric Fly Scents."
+			},
+			"disabled": false
 		}
 	},
 	"order": [
-		"opening_image",
-		"hi_creatine_stage",
-		"purest_creatine_stage",
+		"product_launch",
+		"homepage_showcase",
 		"product_showcase",
 		"science",
 		"bundles",

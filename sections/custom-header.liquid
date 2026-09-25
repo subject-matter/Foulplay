@@ -1,19 +1,19 @@
 {% liquid
-	assign featured_product_1 = section.settings.featured_product_1
-	assign featured_product_2 = section.settings.featured_product_2
-
-	if featured_product_1 == blank
-		assign featured_product_1 = all_products['hi-creatine']
-	endif
-
-	if featured_product_2 == blank
-		assign featured_product_2 = all_products['purest-creatine-sachets']
-	endif
+	assign menu_collections = section.blocks | where: 'type', 'collection'
+	assign first_collection_id = ''
+	for block in menu_collections
+		if block.settings.collection != blank
+			assign first_collection_id = block.id
+			assign featured_collection = block.settings.collection
+			break
+		endif
+	endfor
 %}
 
 <foulplay-header
 	class="fp-header{% if request.page_type == 'index' %} fp-header--home{% endif %}"
 	data-section-id="{{ section.id }}"
+	data-offer-duration="{{ section.settings.message_duration | default: 5 }}"
 >
 	<header class="fp-header__shell" data-header-shell>
 		<div class="fp-header__grid" data-header-grid>
@@ -114,7 +114,8 @@
 								{% if block.type == 'message' %}
 									<p
 										class="fp-header__offer-message{% if forloop.first %} is-active{% endif %}"
-										data-offer-message
+									data-offer-message
+									aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
 										{{ block.shopify_attributes }}
 									>
 										{{
@@ -153,7 +154,7 @@
 							class="fp-header__frame"
 							aria-hidden="true"
 						></span>
-						<p>{{ section.settings.statement }}</p>
+						<p>{{ section.settings.statement | strip_html | strip | truncate: 116, '' | escape }}</p>
 					</div>
 
 					<div class="fp-header__cell fp-header__cta-cell">
@@ -180,46 +181,48 @@
 			data-shop-menu
 			aria-hidden="true"
 		>
-			<nav class="fp-header__shop-tabs" aria-label="Shop categories">
-				<a
-					class="is-active"
-					href="{{ routes.all_products_collection_url }}"
-					>Featured <span>2</span></a
-				>
-				<a href="{{ section.settings.creatine_url | default: routes.all_products_collection_url }}"
-					>Creatine</a
-				>
-				<a href="{{ section.settings.hydration_url | default: routes.all_products_collection_url }}"
-					>Hydration</a
-				>
-				<a href="{{ section.settings.complements_url | default: routes.all_products_collection_url }}"
-					>Complements</a
-				>
-			</nav>
+			<div class="fp-header__shop-tabs" role="tablist" aria-label="Shop categories">
+				<span class="fp-header__frame" aria-hidden="true"></span>
+				{% for block in menu_collections %}
+					{% assign menu_collection = block.settings.collection %}
+					{% if menu_collection != blank %}
+						<button type="button" role="tab" id="ShopTab-{{ section.id }}-{{ block.id }}"
+							class="fp-header__shop-tab{% if block.id == first_collection_id %} is-active{% endif %}"
+							data-shop-tab="{{ block.id }}" aria-controls="ShopPanel-{{ section.id }}-{{ block.id }}"
+							aria-selected="{% if block.id == first_collection_id %}true{% else %}false{% endif %}"
+							tabindex="{% if block.id == first_collection_id %}0{% else %}-1{% endif %}"
+							{{ block.shopify_attributes }}>
+							{{ menu_collection.title | escape }}<span class="fp-header__category-count"><span>{{ menu_collection.products.size | at_most: 3 }}</span></span>
+						</button>
+					{% elsif request.design_mode %}
+						<span {{ block.shopify_attributes }}>Select a collection</span>
+					{% endif %}
+				{% endfor %}
+				<span class="fp-header__category-line" data-shop-category-line aria-hidden="true"></span>
+			</div>
 
 			<div class="fp-header__shop-content">
-				<div class="fp-header__featured-products">
-					{% render 'custom-header-product',
-						product: featured_product_1,
-						image_asset: 'foulplay-header-hi-creatine.png',
-						image_variant: 'hi-creatine',
-						eyebrow: 'HI-CREATINE',
-						subtitle: 'High-strength Creatine Bites',
-						description: 'The most potent creatine edible. 1800mg creatine monohydrate per bite.',
-						badge: 'New',
-						pack: '60 Bites (20 servings)'
-					%}
-					{% render 'custom-header-product',
-						product: featured_product_2,
-						image_asset: 'foulplay-header-purest-creatine.png',
-						image_variant: 'purest-creatine',
-						eyebrow: 'PUREST-CREATINE',
-						subtitle: 'Ultra Pure Creatine Monohydrate',
-						description: 'The purest creatine monohydrate powder at 99.9% purity.',
-						badge: 'Best Seller',
-						pack: '30 Sachets'
-					%}
-				</div>
+				<span class="fp-header__frame" aria-hidden="true"></span>
+				{% for block in menu_collections %}
+					{% assign menu_collection = block.settings.collection %}
+					{% if menu_collection != blank %}
+						<div class="fp-header__featured-products" role="tabpanel" tabindex="0"
+							id="ShopPanel-{{ section.id }}-{{ block.id }}" data-shop-panel="{{ block.id }}"
+							aria-labelledby="ShopTab-{{ section.id }}-{{ block.id }}"{% unless block.id == first_collection_id %} hidden{% endunless %}>
+							{% for menu_product in menu_collection.products limit: 3 %}
+								{% assign product_description = menu_product.description | strip_html | strip | truncate: 120 %}
+								{% render 'custom-header-product', product: menu_product, description: product_description %}
+							{% else %}
+								<p class="fp-header__collection-empty">No products in this collection yet.</p>
+							{% endfor %}
+						</div>
+					{% endif %}
+				{% endfor %}
+				{% if first_collection_id == blank %}
+					<div class="fp-header__featured-products">
+						<a class="fp-header__collection-empty" href="{{ routes.all_products_collection_url }}">Explore all products</a>
+					</div>
+				{% endif %}
 
 				<div class="fp-header__shop-promo">
 					<div>
@@ -379,117 +382,136 @@
 				{% endfor %}
 			{% endif %}
 		</div>
-		<div class="fp-header__cart-upsells">
-			<p>Best Sellers</p>
-			{% render 'custom-header-product',
-				product: featured_product_1,
-				image_asset: 'foulplay-header-hi-creatine.png',
-				image_variant: 'hi-creatine',
-				eyebrow: 'HI-CREATINE',
-				subtitle: 'High-strength Creatine Bites',
-				badge: 'New',
-				pack: '60 Bites'
-			%}
-			{% render 'custom-header-product',
-				product: featured_product_2,
-				image_asset: 'foulplay-header-purest-creatine.png',
-				image_variant: 'purest-creatine',
-				eyebrow: 'PUREST-CREATINE',
-				subtitle: 'Ultra Pure Creatine Monohydrate',
-				badge: 'Best Seller',
-				pack: '30 Sachets'
-			%}
-		</div>
+		{% if featured_collection.products.size > 0 %}
+			<div class="fp-header__cart-upsells">
+				<p>{{ featured_collection.title | escape }}</p>
+				{% for featured_product in featured_collection.products limit: 2 %}
+					{% render 'custom-header-product', product: featured_product %}
+				{% endfor %}
+			</div>
+		{% endif %}
 	</aside>
 </foulplay-header>
 
 {% schema %}
-	{
-		"name": "Header",
-		"tag": "section",
-		"class": "section-header",
-		"limit": 1,
-		"settings": [
-			{
-				"type": "textarea",
-				"id": "tagline",
-				"label": "Tagline",
-				"default": "A new vision for\nperformance nutrition"
-			},
-			{
-				"type": "textarea",
-				"id": "statement",
-				"label": "Statement",
-				"default": "Performance nutrition should work for your lifestyle, not complicate it. That’s exactly where FOULPLAY stands apart."
-			},
-			{
-				"type": "text",
-				"id": "cta_label",
-				"label": "Call to action label",
-				"default": "Explore All Products"
-			},
-			{ "type": "url", "id": "cta_url", "label": "Call to action link" },
-			{ "type": "url", "id": "science_url", "label": "Science link" },
-			{ "type": "url", "id": "journal_url", "label": "Journal link" },
-			{ "type": "url", "id": "creatine_url", "label": "Creatine link" },
-			{ "type": "url", "id": "hydration_url", "label": "Hydration link" },
-			{
-				"type": "url",
-				"id": "complements_url",
-				"label": "Complements link"
-			},
-			{ "type": "url", "id": "bundles_url", "label": "Bundles link" },
-			{
-				"type": "url",
-				"id": "subscription_url",
-				"label": "Subscription link"
-			},
-			{
-				"type": "product",
-				"id": "featured_product_1",
-				"label": "First featured product"
-			},
-			{
-				"type": "product",
-				"id": "featured_product_2",
-				"label": "Second featured product"
-			},
-			{ "type": "blog", "id": "journal_blog", "label": "Journal blog" }
-		],
-		"blocks": [
-			{
-				"type": "message",
-				"name": "Promotion",
-				"limit": 3,
-				"settings": [
-					{
-						"type": "textarea",
-						"id": "text",
-						"label": "Text",
-						"default": "Get 15% off your first order\n“NEW16”"
+{
+	"name": "Header",
+	"tag": "section",
+	"class": "section-header",
+	"limit": 1,
+	"settings": [
+		{
+			"type": "range",
+			"id": "message_duration",
+			"label": "Message cycle duration",
+			"min": 0,
+			"max": 15,
+			"step": 1,
+			"unit": "s",
+			"default": 5,
+			"info": "Set to 0 to turn off automatic message changes."
+		},
+		{
+			"type": "textarea",
+			"id": "tagline",
+			"label": "Tagline",
+			"default": "A new vision for\nperformance nutrition"
+		},
+		{
+			"type": "textarea",
+			"id": "statement",
+			"label": "Statement",
+			"info": "Maximum 116 characters, including spaces and punctuation. The storefront displays only the first 116 characters.",
+			"default": "Performance nutrition should work for your lifestyle, not complicate it. That’s exactly where FOULPLAY stands apart."
+		},
+		{
+			"type": "text",
+			"id": "cta_label",
+			"label": "Call to action label",
+			"default": "Explore All Products"
+		},
+		{
+			"type": "url",
+			"id": "cta_url",
+			"label": "Call to action link"
+		},
+		{
+			"type": "url",
+			"id": "science_url",
+			"label": "Science link"
+		},
+		{
+			"type": "url",
+			"id": "journal_url",
+			"label": "Journal link"
+		},
+		{
+			"type": "url",
+			"id": "bundles_url",
+			"label": "Bundles link"
+		},
+		{
+			"type": "url",
+			"id": "subscription_url",
+			"label": "Subscription link"
+		},
+		{
+			"type": "blog",
+			"id": "journal_blog",
+			"label": "Journal blog"
+		}
+	],
+	"blocks": [
+		{
+			"type": "message",
+			"name": "Promotion",
+			"limit": 3,
+			"settings": [
+				{
+					"type": "textarea",
+					"id": "text",
+					"label": "Text",
+					"default": "Get 15% off your first order\n“NEW16”"
+				}
+			]
+		},
+		{
+			"type": "collection",
+			"name": "Collection",
+			"settings": [
+				{
+					"type": "collection",
+					"id": "collection",
+					"label": "Collection",
+					"info": "Uses the collection title and first 3 products, in collection order. The first collection also supplies cart recommendations."
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Header",
+			"blocks": [
+				{
+					"type": "message"
+				},
+				{
+					"type": "message",
+					"settings": {
+						"text": "Free delivery on subscriptions\nSUBSCRIBE"
 					}
-				]
-			}
-		],
-		"presets": [
-			{
-				"name": "Header",
-				"blocks": [
-					{ "type": "message" },
-					{
-						"type": "message",
-						"settings": {
-							"text": "Free delivery on subscriptions\nSUBSCRIBE"
-						}
-					},
-					{
-						"type": "message",
-						"settings": {
-							"text": "Build a complete routine\nSHOP BUNDLES"
-						}
+				},
+				{
+					"type": "message",
+					"settings": {
+						"text": "Build a complete routine\nSHOP BUNDLES"
 					}
-				]
-			}
-		]
-	}
+				},
+				{
+					"type": "collection"
+				}
+			]
+		}
+	]
+}
 {% endschema %}

@@ -14,6 +14,7 @@ import { FoulplayHeader } from '@/scripts/theme/foulplay-header'
 import {
 	FoulplayBundleShowcase,
 	FoulplayJournalCarousel,
+	FoulplayScene,
 	FoulplayProductShowcase,
 	FoulplayRoster,
 	FoulplayScienceSwitcher,
@@ -30,6 +31,7 @@ q.safeDefineElement(KlaviyoForm)
 q.safeDefineElement(WelcomePopup)
 q.safeDefineElement(WaitlistForm)
 q.safeDefineElement(FoulplayHeader)
+q.safeDefineElement(FoulplayScene)
 q.safeDefineElement(FoulplayProductShowcase)
 q.safeDefineElement(FoulplayScienceSwitcher)
 q.safeDefineElement(FoulplayBundleShowcase)

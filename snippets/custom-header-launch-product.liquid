@@ -1,0 +1,21 @@
+<div class="fp-header__product-form fp-header__launch-product"{% unless mobile %} data-header-product-form="{{ product.handle }}" data-header-product-slot="{{ slot }}" hidden{% endunless %}>
+  <div class="fp-header__hero-product">
+    <span class="fp-header__frame" aria-hidden="true"></span>
+    <div class="fp-header__hero-identity">
+      {% assign image_alt = header_image.alt | default: product.title %}
+      {% if header_image != blank %}
+        {{ header_image | image_url: width: 160 | image_tag: width: 80, height: 80, loading: 'eager', alt: image_alt }}
+      {% elsif product.handle == 'hi-creatine' %}
+        <span class="fp-header__launch-thumbnail"><img src="{{ 'foulplay-launch-product.png' | asset_url }}" alt="{{ product.title | escape }}" width="80" height="80"></span>
+      {% elsif product.featured_image != blank %}
+        {% assign image_alt = product.featured_image.alt | default: product.title %}
+        {{ product.featured_image | image_url: width: 160 | image_tag: width: 80, height: 80, loading: 'eager', alt: image_alt }}
+      {% endif %}
+      <div><p class="fp-header__eyebrow">{{ product.title | escape }}</p><p class="fp-header__muted">{{ subtitle | escape }}</p></div>
+    </div>
+    <div class="fp-header__hero-details">
+      <div><p>{{ heading | escape }}</p><p class="fp-header__muted">{{ description | escape }}</p></div>
+    </div>
+    <a class="fp-header__button fp-header__hero-view" href="{{ product.url }}">View Product</a>
+  </div>
+</div>

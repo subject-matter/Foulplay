@@ -9,15 +9,6 @@ const focusableSelector = [
 	'[tabindex]:not([tabindex="-1"])',
 ].join(',')
 
-type HeaderProductData = {
-	variants: Array<{
-		id: number
-		available: boolean
-		price: string
-		sellingPlans: Record<string, string>
-	}>
-}
-
 export class FoulplayHeader extends HTMLElement {
 	static htmlSelector = 'foulplay-header'
 
@@ -27,10 +18,13 @@ export class FoulplayHeader extends HTMLElement {
 	private activeDrawer: HTMLElement | null = null
 	private lastTrigger: HTMLElement | null = null
 	private backdropTimer: number | undefined
-	private activeProductHandle: string | undefined
+	private offerTimer: number | undefined
 	private cartUpdateUnsubscriber: (() => void) | undefined
 
 	connectedCallback() {
+		this.addEventListener('click', this.handleShopCategoryClick)
+		this.addEventListener('keydown', this.handleShopCategoryKeydown)
+		this.addEventListener('shopify:block:select', this.handleShopBlockSelect)
 		this.mountProductForms()
 		this.shopTrigger = this.querySelector('[data-shop-trigger]')
 		this.shopMenu = this.querySelector('[data-shop-menu]')
@@ -38,7 +32,7 @@ export class FoulplayHeader extends HTMLElement {
 
 		this.shopTrigger?.addEventListener('click', this.toggleShop)
 		this.shopTrigger?.addEventListener('pointerenter', this.openShopOnHover)
-		this.querySelector('[data-header-shell]')?.addEventListener(
+		this.querySelector<HTMLElement>('[data-header-shell]')?.addEventListener(
 			'pointerleave',
 			this.closeShopOnLeave
 		)
@@ -53,7 +47,6 @@ export class FoulplayHeader extends HTMLElement {
 			}
 		)
 		this.backdrop?.addEventListener('click', this.closeDrawer)
-		this.addEventListener('change', this.handleProductChange)
 		this.cartUpdateUnsubscriber = subscribe(
 			PUB_SUB_EVENTS.cartUpdate,
 			this.refreshCustomCart
@@ -61,7 +54,6 @@ export class FoulplayHeader extends HTMLElement {
 		this.querySelectorAll<HTMLButtonElement>('[data-offer-dot]').forEach(
 			(button) => {
 				button.addEventListener('click', this.selectOffer)
-				button.addEventListener('pointerenter', this.selectOfferOnHover)
 			}
 		)
 
@@ -77,15 +69,23 @@ export class FoulplayHeader extends HTMLElement {
 			this.handleSectionLoad
 		)
 		this.updateCompactState()
+		this.startOfferCycle()
 	}
 
 	disconnectedCallback() {
+		this.removeEventListener('click', this.handleShopCategoryClick)
+		this.removeEventListener('keydown', this.handleShopCategoryKeydown)
+		this.removeEventListener('shopify:block:select', this.handleShopBlockSelect)
+		window.clearInterval(this.offerTimer)
+		this.querySelectorAll<HTMLButtonElement>('[data-offer-dot]').forEach(
+			(button) => button.removeEventListener('click', this.selectOffer)
+		)
 		this.shopTrigger?.removeEventListener('click', this.toggleShop)
 		this.shopTrigger?.removeEventListener(
 			'pointerenter',
 			this.openShopOnHover
 		)
-		this.querySelector('[data-header-shell]')?.removeEventListener(
+		this.querySelector<HTMLElement>('[data-header-shell]')?.removeEventListener(
 			'pointerleave',
 			this.closeShopOnLeave
 		)
@@ -96,43 +96,47 @@ export class FoulplayHeader extends HTMLElement {
 			'shopify:section:load',
 			this.handleSectionLoad
 		)
-		this.removeEventListener('change', this.handleProductChange)
 		this.cartUpdateUnsubscriber?.()
 	}
 
 	private updateCompactState = () => {
-		const opening = document.querySelector<HTMLElement>('.home-opening')
-		const compactAfter = opening
-			? opening.offsetTop + opening.offsetHeight
+		const opening = document.querySelector<HTMLElement>('.homepage-showcase .foulplay-scene, .home-opening')
+		const compactAfter = opening && !opening.hasAttribute('data-header-product')
+			? opening.getBoundingClientRect().bottom + window.scrollY
 			: 16
 		const compact =
 			!this.classList.contains('fp-header--home') ||
 			window.scrollY >= compactAfter
 		this.classList.toggle('is-compact', compact)
 		const headerProbe = 38
-		const productSections = document.querySelectorAll<HTMLElement>(
-			'[data-header-product]'
-		)
-		const activeProductSection = Array.from(productSections).find(
-			(section) => {
-				const bounds = section.getBoundingClientRect()
-				return bounds.top <= headerProbe && bounds.bottom > headerProbe
-			}
-		)
-		const activeProductHandle = activeProductSection?.dataset.headerProduct
-		const productForm = activeProductHandle
-			? this.querySelector<HTMLElement>(
-					`[data-header-product-form="${CSS.escape(activeProductHandle)}"]`
-				)
-			: null
-		const productActive = Boolean(
-			productForm && window.matchMedia('(min-width: 1000px)').matches
-		)
-
-		this.classList.toggle('is-product', productActive)
-		this.setActiveProductForm(
-			productActive ? activeProductHandle : undefined
-		)
+		const grid = this.querySelector<HTMLElement>('[data-header-grid]')
+		const headerTop = grid?.getBoundingClientRect().top ?? 16
+		const rowTop = headerTop + 39
+		const rowHeight = 106
+		const headerBottom = rowTop + rowHeight
+		const desktop = window.matchMedia('(min-width: 1000px)').matches
+		const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-header-product]'))
+		const intersections = sections.map(section => ({ section, bounds: section.getBoundingClientRect() }))
+			.filter(({ bounds }) => desktop && bounds.top < headerBottom && bounds.bottom > headerTop)
+		this.classList.toggle('is-product', intersections.length > 0)
+		this.querySelectorAll<HTMLElement>('[data-header-product-form]').forEach(form => {
+			const match = intersections.find(({ section }) => section.dataset.headerProductSlot === form.dataset.headerProductSlot)
+			const top = match ? Math.max(0, match.bounds.top - rowTop) : rowHeight
+			const bottom = match ? Math.max(0, headerBottom - match.bounds.bottom) : 0
+			form.hidden = !match || top + bottom >= rowHeight
+			form.inert = top > 0 || bottom > 0
+			form.style.clipPath = `inset(${Math.min(top, rowHeight)}px 0 ${Math.min(bottom, rowHeight)}px 0)`
+		})
+		const expanded = this.querySelector<HTMLElement>('.fp-header__expanded-row')
+		if (expanded) {
+			const rowIntersections = intersections.filter(({ bounds }) => bounds.top < headerBottom && bounds.bottom > rowTop)
+			const first = rowIntersections[0]?.bounds
+			const last = rowIntersections.at(-1)?.bounds
+			expanded.inert = Boolean(first && last)
+			if (!first || !last) expanded.style.clipPath = ''
+			else if (first.top > rowTop) expanded.style.clipPath = `inset(0 0 ${headerBottom - first.top}px 0)`
+			else expanded.style.clipPath = `inset(${Math.min(rowHeight, last.bottom - rowTop)}px 0 0 0)`
+		}
 
 		const themedSections = document.querySelectorAll<HTMLElement>(
 			'[data-header-theme="dark"]'
@@ -142,19 +146,58 @@ export class FoulplayHeader extends HTMLElement {
 			return bounds.top <= headerProbe && bounds.bottom > headerProbe
 		})
 		this.classList.toggle('is-over-dark', overDarkSection)
+		this.positionShopCategoryLine()
 	}
 
-	private setActiveProductForm(handle?: string) {
-		if (this.activeProductHandle === handle) return
-		this.activeProductHandle = handle
+	private positionShopCategoryLine() {
+		const tab = this.querySelector<HTMLElement>('[data-shop-tab].is-active')
+		const line = this.querySelector<HTMLElement>('[data-shop-category-line]')
+		if (!tab || !line) return
+		line.style.transform = `translateX(${tab.offsetLeft}px) scaleX(${tab.offsetWidth})`
+	}
 
-		this.querySelectorAll<HTMLElement>(
-			'[data-header-product-form]'
-		).forEach((form) => {
-			const active = form.dataset.headerProductForm === handle
-			form.hidden = !active
-			if (active) this.updateProductForm(form)
+	private handleShopCategoryClick = (event: MouseEvent) => {
+		const tab = (event.target as Element).closest<HTMLButtonElement>('[data-shop-tab]')
+		if (tab && this.contains(tab)) this.selectShopCategory(tab, event.detail !== 0)
+	}
+
+	private handleShopCategoryKeydown = (event: KeyboardEvent) => {
+		const tab = (event.target as Element).closest<HTMLButtonElement>('[data-shop-tab]')
+		if (!tab || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+		event.preventDefault()
+		const tabs = Array.from(this.querySelectorAll<HTMLButtonElement>('[data-shop-tab]'))
+		const index = tabs.indexOf(tab)
+		const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1
+			: (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length
+		this.selectShopCategory(tabs[next], false)
+		tabs[next].focus()
+	}
+
+	private selectShopCategory(selected: HTMLButtonElement, animate: boolean) {
+		if (selected.classList.contains('is-active')) return
+		const tabs = Array.from(this.querySelectorAll<HTMLButtonElement>('[data-shop-tab]'))
+		const positions = tabs.map((tab) => tab.getBoundingClientRect().left)
+		const line = this.querySelector<HTMLElement>('[data-shop-category-line]')
+		const previousLine = line ? getComputedStyle(line).transform : ''
+		tabs.forEach((tab) => {
+			tab.getAnimations().forEach((animation) => animation.cancel())
+			const active = tab === selected
+			tab.classList.toggle('is-active', active)
+			tab.setAttribute('aria-selected', String(active))
+			tab.tabIndex = active ? 0 : -1
 		})
+		this.querySelectorAll<HTMLElement>('[data-shop-panel]').forEach((panel) => {
+			panel.hidden = panel.dataset.shopPanel !== selected.dataset.shopTab
+		})
+		line?.getAnimations().forEach((animation) => animation.cancel())
+		this.positionShopCategoryLine()
+		if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+		const timing = { duration: 300, easing: 'cubic-bezier(0.75, 0, 0.12, 1)' }
+		tabs.forEach((tab, index) => {
+			const shift = positions[index] - tab.getBoundingClientRect().left
+			if (shift) tab.animate([{ transform: `translateX(${shift}px)` }, { transform: 'translateX(0)' }], timing)
+		})
+		if (line) line.animate([{ transform: previousLine }, { transform: line.style.transform }], timing)
 	}
 
 	private mountProductForms() {
@@ -162,6 +205,7 @@ export class FoulplayHeader extends HTMLElement {
 			'[data-header-product-row]'
 		)
 		if (!productRow) return
+		productRow.replaceChildren()
 
 		document
 			.querySelectorAll<HTMLTemplateElement>(
@@ -172,99 +216,20 @@ export class FoulplayHeader extends HTMLElement {
 				const slot = source.dataset.headerProductSource
 				if (!slot) return
 
-				productRow
-					.querySelectorAll<HTMLElement>(
-						`[data-header-product-slot="${CSS.escape(slot)}"], [data-header-product-ui="${CSS.escape(slot)}"]`
-					)
-					.forEach((element) => element.remove())
-
 				productRow.append(source.content.cloneNode(true))
 			})
 	}
 
+	private handleShopBlockSelect = (event: Event) => {
+		const tab = (event.target as Element).closest<HTMLButtonElement>('[data-shop-tab]')
+		if (!tab) return
+		this.setShopState(true)
+		this.selectShopCategory(tab, false)
+	}
+
 	private handleSectionLoad = () => {
-		this.activeProductHandle = undefined
 		this.mountProductForms()
 		this.updateCompactState()
-	}
-
-	private handleProductChange = (event: Event) => {
-		const target = event.target as HTMLElement
-		const productForm = target.closest<HTMLElement>(
-			'[data-header-product-form]'
-		)
-		if (!productForm) return
-
-		if (target.matches('[data-header-purchase-option]')) {
-			const subscriptionSelected =
-				(target as HTMLInputElement).value === 'subscription'
-			const sellingPlan = productForm.querySelector<HTMLSelectElement>(
-				'[data-header-selling-plan]'
-			)
-			if (sellingPlan) sellingPlan.disabled = !subscriptionSelected
-		}
-
-		this.updateProductForm(productForm)
-	}
-
-	private updateProductForm(productForm: HTMLElement) {
-		const dataElement = productForm.querySelector<HTMLScriptElement>(
-			'[data-header-product-data]'
-		)
-		const variantSelect = productForm.querySelector<HTMLSelectElement>(
-			'[data-header-variant]'
-		)
-		const sellingPlan = productForm.querySelector<HTMLSelectElement>(
-			'[data-header-selling-plan]'
-		)
-		const subscription = productForm.querySelector<HTMLInputElement>(
-			'[data-header-purchase-option][value="subscription"]'
-		)
-		const price = productForm.querySelector<HTMLElement>(
-			'[data-header-product-price]'
-		)
-		const button = productForm.querySelector<HTMLButtonElement>(
-			'[data-header-product-submit]'
-		)
-		const buttonLabel = productForm.querySelector<HTMLElement>(
-			'[data-header-submit-label]'
-		)
-		const status = productForm.querySelector<HTMLElement>(
-			'[data-header-product-status]'
-		)
-		if (!dataElement || !variantSelect || !price || !button || !buttonLabel)
-			return
-
-		let data: HeaderProductData
-		try {
-			data = JSON.parse(
-				dataElement.textContent || '{}'
-			) as HeaderProductData
-		} catch {
-			return
-		}
-
-		const variant = data.variants.find(
-			(item) => item.id === Number(variantSelect.value)
-		)
-		if (!variant) return
-
-		const subscriptionActive = Boolean(
-			subscription?.checked && sellingPlan && !sellingPlan.disabled
-		)
-		const planPrice = subscriptionActive
-			? variant.sellingPlans[sellingPlan?.value || '']
-			: undefined
-		const available =
-			variant.available && (!subscriptionActive || Boolean(planPrice))
-
-		price.textContent = planPrice || variant.price
-		button.disabled = !available
-		button.setAttribute('aria-disabled', String(!available))
-		buttonLabel.textContent = available ? 'Add to Cart' : 'Sold Out'
-		if (status) {
-			status.textContent = `${buttonLabel.textContent}, ${price.textContent}`
-		}
 	}
 
 	private refreshCustomCart = async () => {
@@ -344,9 +309,13 @@ export class FoulplayHeader extends HTMLElement {
 
 	private setShopState(open: boolean) {
 		if (!this.shopTrigger || !this.shopMenu) return
+		this.classList.add('is-shop-switching')
 		this.classList.toggle('is-shop-open', open)
 		this.shopTrigger.setAttribute('aria-expanded', String(open))
 		this.shopMenu.setAttribute('aria-hidden', String(!open))
+		// Resolve the new header geometry before restoring scroll transitions.
+		void this.offsetHeight
+		this.classList.remove('is-shop-switching')
 	}
 
 	private openDrawer = (event: Event) => {
@@ -430,16 +399,21 @@ export class FoulplayHeader extends HTMLElement {
 
 	private selectOffer = (event: Event) => {
 		const button = event.currentTarget as HTMLButtonElement
-		const index = Number(button.dataset.offerDot)
+		this.showOffer(Number(button.dataset.offerDot))
+		this.startOfferCycle()
+	}
+
+	private showOffer(index: number) {
 		const messages = this.querySelectorAll<HTMLElement>(
 			'[data-offer-message]'
 		)
 		const dots =
 			this.querySelectorAll<HTMLButtonElement>('[data-offer-dot]')
 
-		messages.forEach((message, messageIndex) =>
+		messages.forEach((message, messageIndex) => {
 			message.classList.toggle('is-active', messageIndex === index)
-		)
+			message.setAttribute('aria-hidden', String(messageIndex !== index))
+		})
 		dots.forEach((dot, dotIndex) => {
 			const active = dotIndex === index
 			dot.classList.toggle('is-active', active)
@@ -448,12 +422,24 @@ export class FoulplayHeader extends HTMLElement {
 		})
 	}
 
-	private selectOfferOnHover = (event: PointerEvent) => {
-		if (
-			event.pointerType !== 'touch' &&
-			window.matchMedia('(hover: hover) and (pointer: fine)').matches
-		) {
-			this.selectOffer(event)
-		}
+	private startOfferCycle() {
+		window.clearInterval(this.offerTimer)
+		const duration = Number(this.dataset.offerDuration ?? 5)
+		const messages = this.querySelectorAll<HTMLElement>('[data-offer-message]')
+		if (messages.length < 2 || !Number.isFinite(duration) || duration <= 0) return
+		this.offerTimer = window.setInterval(() => {
+			const offer = this.querySelector<HTMLElement>('.fp-header__offer')
+			if (
+				document.hidden ||
+				!offer?.getClientRects().length ||
+				getComputedStyle(offer).visibility === 'hidden' ||
+				offer.matches(':hover, :focus-within') ||
+				window.matchMedia('(prefers-reduced-motion: reduce)').matches
+			) return
+			const current = Array.from(messages).findIndex((message) =>
+				message.classList.contains('is-active')
+			)
+			this.showOffer((current + 1) % messages.length)
+		}, duration * 1000)
 	}
 }
